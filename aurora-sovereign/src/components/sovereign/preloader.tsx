@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import Image from "next/image";
 
 export function Preloader() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -74,7 +75,7 @@ export function Preloader() {
   return (
     <div 
         ref={containerRef} 
-        className="fixed inset-0 z-[9999] bg-[#0d0b07] flex flex-col items-center justify-center pointer-events-auto"
+        className="fixed inset-0 z-9999 bg-[#0d0b07] flex flex-col items-center justify-center pointer-events-auto"
     >
         {/* TEXTO MUTÁVEL (Consórcio -> Seguros -> Legado) */}
         <h2 
@@ -88,11 +89,12 @@ export function Preloader() {
         <div ref={brandRef} className="flex flex-col items-center gap-6 opacity-0">
             {/* LOGO */}
             <div className="w-24 h-24 md:w-32 md:h-32 relative overflow-hidden">
-                 <img 
+                 <Image 
                     ref={logoRef}
                     src="/assets/logo.svg" 
-                    alt="Aurora Asset Logo" 
-                    className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(236,182,19,0.3)]"
+                    alt="Aurora Asset Logo"
+                    fill
+                    className="object-contain drop-shadow-[0_0_15px_rgba(236,182,19,0.3)]"
                  />
             </div>
 
@@ -101,7 +103,7 @@ export function Preloader() {
                 <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tighter mix-blend-exclusion">
                     AURORA ASSET
                 </h1>
-                <div className="w-full h-[1px] bg-[#ecb613] mt-2 scale-x-0 animate-[grow_1s_ease-out_forwards]"></div>
+                <div className="w-full h-px bg-[#ecb613] mt-2 scale-x-0 animate-[grow_1s_ease-out_forwards]"></div>
             </div>
         </div>
 

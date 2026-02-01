@@ -137,7 +137,7 @@ export function ExpansionGrid() {
                 </div>
 
                 {/* Abstract Pattern Background */}
-                <div className="absolute right-[-20%] bottom-[-20%] w-64 h-64 border-[20px] border-white/10 rounded-full group-hover:scale-150 transition-transform duration-1000 ease-in-out" />
+                <div className="absolute right-[-20%] bottom-[-20%] w-64 h-64 border-20 border-white/10 rounded-full group-hover:scale-150 transition-transform duration-1000 ease-in-out" />
             </motion.div>
 
         </div>
