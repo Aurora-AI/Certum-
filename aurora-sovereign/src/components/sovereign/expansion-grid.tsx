@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight, Anchor, Zap, Tractor, Diamond } from "lucide-react";
+import Image from "next/image";
 
 const ASSETS = [
   {
@@ -72,10 +73,11 @@ export function ExpansionGrid() {
                     className="group relative h-full bg-gray-100 overflow-hidden cursor-pointer rounded-sm"
                 >
                     {/* IMAGE (Grayscale to Color) */}
-                    <img 
+                    <Image 
                         src={asset.image} 
                         alt={asset.title}
-                        className="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
+                        fill
+                        className="object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
                     />
                     
                     {/* OVERLAY (Noise + Gradient) */}
