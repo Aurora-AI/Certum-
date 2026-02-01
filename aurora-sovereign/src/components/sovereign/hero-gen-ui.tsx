@@ -3,8 +3,8 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { AuroraBackground } from "./AuroraBackground"; 
 import { ArrowUp } from "lucide-react"; 
-import { AuroraBackground } from "./AuroraBackground";
 
 export function HeroGenUI() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -15,22 +15,21 @@ export function HeroGenUI() {
   
   const [isSummoning, setIsSummoning] = useState(false);
 
-  // 1. KINETIC ENTRANCE (Disney: Staging)
+  // 1. KINETIC ENTRANCE (Manual - No Paid Plugins)
   useGSAP(() => {
     const tl = gsap.timeline();
 
-    // The Text "Forging Reality" enters ripping through space
-    tl.from(".hero-title-char", {
-      y: 100,
-      opacity: 0,
+    // Text Animation "Mask Reveal" (Free and Elegant)
+    tl.from(".hero-line-inner", {
+      yPercent: 100, // Comes from below
       duration: 1.2,
-      stagger: 0.05,
+      stagger: 0.1,
       ease: "power4.out",
-      delay: 0.5
+      delay: 0.2
     })
-    // The Input enters later, floating (Secondary Action)
+    // The Input enters smoothly
     .from(formRef.current, {
-      y: 40,
+      y: 20,
       opacity: 0,
       duration: 1,
       ease: "power3.out"
@@ -38,91 +37,91 @@ export function HeroGenUI() {
 
   }, { scope: containerRef });
 
-  // 2. THE SUMMONING LOGIC (Gen-UI Trigger)
+  // 2. THE SUMMONING LOGIC
   const handleSummon = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputRef.current?.value || isSummoning) return;
 
     setIsSummoning(true);
 
-    // DOHERTY THRESHOLD: Feedback <100ms
-    // Disney: Anticipation (Form "breathes" before sending)
     const tl = gsap.timeline();
 
-    if (formRef.current) {
-        tl.to(formRef.current, {
-        scale: 0.97,
-        duration: 0.1,
-        ease: "power2.in"
-        })
-        .to(formRef.current, {
-        scale: 1,
-        duration: 0.4,
-        ease: "elastic.out(1, 0.5)", // Squash & Stretch
-        borderColor: "#ecb613",
-        boxShadow: "0 0 30px rgba(236,182,19, 0.2)"
-        });
-    }
+    // Tactile Feedback (Squash)
+    tl.to(formRef.current, {
+      scale: 0.98,
+      duration: 0.1,
+      ease: "power2.in"
+    })
+    .to(formRef.current, {
+      scale: 1,
+      duration: 0.4,
+      ease: "elastic.out(1, 0.5)",
+      borderColor: "#ecb613",
+      boxShadow: "0 0 30px rgba(236,182,19, 0.2)"
+    });
 
-    // Thinking Visual Feedback
-    if (feedbackRef.current) {
-        gsap.to(feedbackRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.3
-        });
-    }
+    // "Thinking" State
+    gsap.to(feedbackRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.3
+    });
 
-    // Server Action Simulation (Gen-UI)
+    // Response Simulation
     setTimeout(() => {
-        // Simulated Success
-        if (btnRef.current) btnRef.current.innerHTML = "✓";
-        if (inputRef.current) inputRef.current.value = "Asset Identified. Loading...";
+        if (btnRef.current) btnRef.current.innerHTML = "✓"; // Simple Check
         
-        // Exit Transition
-        if (containerRef.current) {
-            gsap.to(containerRef.current, {
-                filter: "blur(10px)",
-                scale: 1.05,
-                opacity: 0,
-                duration: 1.5,
-                delay: 0.5,
-                ease: "power2.in"
-            });
-        }
-        
-        // window.location.href = '/simulacao'; // Real Action
+        // Cinematic Exit
+        gsap.to(containerRef.current, {
+            filter: "blur(10px)",
+            opacity: 0,
+            duration: 1.5,
+            delay: 0.5,
+            ease: "power2.in"
+        });
     }, 2000);
   };
 
   return (
     <section ref={containerRef} className="relative w-full h-screen overflow-hidden flex flex-col justify-end pb-24 px-6 lg:px-12 bg-[#0d0b07] text-white">
         
-        {/* NEW ATMOSPHERIC BACKGROUND */}
-        <AuroraBackground />
+        {/* 1. ATMOSPHERE (Absolute Background) */}
+        <div className="absolute inset-0 z-0">
+            <AuroraBackground />
+        </div>
 
-        {/* CONTENT */}
-        <div className="relative z-20 w-full max-w-[1800px] mx-auto flex flex-col lg:flex-row items-end justify-between gap-16">
+        {/* 2. CONTENT (Relative Front) */}
+        <div className="relative z-10 w-full max-w-[1800px] mx-auto flex flex-col lg:flex-row items-end justify-between gap-16">
             
-            {/* Left Side: The Promise */}
-            <div className="max-w-4xl pointer-events-none select-none">
-                <div className="overflow-hidden mb-6">
-                    <div className="flex items-center gap-3">
+            {/* Left Side: Sovereign Title */}
+            <div className="max-w-5xl pointer-events-none select-none">
+                {/* Status Indicator */}
+                <div className="overflow-hidden mb-8">
+                    <div className="flex items-center gap-3 hero-line-inner">
                         <div className="w-2 h-2 bg-[#ecb613] rounded-full animate-pulse"></div>
-                        <span className="text-[#ecb613] text-xs font-mono uppercase tracking-[0.3em]">System Online</span>
+                        <span className="text-[#ecb613] text-xs font-mono uppercase tracking-[0.3em]">
+                            System Online
+                        </span>
                     </div>
                 </div>
                 
-                <h1 className="text-6xl md:text-8xl lg:text-9xl font-light leading-[0.9] tracking-tightest mix-blend-exclusion">
-                    <span className="block hero-title-char">Forging</span> 
-                    <span className="block font-bold italic text-transparent bg-clip-text bg-linear-to-r from-white to-gray-500 hero-title-char">Reality.</span>
+                {/* Main Title (With Mask for Animation) */}
+                <h1 className="text-6xl md:text-8xl lg:text-9xl font-light leading-[0.9] tracking-tightest mix-blend-exclusion space-y-2">
+                    <div className="overflow-hidden">
+                        <span className="block hero-line-inner">Forging</span>
+                    </div>
+                    <div className="overflow-hidden">
+                        <span className="block font-bold italic text-transparent bg-clip-text bg-linear-to-r from-white to-gray-500 hero-line-inner pb-2">
+                            Legacy.
+                        </span>
+                    </div>
                 </h1>
             </div>
 
-            {/* Right Side: The Input (Gen-UI) */}
+            {/* Right Side: Gen-UI Input */}
             <div className="w-full max-w-xl pointer-events-auto">
                 
-                {/* Thinking State Feedback */}
+                {/* Visual Feedback "Thinking" */}
                 <div ref={feedbackRef} className="opacity-0 translate-y-4 mb-4 flex items-center gap-3 text-xs font-mono text-[#ecb613] uppercase tracking-widest">
                     <span className="w-4 h-4 border-2 border-[#ecb613] border-t-transparent rounded-full animate-spin"></span>
                     <span>Antigravity Processing...</span>
@@ -132,13 +131,13 @@ export function HeroGenUI() {
                 <form 
                     ref={formRef}
                     onSubmit={handleSummon}
-                    className="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-1 transition-colors duration-500 hover:border-[#ecb613]/30"
+                    className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg p-1 transition-colors duration-500 hover:border-[#ecb613]/30"
                 >
                     <input 
                         ref={inputRef}
                         type="text" 
                         disabled={isSummoning}
-                        placeholder="Ex: Simular casa de 800k em Curitiba..." 
+                        placeholder="Ex: Simular casa de 800k..." 
                         className="w-full bg-transparent border-none py-6 pl-6 pr-16 text-white placeholder-white/30 text-lg font-light focus:ring-0 focus:outline-none disabled:opacity-50"
                     />
                     
@@ -155,8 +154,6 @@ export function HeroGenUI() {
 
                 <div className="absolute -bottom-8 left-0 flex gap-4 text-[10px] uppercase tracking-widest text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                     <span>Press Enter to Summon</span>
-                    <span>•</span>
-                    <span>AI Powered</span>
                 </div>
             </div>
 
