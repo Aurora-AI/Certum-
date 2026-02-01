@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useGSAP } from "@gsap/react";
 import { ArrowUp } from "lucide-react"; 
 import { AuroraBackground } from "./AuroraBackground";
 
