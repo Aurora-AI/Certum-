@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { AuroraBackground } from "./AuroraBackground"; 
+import { AuroraBackground } from "./AuroraBackground";
 import { ArrowUp } from "lucide-react"; 
 
 export function HeroGenUI() {
@@ -15,19 +15,19 @@ export function HeroGenUI() {
   
   const [isSummoning, setIsSummoning] = useState(false);
 
-  // 1. KINETIC ENTRANCE (Manual - No Paid Plugins)
+  // 1. KINETIC ENTRANCE (Versão Manual & Gratuita)
   useGSAP(() => {
     const tl = gsap.timeline();
 
-    // Text Animation "Mask Reveal" (Free and Elegant)
+    // A mágica acontece aqui: animamos o 'span' dentro da div com overflow-hidden
     tl.from(".hero-line-inner", {
-      yPercent: 100, // Comes from below
+      yPercent: 100, // O texto sobe de "baixo da terra"
       duration: 1.2,
       stagger: 0.1,
       ease: "power4.out",
       delay: 0.2
     })
-    // The Input enters smoothly
+    // O Input entra suavemente depois do texto
     .from(formRef.current, {
       y: 20,
       opacity: 0,
@@ -46,7 +46,7 @@ export function HeroGenUI() {
 
     const tl = gsap.timeline();
 
-    // Tactile Feedback (Squash)
+    // Feedback Tátil (Squash no Input)
     tl.to(formRef.current, {
       scale: 0.98,
       duration: 0.1,
@@ -60,18 +60,18 @@ export function HeroGenUI() {
       boxShadow: "0 0 30px rgba(236,182,19, 0.2)"
     });
 
-    // "Thinking" State
+    // Estado "Pensando"
     gsap.to(feedbackRef.current, {
       opacity: 1,
       y: 0,
       duration: 0.3
     });
 
-    // Response Simulation
+    // Simulação de Resposta (Gen-UI)
     setTimeout(() => {
-        if (btnRef.current) btnRef.current.innerHTML = "✓"; // Simple Check
+        if (btnRef.current) btnRef.current.innerHTML = "✓"; 
         
-        // Cinematic Exit
+        // Saída Cinematográfica
         gsap.to(containerRef.current, {
             filter: "blur(10px)",
             opacity: 0,
@@ -85,15 +85,15 @@ export function HeroGenUI() {
   return (
     <section ref={containerRef} className="relative w-full h-screen overflow-hidden flex flex-col justify-end pb-24 px-6 lg:px-12 bg-[#0d0b07] text-white">
         
-        {/* 1. ATMOSPHERE (Absolute Background) */}
+        {/* 1. ATMOSFERA (Fundo Absoluto z-0) */}
         <div className="absolute inset-0 z-0">
             <AuroraBackground />
         </div>
 
-        {/* 2. CONTENT (Relative Front) */}
+        {/* 2. CONTEÚDO (Frente Relativa z-10) */}
         <div className="relative z-10 w-full max-w-[1800px] mx-auto flex flex-col lg:flex-row items-end justify-between gap-16">
             
-            {/* Left Side: Sovereign Title */}
+            {/* Lado Esquerdo: Título Soberano */}
             <div className="max-w-5xl pointer-events-none select-none">
                 {/* Status Indicator */}
                 <div className="overflow-hidden mb-8">
@@ -105,23 +105,24 @@ export function HeroGenUI() {
                     </div>
                 </div>
                 
-                {/* Main Title (With Mask for Animation) */}
+                {/* Título Principal (Estrutura de Máscara para Animação) */}
                 <h1 className="text-6xl md:text-8xl lg:text-9xl font-light leading-[0.9] tracking-tightest mix-blend-exclusion space-y-2">
                     <div className="overflow-hidden">
                         <span className="block hero-line-inner">Forging</span>
                     </div>
                     <div className="overflow-hidden">
-                        <span className="block font-bold italic text-transparent bg-clip-text bg-linear-to-r from-white to-gray-500 hero-line-inner pb-2">
+                        {/* Gradiente no texto */}
+                        <span className="block font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500 hero-line-inner pb-2">
                             Legacy.
                         </span>
                     </div>
                 </h1>
             </div>
 
-            {/* Right Side: Gen-UI Input */}
+            {/* Lado Direito: Input Gen-UI */}
             <div className="w-full max-w-xl pointer-events-auto">
                 
-                {/* Visual Feedback "Thinking" */}
+                {/* Feedback "Pensando" */}
                 <div ref={feedbackRef} className="opacity-0 translate-y-4 mb-4 flex items-center gap-3 text-xs font-mono text-[#ecb613] uppercase tracking-widest">
                     <span className="w-4 h-4 border-2 border-[#ecb613] border-t-transparent rounded-full animate-spin"></span>
                     <span>Antigravity Processing...</span>
@@ -141,13 +142,14 @@ export function HeroGenUI() {
                         className="w-full bg-transparent border-none py-6 pl-6 pr-16 text-white placeholder-white/30 text-lg font-light focus:ring-0 focus:outline-none disabled:opacity-50"
                     />
                     
-                    {/* Magnetic Button */}
+                    {/* Botão Magnético */}
                     <button 
                         ref={btnRef}
                         type="submit" 
                         disabled={isSummoning}
                         className="absolute right-2 top-2 bottom-2 w-14 bg-[#ecb613] text-black rounded flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-300 disabled:grayscale disabled:cursor-not-allowed"
                     >
+                        {/* Se der erro no ícone, troque por <span className="text-xl">↑</span> */}
                         <ArrowUp size={24} />
                     </button>
                 </form>
