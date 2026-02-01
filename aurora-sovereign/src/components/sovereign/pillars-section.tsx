@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import { KineticCard } from "@/components/mad-lab/KineticCard";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -146,7 +147,7 @@ export function PillarsSection() {
             {/* MOLDURA VIVA (PARALLAX SLOW) */}
             <div ref={p1ContainerRef} className="w-full lg:w-[60%] relative group order-1 lg:order-2">
                 {/* Aspect Ratio Vertical Esticado */}
-                <div className="aspect-[3.5/5] relative">
+                <KineticCard intensity={12} className="aspect-[3.5/5] relative">
                     
                     {/* VIDEO BACK (ATMOSFERA) */}
                     <div className="absolute -inset-4 lg:-inset-12 bg-gray-200 rounded-sm overflow-hidden z-0">
@@ -173,7 +174,7 @@ export function PillarsSection() {
                     <div className="absolute -bottom-8 -left-8 z-20 bg-white p-4 shadow-xl hidden lg:block">
                         <span className="text-xs font-bold uppercase tracking-widest text-[#181611]">Ver Territórios</span>
                     </div>
-                </div>
+                </KineticCard>
             </div>
         </div>
 
@@ -183,7 +184,7 @@ export function PillarsSection() {
             
             {/* MOLDURA VIVA */}
             <div ref={p2ContainerRef} className="w-full lg:w-[60%] relative group">
-                <div className="aspect-[16/10] relative">
+                <KineticCard intensity={15} className="aspect-[16/10] relative">
                     
                     {/* VIDEO BACK */}
                     <div className="absolute -inset-4 lg:-inset-12 bg-gray-200 rounded-sm overflow-hidden z-0">
@@ -208,7 +209,7 @@ export function PillarsSection() {
                     <div className="absolute -top-6 -right-6 z-20 bg-[#ecb613] p-4 shadow-xl hidden lg:block">
                         <span className="text-xs font-bold uppercase tracking-widest text-[#181611]">Ver Coleção</span>
                     </div>
-                </div>
+                </KineticCard>
             </div>
 
             {/* TEXTO */}
