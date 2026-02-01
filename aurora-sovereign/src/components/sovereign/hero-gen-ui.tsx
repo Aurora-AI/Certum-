@@ -3,7 +3,9 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ArrowUp } from "lucide-react"; // Replaced Material Icon with Lucide
+import { useGSAP } from "@gsap/react";
+import { ArrowUp } from "lucide-react"; 
+import { AuroraBackground } from "./AuroraBackground";
 
 export function HeroGenUI() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -97,16 +99,8 @@ export function HeroGenUI() {
   return (
     <section ref={containerRef} className="relative w-full h-screen overflow-hidden flex flex-col justify-end pb-24 px-6 lg:px-12 bg-[#0d0b07] text-white">
         
-        {/* ATMOSPHERE (Background) */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay z-10"></div>
-            <img 
-                src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop" 
-                className="w-full h-full object-cover scale-110 opacity-60 grayscale-[0.3]" 
-                alt="Void Architecture" 
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-[#0d0b07] via-[#0d0b07]/50 to-transparent z-0"></div>
-        </div>
+        {/* NEW ATMOSPHERIC BACKGROUND */}
+        <AuroraBackground />
 
         {/* CONTENT */}
         <div className="relative z-20 w-full max-w-[1800px] mx-auto flex flex-col lg:flex-row items-end justify-between gap-16">

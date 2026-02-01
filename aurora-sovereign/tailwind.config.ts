@@ -32,6 +32,23 @@ const config: Config = {
       },
       animation: {
         'bounce-slow': 'bounce 3s infinite',
+        'aurora-1': 'aurora-1 20s infinite alternate',
+        'aurora-2': 'aurora-2 25s infinite alternate-reverse',
+        'aurora-3': 'aurora-3 30s infinite alternate',
+      },
+      keyframes: {
+        'aurora-1': {
+          '0%': { transform: 'translate(0, 0) scale(1)' },
+          '100%': { transform: 'translate(10%, 20%) scale(1.1)' },
+        },
+        'aurora-2': {
+          '0%': { transform: 'translate(0, 0) scale(1)' },
+          '100%': { transform: 'translate(-10%, -10%) scale(1.2)' },
+        },
+        'aurora-3': {
+          '0%': { transform: 'translate(0, 0) scale(1)' },
+          '100%': { transform: 'translate(-5%, 10%) scale(0.9)' },
+        },
       },
     },
   },
