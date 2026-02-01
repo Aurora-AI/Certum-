@@ -9,7 +9,6 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       duration: 1.2, // Inércia Pesada (Sovereign Feel)
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponencial
       orientation: "vertical",
-      gestureDirection: "vertical",
       smoothWheel: true,
     });
 
