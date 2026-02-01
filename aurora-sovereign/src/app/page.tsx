@@ -1,4 +1,4 @@
-import { GenesisPreloader } from "@/components/sovereign/genesis-preloader";
+import { Preloader } from "@/components/sovereign/preloader";
 // import { HeroSection } from "@/components/sovereign/hero-section"; // BACKUP: Old Hero
 import { HeroGenUI } from "@/components/sovereign/hero-gen-ui"; // NEW: Gen-UI Hero
 import { PillarsSection } from "@/components/sovereign/pillars-section";
@@ -9,7 +9,7 @@ import { Footer } from "@/components/sovereign/footer";
 export default function Home() {
   return (
     <main className="relative w-full min-h-screen bg-background-light selection:bg-primary selection:text-background">
-      <GenesisPreloader />
+      <Preloader />
       {/* <HeroSection /> */}
       <HeroGenUI />
       <PillarsSection />
