@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetic Interactions - Aurora Effects Library</title>
+    
+    <!--
+    ╔═══════════════════════════════════════════════════════════════════╗
+    ║                   MAGNETIC INTERACTIONS                           ║
+    ╠═══════════════════════════════════════════════════════════════════╣
+    ║  Efeito: Cursor customizado + Elementos magnéticos               ║
+    ║  Inspiração: Studio Dialect, Exoape                              ║
+    ║  Complexidade: ⭐⭐                                               ║
+    ║  Dependências: GSAP 3.12+                                        ║
+    ╚═══════════════════════════════════════════════════════════════════╝
+    -->
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --void: #050505;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Hide default cursor */
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--void);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           CUSTOM CURSOR
+           ═══════════════════════════════════════════════════════════ */
+        .cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 99999;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .cursor-ring {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            transition: transform 0.15s ease-out,
+                        border-color 0.3s,
+                        background 0.3s;
+        }
+
+        /* Cursor states */
+        .cursor.hover .cursor-ring {
+            transform: scale(1.5);
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .cursor.click .cursor-dot {
+            transform: scale(0.5);
+        }
+
+        .cursor.click .cursor-ring {
+            transform: scale(0.8);
+        }
+
+        .cursor.text .cursor-ring {
+            transform: scaleX(0.1) scaleY(2);
+            border-radius: 0;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           PAGE CONTENT
+           ═══════════════════════════════════════════════════════════ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 50px;
+        }
+
+        .title {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 60px;
+            line-height: 1.2;
+        }
+
+        .title span {
+            color: var(--gold);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           MAGNETIC BUTTONS
+           ═══════════════════════════════════════════════════════════ */
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .magnetic-btn {
+            position: relative;
+            padding: 25px 40px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            cursor: none;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .magnetic-btn:hover {
+            border-color: var(--gold);
+        }
+
+        .magnetic-btn .btn-text {
+            position: relative;
+            z-index: 2;
+            transition: color 0.3s;
+        }
+
+        .magnetic-btn:hover .btn-text {
+            color: var(--gold);
+        }
+
+        .magnetic-btn .btn-bg {
+            position: absolute;
+            inset: 0;
+            background: var(--gold);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+
+        .magnetic-btn:hover .btn-bg {
+            transform: scaleY(1);
+        }
+
+        .magnetic-btn:hover .btn-text {
+            color: var(--void);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           MAGNETIC CARDS
+           ═══════════════════════════════════════════════════════════ */
+        .cards-section {
+            margin-bottom: 80px;
+        }
+
+        .section-label {
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 30px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .magnetic-card {
+            position: relative;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: none;
+            transition: border-color 0.3s;
+        }
+
+        .magnetic-card:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .card-number {
+            font-size: 11px;
+            color: var(--gold);
+            opacity: 0.6;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .card-text {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .card-arrow {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .magnetic-card:hover .card-arrow {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           MAGNETIC TEXT LINKS
+           ═══════════════════════════════════════════════════════════ */
+        .links-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .magnetic-link {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 300;
+            color: #fff;
+            text-decoration: none;
+            cursor: none;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: color 0.3s;
+        }
+
+        .magnetic-link:hover {
+            color: var(--gold);
+        }
+
+        .link-number {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 400;
+        }
+
+        .link-arrow {
+            margin-left: auto;
+            font-size: 24px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .magnetic-link:hover .link-arrow {
+            opacity: 1;
+            transform: translateX(0);
+            color: var(--gold);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           INFO
+           ═══════════════════════════════════════════════════════════ */
+        .info-box {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 300px;
+        }
+
+        .info-box strong {
+            color: var(--gold);
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor">
+        <div class="cursor-dot"></div>
+        <div class="cursor-ring"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="container">
+        <h1 class="title">
+            Magnetic <span>Interactions</span><br>
+            Feel the Pull
+        </h1>
+
+        <!-- Magnetic Buttons -->
+        <div class="buttons-grid">
+            <button class="magnetic-btn" data-magnetic="0.3">
+                <span class="btn-text">Hover Me</span>
+                <span class="btn-bg"></span>
+            </button>
+            <button class="magnetic-btn" data-magnetic="0.4">
+                <span class="btn-text">Learn More</span>
+                <span class="btn-bg"></span>
+            </button>
+            <button class="magnetic-btn" data-magnetic="0.5">
+                <span class="btn-text">Get Started</span>
+                <span class="btn-bg"></span>
+            </button>
+            <button class="magnetic-btn" data-magnetic="0.3">
+                <span class="btn-text">Contact Us</span>
+                <span class="btn-bg"></span>
+            </button>
+        </div>
+
+        <!-- Magnetic Cards -->
+        <section class="cards-section">
+            <div class="section-label">Services</div>
+            <div class="cards-grid">
+                <div class="magnetic-card" data-magnetic="0.15">
+                    <div class="card-number">01</div>
+                    <h3 class="card-title">Strategy</h3>
+                    <p class="card-text">Deep market analysis and positioning for sovereign-tier brands.</p>
+                    <div class="card-arrow">→</div>
+                </div>
+                <div class="magnetic-card" data-magnetic="0.15">
+                    <div class="card-number">02</div>
+                    <h3 class="card-title">Design</h3>
+                    <p class="card-text">Visual systems that command attention and respect.</p>
+                    <div class="card-arrow">→</div>
+                </div>
+                <div class="magnetic-card" data-magnetic="0.15">
+                    <div class="card-number">03</div>
+                    <h3 class="card-title">Development</h3>
+                    <p class="card-text">Engineering excellence for digital experiences.</p>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Magnetic Text Links -->
+        <section class="links-section">
+            <a href="#" class="magnetic-link" data-magnetic="0.2">
+                <span class="link-number">01</span>
+                <span>About Us</span>
+                <span class="link-arrow">→</span>
+            </a>
+            <a href="#" class="magnetic-link" data-magnetic="0.2">
+                <span class="link-number">02</span>
+                <span>Our Work</span>
+                <span class="link-arrow">→</span>
+            </a>
+            <a href="#" class="magnetic-link" data-magnetic="0.2">
+                <span class="link-number">03</span>
+                <span>Contact</span>
+                <span class="link-arrow">→</span>
+            </a>
+        </section>
+    </div>
+
+    <!-- Info -->
+    <div class="info-box">
+        <strong>Magnetic Interactions</strong>
+        Move your cursor over buttons, cards and links. Elements are pulled towards the cursor creating a tactile feel.
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    
+    <script>
+    (function() {
+        'use strict';
+
+        // ═══════════════════════════════════════════════════════════
+        // CUSTOM CURSOR
+        // ═══════════════════════════════════════════════════════════
+        
+        const cursor = document.getElementById('cursor');
+        const cursorDot = cursor.querySelector('.cursor-dot');
+        const cursorRing = cursor.querySelector('.cursor-ring');
+        
+        let mouseX = 0;
+        let mouseY = 0;
+        let cursorX = 0;
+        let cursorY = 0;
+        
+        // Update mouse position
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        // Smooth cursor follow
+        function updateCursor() {
+            const dx = mouseX - cursorX;
+            const dy = mouseY - cursorY;
+            
+            cursorX += dx * 0.15;
+            cursorY += dy * 0.15;
+            
+            gsap.set(cursor, {
+                x: cursorX,
+                y: cursorY,
+            });
+            
+            // Dot follows faster
+            gsap.set(cursorDot, {
+                x: (mouseX - cursorX) * 0.5,
+                y: (mouseY - cursorY) * 0.5,
+            });
+            
+            requestAnimationFrame(updateCursor);
+        }
+        updateCursor();
+        
+        // Cursor states
+        document.addEventListener('mousedown', () => cursor.classList.add('click'));
+        document.addEventListener('mouseup', () => cursor.classList.remove('click'));
+
+        // ═══════════════════════════════════════════════════════════
+        // MAGNETIC ELEMENTS
+        // ═══════════════════════════════════════════════════════════
+        
+        const magneticElements = document.querySelectorAll('[data-magnetic]');
+        
+        magneticElements.forEach(el => {
+            const strength = parseFloat(el.dataset.magnetic) || 0.3;
+            
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+                
+                // Reset position
+                gsap.to(el, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.6,
+                    ease: 'elastic.out(1, 0.4)',
+                });
+            });
+            
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                const deltaX = (e.clientX - centerX) * strength;
+                const deltaY = (e.clientY - centerY) * strength;
+                
+                gsap.to(el, {
+                    x: deltaX,
+                    y: deltaY,
+                    duration: 0.3,
+                    ease: 'power2.out',
+                });
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════
+        // TEXT CURSOR STATE
+        // ═══════════════════════════════════════════════════════════
+        
+        const textElements = document.querySelectorAll('p, .card-text');
+        
+        textElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('text'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('text'));
+        });
+
+        console.log('🧲 Magnetic Interactions Initialized');
+
+    })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Hole Hero Effect - Event Horizon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           HERO LAYER - Fixed, sits ON TOP of everything
+           ═══════════════════════════════════════════════════════════ */
+        .hero-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 100;
+            pointer-events: none; /* Allow clicking through when hole opens */
+            
+            /* THE BLACK HOLE MASK - starts as full coverage, opens from center */
+            -webkit-mask-image: radial-gradient(
+                circle at 50% 50%,
+                transparent 0%,
+                transparent 0%,
+                black 0%,
+                black 100%
+            );
+            mask-image: radial-gradient(
+                circle at 50% 50%,
+                transparent 0%,
+                transparent 0%,
+                black 0%,
+                black 100%
+            );
+        }
+
+        .hero-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #050505;
+            position: relative;
+            overflow: hidden;
+            pointer-events: auto;
+        }
+
+        /* Hero Background Effects */
+        .hero-bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .hero-bg-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Event Horizon Ring - decorative */
+        .event-horizon-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 
+                0 0 60px rgba(212, 175, 55, 0.1),
+                inset 0 0 60px rgba(212, 175, 55, 0.05);
+            pointer-events: none;
+        }
+
+        .event-horizon-ring::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .event-horizon-ring::after {
+            content: '';
+            position: absolute;
+            inset: 20px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        /* Hero Text */
+        .hero-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            margin-bottom: 40px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: #D4AF37;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 400;
+            font-style: italic;
+            background: linear-gradient(180deg, #D4AF37 0%, #F8F1D2 50%, #8a7122 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 80px rgba(212, 175, 55, 0.3);
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-weight: 300;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 20px;
+        }
+
+        .hero-cta {
+            margin-top: 60px;
+            padding: 20px 50px;
+            background: #D4AF37;
+            color: #000;
+            border: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .hero-cta:hover {
+            background: #fff;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .scroll-indicator .arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 1px solid rgba(212, 175, 55, 0.5);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.5);
+            transform: rotate(45deg);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: rotate(45deg) translateY(0); }
+            50% { transform: rotate(45deg) translateY(10px); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           CONTENT BELOW - Normal flow, revealed by black hole
+           ═══════════════════════════════════════════════════════════ */
+        .content-below {
+            position: relative;
+            z-index: 1;
+            min-height: 300vh; /* Extra scroll space for effect */
+        }
+
+        /* Spacer to push content below fold */
+        .scroll-spacer {
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        /* The section being revealed */
+        .revealed-section {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #0a0a0a 0%, #111 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 100px 20px;
+            position: relative;
+        }
+
+        .revealed-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 100px;
+            background: linear-gradient(180deg, #D4AF37, transparent);
+        }
+
+        .section-label {
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #D4AF37;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-description {
+            max-width: 600px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .card-text {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Another section */
+        .third-section {
+            min-height: 100vh;
+            background: #080808;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           VISUAL FEEDBACK - Shows the effect progress
+           ═══════════════════════════════════════════════════════════ */
+        .debug-info {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 15px 20px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 9999;
+            color: #D4AF37;
+        }
+
+        .debug-info span {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         HERO LAYER - Gets "sucked" into black hole
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="hero-layer" id="heroLayer">
+        <div class="hero-content">
+            <div class="hero-bg-grid"></div>
+            <div class="hero-bg-glow"></div>
+            <div class="event-horizon-ring"></div>
+            
+            <div class="hero-badge">
+                <span>◆</span>
+                <span>Event Horizon Reached</span>
+            </div>
+            
+            <h1 class="hero-title">SOVEREIGNTY</h1>
+            <p class="hero-subtitle">Is A Choice</p>
+            
+            <button class="hero-cta">Initialize Protocol</button>
+            
+            <div class="scroll-indicator">
+                <span>Scroll to Enter</span>
+                <div class="arrow"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         CONTENT BELOW - Revealed as Hero is sucked away
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="content-below">
+        <!-- Spacer matching hero height -->
+        <div class="scroll-spacer"></div>
+        
+        <!-- This section appears as the black hole opens -->
+        <section class="revealed-section">
+            <span class="section-label">Beyond The Horizon</span>
+            <h2 class="section-title">Welcome to the Singularity</h2>
+            <p class="section-description">
+                You've crossed the event horizon. Here, the rules of conventional 
+                finance cease to exist. Discover a new paradigm of sovereign wealth 
+                management built for those who refuse to be ordinary.
+            </p>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">◈</div>
+                    <h3 class="card-title">Quantum Vault</h3>
+                    <p class="card-text">Multi-dimensional asset protection with zero-knowledge encryption protocols.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">◇</div>
+                    <h3 class="card-title">Neural Trading</h3>
+                    <p class="card-text">AI-powered market analysis operating at the edge of predictive possibility.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">○</div>
+                    <h3 class="card-title">Sovereign Access</h3>
+                    <p class="card-text">Private channels to opportunities invisible to conventional investors.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="third-section">
+            Continue scrolling... more content below
+        </section>
+    </div>
+
+    <!-- Debug Info -->
+    <div class="debug-info">
+        Hole Size: <span id="debugHole">0%</span><br>
+        Progress: <span id="debugProgress">0%</span>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SCRIPTS - GSAP + ScrollTrigger for the black hole effect
+         ═══════════════════════════════════════════════════════════ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    
+    <script>
+    (function() {
+        'use strict';
+        
+        // ═══════════════════════════════════════════════════════════
+        // SMOOTH SCROLL SETUP
+        // ═══════════════════════════════════════════════════════════
+        
+        const lenis = new Lenis({
+            duration: 1.4,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+
+        // ═══════════════════════════════════════════════════════════
+        // BLACK HOLE EFFECT - The Magic Happens Here
+        // ═══════════════════════════════════════════════════════════
+        
+        const heroLayer = document.getElementById('heroLayer');
+        const debugHole = document.getElementById('debugHole');
+        const debugProgress = document.getElementById('debugProgress');
+        
+        // Configuration
+        const config = {
+            startHoleSize: 0,      // Initial hole size (0 = no hole)
+            endHoleSize: 150,      // Final hole size (150% = fully open, hero gone)
+            edgeSoftness: 5,       // Softness of the hole edge (%)
+        };
+        
+        // Create the ScrollTrigger for the black hole effect
+        ScrollTrigger.create({
+            trigger: '.scroll-spacer',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+            onUpdate: (self) => {
+                const progress = self.progress;
+                
+                // Calculate hole size based on scroll progress
+                // Using easeInQuad for more dramatic "sucking" effect
+                const easedProgress = progress * progress; // Accelerates towards end
+                const holeSize = config.startHoleSize + (easedProgress * config.endHoleSize);
+                const edgeEnd = holeSize + config.edgeSoftness;
+                
+                // Update the radial gradient mask
+                // transparent = hole (shows content below)
+                // black = visible hero
+                heroLayer.style.maskImage = `radial-gradient(
+                    circle at 50% 50%,
+                    transparent ${holeSize}%,
+                    black ${edgeEnd}%
+                )`;
+                heroLayer.style.webkitMaskImage = `radial-gradient(
+                    circle at 50% 50%,
+                    transparent ${holeSize}%,
+                    black ${edgeEnd}%
+                )`;
+                
+                // Update debug info
+                debugHole.textContent = `${Math.round(holeSize)}%`;
+                debugProgress.textContent = `${Math.round(progress * 100)}%`;
+                
+                // Optional: Add some distortion/pull effect to hero content
+                const pullScale = 1 + (easedProgress * 0.1); // Slight scale up
+                const pullOpacity = 1 - (easedProgress * 0.5); // Fade slightly
+                
+                heroLayer.querySelector('.hero-content').style.transform = `scale(${pullScale})`;
+                heroLayer.querySelector('.hero-content').style.opacity = pullOpacity;
+                
+                // Disable pointer events when hole is big enough
+                if (holeSize > 50) {
+                    heroLayer.style.pointerEvents = 'none';
+                } else {
+                    heroLayer.style.pointerEvents = 'auto';
+                }
+            }
+        });
+
+        // ═══════════════════════════════════════════════════════════
+        // ENTRANCE ANIMATIONS FOR REVEALED CONTENT
+        // ═══════════════════════════════════════════════════════════
+        
+        // Animate cards when they come into view
+        gsap.from('.card', {
+            y: 60,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.cards-grid',
+                start: 'top 80%',
+            }
+        });
+
+        // Animate section title
+        gsap.from('.revealed-section .section-title', {
+            y: 40,
+            opacity: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.revealed-section',
+                start: 'top 60%',
+            }
+        });
+
+        // ═══════════════════════════════════════════════════════════
+        // BONUS: Gravitational Lensing Effect on Hero Elements
+        // ═══════════════════════════════════════════════════════════
+        
+        // Make the event horizon ring spin faster as we get closer
+        ScrollTrigger.create({
+            trigger: '.scroll-spacer',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.5,
+            onUpdate: (self) => {
+                const rotation = self.progress * 180;
+                const scale = 1 - (self.progress * 0.3);
+                
+                document.querySelector('.event-horizon-ring').style.transform = 
+                    `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale})`;
+            }
+        });
+
+        console.log('🕳️ Black Hole Effect Initialized');
+        console.log('Scroll down to see the Hero get sucked into the singularity!');
+        
+    })();
+    </script>
+
+</body>
+</html>
