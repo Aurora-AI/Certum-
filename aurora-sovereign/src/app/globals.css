@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0");
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+
+/*
+  The default theme variables are overridden by tailwind.config.ts
+  but we keep the file for global imports and specific overrides if needed.
+*/
+
+body {
+  background-color: theme('colors.background.DEFAULT');
+  color: theme('colors.text.main');
+}
