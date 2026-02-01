@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import React, { useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 
 const services = [
   {
@@ -25,9 +25,9 @@ const services = [
   },
 ];
 
-const Services: React.FC = () => {
+const Services: FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const panelsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const panelsRef = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {

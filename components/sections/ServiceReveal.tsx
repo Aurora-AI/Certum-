@@ -1,6 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import React, { useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 
 // Register ScrollTrigger
 if (typeof window !== "undefined") {
@@ -34,9 +34,9 @@ const services = [
   },
 ];
 
-export const ServiceReveal: React.FC = () => {
+export const ServiceReveal: FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const panelsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const panelsRef = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
