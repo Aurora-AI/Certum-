@@ -1,0 +1,16 @@
+{
+  "objective": "Capture qualified leads for High-End Life Insurance focused on family protection and legacy planning",
+  "audience": "High Net Worth Individuals (HNWI) with dependents, aged 35-55, family-oriented, risk-aware",
+  "domain": "seguros",
+  "emotion": "confianca",
+  "primaryCta": {
+    "label": "Proteja Seu Legado",
+    "action": "openChat"
+  },
+  "requiredStates": ["happy", "loading", "error", "empty"],
+  "constraints": {
+    "tokensOnly": true,
+    "accessibility": "aaa",
+    "noHardcode": true
+  }
+}

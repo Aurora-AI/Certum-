@@ -1,13 +1,9 @@
+// import "@/styles/globals.css";
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google"; // Fonte Brutalista/Clean
-import "./globals.css";
-import { SmoothScroll } from "@/components/smooth-scroll";
-
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 
 export const metadata: Metadata = {
-  title: "Aurora Asset | Sovereign Interface",
-  description: "Wealth Architecture System",
+  title: "Certum Prime | Sovereign Wealth",
+  description: "Advanced Wealth Management Architecture",
 };
 
 export default function RootLayout({
@@ -16,11 +12,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className="antialiased">
-      <body className={`${manrope.variable} font-sans bg-[#0d0b07] text-[#f2f2f0] overflow-x-hidden`}>
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+    <html lang="pt-BR">
+      <body className="antialiased bg-black text-white selection:bg-white selection:text-black">
+        {children}
       </body>
     </html>
   );
