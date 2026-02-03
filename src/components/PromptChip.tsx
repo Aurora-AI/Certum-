@@ -4,13 +4,12 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { cn } from "@/lib/utils";
 
-interface PromptChipProps {
+interface PromptChipProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   delay?: number;
-  onClick?: () => void;
 }
 
-export function PromptChip({ label, delay = 0, onClick }: PromptChipProps) {
+export function PromptChip({ label, delay = 0, className, onClick, ...props }: PromptChipProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -39,8 +38,10 @@ export function PromptChip({ label, delay = 0, onClick }: PromptChipProps) {
         "text-sm font-medium text-white/80 tracking-wide",
         "transition-all duration-300 ease-out",
         "hover:bg-white/10 hover:border-[#ecb613] hover:text-[#ecb613] hover:scale-105 hover:shadow-[0_0_20px_rgba(236,182,19,0.2)]",
-        "active:scale-95"
+        "active:scale-95",
+        className
       )}
+      {...props}
     >
       {label}
     </button>

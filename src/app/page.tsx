@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useChat } from "@ai-sdk/react";
 import gsap from "gsap";
+import { useNeuroSensor } from "@/hooks/useNeuroSensor";
 import { PromptChip } from "@/components/PromptChip";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +17,35 @@ export default function Home() {
   // useChat returns { input, handleInputChange, handleSubmit, messages, setInput, ... }
   const chat = useChat();
   const { messages, input, handleInputChange, handleSubmit, setInput } = chat as any;
+
+  // --- NEURO SENSOR INTEGRATION ---
+  useNeuroSensor(async (signal) => {
+    // 1. Send telemetry to Cortex (Fire & Forget)
+    fetch('/api/cortex', {
+        method: 'POST',
+        body: JSON.stringify(signal)
+    }).then(res => res.json()).then(cmd => {
+        // 2. React to Cortex Commands (The "Closer" Logic)
+        if (cmd.action === 'CALM_DOWN') {
+            gsap.to(".hero-bg", { filter: "blur(40px) brightness(0.4)", duration: 2 });
+        } else if (cmd.action === 'NO_OP') {
+             // Reset to default state if needed
+             // gsap.to(".hero-bg", { filter: "blur(0px) brightness(1)", duration: 2 });
+        }
+    });
+
+    // 3. Client-Side Immediate Mutations (Latency < 16ms)
+    // Hesitation Check: Hovering "Initiate Protocol" (CTA)
+    if (signal.hoverTarget === 'cta-primary' && signal.dwellTime > 2000) {
+        gsap.to(".cta-pulse", { 
+            boxShadow: "0 0 30px rgba(236, 182, 19, 0.6)", 
+            scale: 1.05, 
+            duration: 0.5, 
+            yoyo: true, 
+            repeat: 1 
+        });
+    }
+  });
 
   // GSAP Entrance
   useEffect(() => {
@@ -117,6 +147,8 @@ export default function Home() {
               label="Initiate Protocol" 
               delay={1.4} 
               onClick={() => activateChat()}
+              className="cta-pulse border-[#ecb613]/50 text-[#ecb613]" // Visual distinction
+              data-neuro-target="cta-primary" // Sensor Target
             />
           </div>
         </div>
