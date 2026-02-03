@@ -14,12 +14,7 @@ export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   // useChat returns { input, handleInputChange, handleSubmit, messages, setInput, ... }
-  // If Typescript complains, we can cast or ensure we assume standard behavior.
-  // The error "Property 'input' does not exist" suggests a version mismatch or breaking change.
-  // However, for MVP commit, we can use 'any' casting if needed, but let's try standard usage again.
-  // Ideally: const { messages, input, handleInputChange, handleSubmit, setInput } = useChat();
   const chat = useChat();
-  // Safe destructuring with fallback or manual access to debug type
   const { messages, input, handleInputChange, handleSubmit, setInput } = chat as any;
 
   // GSAP Entrance
@@ -155,10 +150,16 @@ export default function Home() {
               </div>
 
               {/* Input Area */}
-              <form onSubmit={handleSubmit} className="relative w-full">
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }} 
+                className="relative w-full z-50 pointer-events-auto"
+              >
                  <input
                     ref={inputRef}
-                    value={input || ''}
+                    value={input}
                     onChange={handleInputChange}
                     placeholder="Command the architecture..."
                     className={cn(
@@ -168,7 +169,7 @@ export default function Home() {
                  />
                  <button 
                   type="submit"
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-[#ecb613] transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-[#ecb613] transition-colors pointer-events-auto cursor-pointer"
                  >
                     Send
                  </button>
