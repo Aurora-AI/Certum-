@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 import LivingFrame from "./LivingFrame"; // Fixed Default Import
 
 gsap.registerPlugin(ScrollTrigger);
@@ -114,9 +115,11 @@ export function SovereignVault() {
 
                     {/* CTA */}
                     <div>
-                        <button className="px-8 py-3 rounded-full border-2 border-black/10 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-300">
-                            Simular Auto
-                        </button>
+                        <Link href="/consorcio">
+                            <button className="px-8 py-3 rounded-full border-2 border-black/10 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-300">
+                                Simular Auto
+                            </button>
+                        </Link>
                     </div>
                  </div>
             </div>
@@ -151,9 +154,11 @@ export function SovereignVault() {
 
                     {/* CTA */}
                     <div className="flex md:justify-end">
-                        <button className="px-8 py-3 rounded-full border-2 border-black/10 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-300">
-                            Simular Imóvel
-                        </button>
+                        <Link href="/consorcio">
+                            <button className="px-8 py-3 rounded-full border-2 border-black/10 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-300">
+                                Simular Imóvel
+                            </button>
+                        </Link>
                     </div>
                  </div>
             </div>

@@ -10,16 +10,14 @@ export function Navbar() {
       <div className="text-xl font-bold uppercase tracking-widest text-white">
         CERTUM
       </div>
-      <div className="hidden md:flex gap-8">
-        {["Work", "Studio", "News", "Contact"].map((item) => (
-          <Link 
-            key={item} 
-            href="#" 
-            className="text-sm font-medium uppercase tracking-widest text-white/80 hover:text-white transition-colors"
-          >
-            {item}
-          </Link>
-        ))}
+      <div className="flex items-center gap-8 text-xs font-bold tracking-[0.2em] relative z-50">
+        <Link href="/work" className="hover:text-gray-400 transition-colors">WORK</Link>
+        <Link href="/agent" className="text-[#bfb38f] hover:text-white transition-colors flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#bfb38f] animate-pulse" />
+            CENTRUM
+        </Link>
+        <Link href="/news" className="hover:text-gray-400 transition-colors">NEWS</Link>
+        <Link href="/contact" className="hover:text-gray-400 transition-colors">CONTACT</Link>
       </div>
     </nav>
   );
