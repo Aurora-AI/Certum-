@@ -70,7 +70,7 @@ export default function Home() {
       >
          <div className="w-full max-w-2xl h-[60vh] flex flex-col">
             {/* Chat Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 rounded-t-2xl bg-black/20 backdrop-blur-sm border border-white/10 border-b-0 mask-image-b">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 rounded-t-2xl bg-black/20 backdrop-blur-[6px] border-2 border-white/25 border-b-0 mask-image-b">
                {messages?.length === 0 && (
                   <div className="h-full flex items-center justify-center text-white/30 italic">
                      Elysian Intelligence Active. Awaiting Input.

@@ -51,6 +51,12 @@ export function HeroSection({ mode, onActivate }: HeroSectionProps) {
         duration: 0.8,
         ease: "power2.in",
       });
+      // Clarity Blur: Only 6px, preserving structure.
+      gsap.to(".hero-bg", {
+        filter: "blur(6px)",
+        duration: 1,
+        ease: "power2.out"
+      });
     }
   }, [mode]);
 
