@@ -74,12 +74,12 @@ export function SovereignVault() {
                  {/* Text Content (Right) */}
                  <div className="w-full md:w-[40%] flex flex-col gap-6">
                     <div className="flex flex-col">
-                        <span className="text-primary text-xs font-bold uppercase tracking-widest mb-2">Current Assets</span>
-                        <h3 className="text-4xl md:text-5xl font-light leading-tight">Vintage Engineering</h3>
+                        <span className="text-primary text-xs font-bold uppercase tracking-widest mb-2">Kinetic Assets</span>
+                        <h3 className="text-4xl md:text-5xl font-light leading-tight">The Velocity Archive</h3>
                     </div>
                     
                     <p className="text-gray-500 text-lg font-light leading-relaxed max-w-sm">
-                        Timeless machines preserved in their prime. A collection of accessible legends.
+                        Curated vintage engineering. Machines that capture time, available for fractional ownership.
                     </p>
 
                     {/* Metadata Line */}
@@ -95,8 +95,8 @@ export function SovereignVault() {
                  {/* Image Container */}
                  <div className="w-full md:w-[50%] lg:w-[45%]">
                     <LivingFrame 
-                        videoSrc="/assets/Efeito .mp4" 
-                        imageSrc="/assets/House.png"
+                        videoSrc="/assets/nano-banana/Efeito.mp4" 
+                        imageSrc="/assets/nano-banana/family.png"
                         alt="Real Estate Protocol"
                     />
                  </div>
