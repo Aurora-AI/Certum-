@@ -8,7 +8,10 @@ import { VaultSection } from "@/components/mad-lab/VaultSection";
 import { ConsortiumSection } from "@/components/mad-lab/ConsortiumSection";
 import { cn } from "@/lib/utils";
 
+import { GenesisPreloader } from "@/components/GenesisPreloader";
+
 export default function Home() {
+  const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState<"dream" | "chat">("dream");
   const chatRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,6 +49,7 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-black text-white scroll-smooth">
+      {loading && <GenesisPreloader onComplete={() => setLoading(false)} />}
       
       {/* 1. Hero Module (Dream State) */}
       <HeroSection mode={mode} onActivate={activateChat} />

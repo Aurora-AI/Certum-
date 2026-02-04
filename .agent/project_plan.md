@@ -10,10 +10,17 @@ Base Study: cinematographer.md
 - [x] **Plan Generation**: Create Master Construction Plan
 
 ## Phase 2: Execution (Cinematographer)
-- [ ] **Consortium Study**: Tech Check and Animation Strategy for `ConsortiumSection`
-- [ ] **Injection**: Apply GSAP/ScrollTrigger logic to `ConsortiumSection`
-- [ ] **Vault Polish**: Ensure `SovereignVault` alignment (Golden Path)
+- [x] **Consortium Study**: Tech Check and Animation Strategy for `ConsortiumSection`
+- [x] **Injection**: Apply GSAP/ScrollTrigger logic to `ConsortiumSection`
+- [x] **Vault Polish**: Ensure `SovereignVault` alignment (Golden Path)
 
-## Phase 3: Validation
+## Phase 3: Hero Remaster (Current)
+- [ ] **Asset Generation**: Create "Sovereign/Wealth" themed images using Nano Banana.
+- [ ] **Remotion Setup**: Install Remotion (missing in package.json) and scaffold.
+- [ ] **Video Engineering**: Code the `HeroVideo` composition.
+- [ ] **Rendering**: Generate `Hero.mp4`.
+- [ ] **Integration**: Replace current Hero video.
+
+## Phase 4: Validation
 - [ ] **Code Review**: Verify no structural breaches (Stitch Preservation)
 - [ ] **Visual Check**: Verify animation timing and smoothness

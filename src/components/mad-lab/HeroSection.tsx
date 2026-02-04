@@ -68,7 +68,7 @@ export function HeroSection({ mode, onActivate }: HeroSectionProps) {
             playsInline
             className="absolute inset-0 w-full h-full object-cover opacity-60"
         >
-            <source src="/assets/Hero.mp4" type="video/mp4" />
+            <source src="/assets/Hero_Remaster_v3.mp4" type="video/mp4" />
         </video>
         {/* MVP: ultra-leve para deploy hoje (sem assets pesados) */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(236,182,19,0.16),_rgba(0,0,0,0.92)_55%,_#000_100%)] mix-blend-overlay" />
@@ -81,30 +81,33 @@ export function HeroSection({ mode, onActivate }: HeroSectionProps) {
 
         {/* Content Layer */}
         <div ref={titleRef} className="text-center relative z-20">
-          <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-white mb-4">
+          {/* <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-white mb-4">
             CENTRUM
-          </h1>
+          </h1> */}
           <p className="text-xl md:text-2xl font-light text-white/80 tracking-widest uppercase mb-12">
-            Architecture of Wealth
+            Arquitetura de Riqueza
           </p>
 
           <div className="flex flex-wrap justify-center gap-4">
             <PromptChip 
-              label="Design my Sovereign Vault" 
+              englishLabel="DESIGN VAULT"
+              label="SIMULAR CONSÓRCIO" 
               delay={1} 
-              onClick={() => onActivate("Design a sovereign vault structure for wealth preservation.")}
+              onClick={() => onActivate("Projete uma estrutura de cofre soberano para preservação de riqueza.")}
             />
             <PromptChip 
-              label="Analyze Market Entropy" 
+              englishLabel="ANALYZE ENTROPY"
+              label="COTAR SEGURO" 
               delay={1.2} 
-              onClick={() => onActivate("Analyze current market entropy and risk vectors.")}
+              onClick={() => onActivate("Analise a entropia atual do mercado e vetores de risco.")}
             />
             <PromptChip 
-              label="Initiate Protocol" 
+              englishLabel="INITIATE PROTOCOL"
+              label="FALAR COM BANKER" 
               delay={1.4} 
               onClick={() => onActivate()}
-              className="cta-pulse border-[#ecb613]/50 text-[#ecb613]" // Visual distinction
-              data-neuro-target="cta-primary" // Sensor Target
+              className="cta-pulse border-[#ecb613]/50 text-[#ecb613]" 
+              data-neuro-target="cta-primary" 
             />
           </div>
         </div>
