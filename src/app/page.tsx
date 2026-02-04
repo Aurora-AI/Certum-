@@ -26,11 +26,9 @@ export default function Home() {
         body: JSON.stringify(signal)
     }).then(res => res.json()).then(cmd => {
         // 2. React to Cortex Commands (The "Closer" Logic)
+        // 2. React to Cortex Commands (The "Closer" Logic) - DISABLED per Clean Start
         if (cmd.action === 'CALM_DOWN') {
-            gsap.to(".hero-bg", { filter: "blur(40px) brightness(0.4)", duration: 2 });
-        } else if (cmd.action === 'NO_OP') {
-             // Reset to default state if needed
-             // gsap.to(".hero-bg", { filter: "blur(0px) brightness(1)", duration: 2 });
+           // No-op
         }
     });
 
@@ -51,7 +49,7 @@ export default function Home() {
   useEffect(() => {
     const tl = gsap.timeline();
 
-    tl.to(heroRef.current, { opacity: 1, duration: 1.5 })
+    tl.fromTo(heroRef.current, { opacity: 0 }, { opacity: 1, duration: 1.5 })
       .fromTo(
         titleRef.current,
         { y: 50, opacity: 0 },
@@ -75,8 +73,8 @@ export default function Home() {
       duration: 0.8,
       ease: "power2.in",
     })
-      // 2. Background Focus Pull (Blur + Darken)
-      .to(
+      // REMOVED BLUR per Clean Start Request
+      /* .to(
         ".hero-bg",
         {
           filter: "blur(20px) brightness(0.3)",
@@ -85,7 +83,7 @@ export default function Home() {
           ease: "power2.out",
         },
         "-=0.5"
-      )
+      ) */
       // 3. Chat Interface Entrance
       .fromTo(
         chatRef.current,
@@ -108,16 +106,28 @@ export default function Home() {
   return (
     <main
       ref={heroRef}
-      className="relative min-h-screen w-full overflow-hidden bg-black text-white opacity-0"
+      className="relative min-h-screen w-full overflow-hidden bg-black text-white"
     >
       {/* Background Layer */}
-      <div 
-        className="hero-bg absolute inset-0 z-0 bg-cover bg-center transition-all will-change-transform"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2669&auto=format&fit=crop')",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/40" /> {/* Default Overlay */}
+      <div className="hero-bg absolute inset-0 z-0 flex items-center justify-center bg-black transition-all overflow-hidden">
+        <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-60"
+        >
+            <source src="/assets/Hero.mp4" type="video/mp4" />
+        </video>
+        {/* MVP: ultra-leve para deploy hoje (sem assets pesados) */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(236,182,19,0.16),_rgba(0,0,0,0.92)_55%,_#000_100%)] mix-blend-overlay" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/80" />
+
+        {/* Cinematic Letterboxing (The 'Film 4' Look) */}
+        <div className="absolute top-0 left-0 w-full h-[12vh] bg-black z-20 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-full h-[12vh] bg-black z-20 pointer-events-none" />
+        
+        {/* Optional Overlay for Text Readability - Disabled to avoid darkening the video */}
       </div>
 
       {/* Content Layer */}

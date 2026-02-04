@@ -1,6 +1,7 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from cortex.core.elysian import logger
+from cortex.core.llm_provider import get_default_llm
 
 @CrewBase
 class GenesisCrew():
@@ -10,17 +11,21 @@ class GenesisCrew():
 
     @agent
     def director(self) -> Agent:
+        llm = get_default_llm()
         return Agent(
             config=self.agents_config['director'],
             verbose=True,
-            allow_delegation=True
+            allow_delegation=True,
+            llm=llm,
         )
 
     @agent
     def engineer(self) -> Agent:
+        llm = get_default_llm()
         return Agent(
             config=self.agents_config['engineer'],
-            verbose=True
+            verbose=True,
+            llm=llm,
         )
 
     @task

@@ -1,4 +1,4 @@
-import { openai } from '@ai-sdk/openai';
+import { createOpenAI, openai } from '@ai-sdk/openai';
 import { streamText } from 'ai';
 
 // Allow streaming responses up to 30 seconds
@@ -7,22 +7,36 @@ export const maxDuration = 30;
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
-  // For MVP without keys, we can just echo or use a mock if keys aren't present.
-  // However, assuming the user might want keyless demo:
-  
   try {
-      // Check if we have keys. If not, return a mock stream.
-      if (!process.env.OPENAI_API_KEY) {
-          return new Response("Elysian Intelligence requires an API Key to function. (Mock Response: System Active)", { status: 200 });
-      }
+    const apiKey = process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      return new Response(
+        "Elysian Intelligence requires an API key to function. (Mock Response: System Active)",
+        { status: 200 }
+      );
+    }
 
-      const result = streamText({
-        model: openai('gpt-4-turbo'),
-        messages,
-      });
+    const baseURL =
+      process.env.DEEPSEEK_BASE_URL ||
+      process.env.OPENAI_BASE_URL ||
+      process.env.OPENAI_API_BASE ||
+      undefined;
 
-      return (result as any).toDataStreamResponse();
+    const modelId =
+      process.env.DEEPSEEK_MODEL || process.env.OPENAI_MODEL || "gpt-4o-mini";
+
+    const provider = baseURL
+      ? createOpenAI({ apiKey, baseURL })
+      : // Fallback to default OpenAI provider (env-based)
+        openai;
+
+    const result = streamText({
+      model: provider(modelId),
+      messages,
+    });
+
+    return (result as any).toDataStreamResponse();
   } catch {
-      return new Response("System Error: Interaction Failed.", { status: 500 });
+    return new Response("System Error: Interaction Failed.", { status: 500 });
   }
 }

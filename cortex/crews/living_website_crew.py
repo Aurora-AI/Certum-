@@ -1,6 +1,7 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from cortex.core.elysian import logger
+from cortex.core.llm_provider import get_default_llm
 
 @CrewBase
 class LivingWebsiteCrew():
@@ -10,16 +11,20 @@ class LivingWebsiteCrew():
 
     @agent
     def empath(self) -> Agent:
+        llm = get_default_llm()
         return Agent(
             config=self.agents_config['empath'],
-            verbose=True
+            verbose=True,
+            llm=llm,
         )
 
     @agent
     def atmosphere(self) -> Agent:
+        llm = get_default_llm()
         return Agent(
             config=self.agents_config['atmosphere'],
-            verbose=True
+            verbose=True,
+            llm=llm,
         )
 
     @task

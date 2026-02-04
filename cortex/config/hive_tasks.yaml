@@ -1,0 +1,16 @@
+scout_task:
+  description: >
+    {prompt}
+
+    Target: {target}
+
+    If the target is local, use `list_files` to find relevant files and `read_file` to cite specifics.
+    If the target is a URL, fetch it first with `web_fetch` and ground your report in the content.
+  expected_output: >
+    Key intelligence points (concise).
+
+aggregator_task:
+  description: >
+    Read all field reports and produce a single consolidated master strategy in Markdown.
+  expected_output: >
+    Master Strategy Document (Markdown).

@@ -14,17 +14,24 @@ class ElysianIntegrator(ElysianEntity):
         """Verifies that all required keys are present."""
         logger.info("🕵️ Scanning Environment...")
         
-        required_keys = ["OPENAI_API_KEY"]
-        all_good = True
-        
-        for key in required_keys:
-            value = os.getenv(key)
-            if value:
-                self.env_checks[key] = "OK"
-                logger.info(f"✅ {key}: FOUND")
-            else:
-                self.env_checks[key] = "MISSING"
-                logger.error(f"❌ {key}: MISSING")
-                all_good = False
+        openai_key = os.getenv("OPENAI_API_KEY")
+        deepseek_key = os.getenv("DEEPSEEK_API_KEY")
+
+        # At least one provider key must exist
+        all_good = bool(deepseek_key or openai_key)
+
+        # Record checks for reporting
+        self.env_checks["DEEPSEEK_API_KEY"] = "OK" if deepseek_key else "MISSING"
+        self.env_checks["OPENAI_API_KEY"] = "OK" if openai_key else "MISSING"
+
+        if deepseek_key:
+            logger.info("✅ DEEPSEEK_API_KEY: FOUND")
+        else:
+            logger.error("❌ DEEPSEEK_API_KEY: MISSING")
+
+        if openai_key:
+            logger.info("✅ OPENAI_API_KEY: FOUND")
+        else:
+            logger.error("❌ OPENAI_API_KEY: MISSING")
         
         return all_good
