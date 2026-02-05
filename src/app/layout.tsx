@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { AtmosphereProvider } from "@/context/AtmosphereContext"; // <--- Importação Nova
 
 export const metadata: Metadata = {
   title: "Certum Prime | Sovereign Wealth",
@@ -20,9 +21,12 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
       </head>
       <body className="antialiased bg-[#FFFFFF] text-[#2D2D2D]">
-        <Navbar />
-        {children}
-        <Footer />
+        {/* O AtmosphereProvider agora controla o "corpo" da aplicação */}
+        <AtmosphereProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </AtmosphereProvider>
       </body>
     </html>
   );

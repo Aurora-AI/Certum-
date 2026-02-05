@@ -20,7 +20,7 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-screen w-full overflow-x-hidden bg-black text-white scroll-smooth">
+    <main className="relative min-h-screen w-full overflow-x-hidden bg-[#F4F4F4] text-[#1A1A1A] scroll-smooth">
       {loading && <GenesisPreloader onComplete={() => setLoading(false)} />}
       
       {/* 1. Hero Module (Dream State) */}

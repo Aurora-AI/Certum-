@@ -38,3 +38,8 @@
         - [ ] Map Insurance Products to `Protecao` Module
     - [x] **Phase 6: Verify**
         - [x] Build Check
+    - [x] **Phase 7: Visual Storytelling Pivot**
+        - [x] Extend `consorcio/page.tsx` with "Serviços" section
+        - [x] Extend `consorcio/page.tsx` with "Pontual" interstitial
+        - [x] Redesign "Seguros" footer (Single CTA, no bento)
+        - [x] Add Floating Chat Button (FAB)

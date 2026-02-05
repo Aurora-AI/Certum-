@@ -1,34 +1,65 @@
-# Walkthrough: Consórcio Product Architecture (Astro Chat)
+# Walkthrough: Visual Storytelling Architecture (Pivot)
 
-We have successfully migrated the Consórcio experience from a monolithic agent page to a modular, product-specific architecture. This improves SEO, user navigation, and allows for specialized AI contexts for each product.
+## Goal
+Migrate from a chat-centric `ProductConsole` to a **single-page visual narrative** for all Consórcio products, with Chat as an add-on.
 
-## 1. New Architecture: `ProductConsole`
-A wrapper component that unifies the "Astro Chat" aesthetic across all pages.
-- **Dynamic Props:** Accepts `assetDefault`, `horizonDefault`, and `initialContext`.
-- **Integrated State:** Controls `ActiveToolPanel` (pricing/time) via user input or defaults.
-- **Visuals:** Uses `StaticParticles` (Antigravity), `NeuralStream` (Chat), and Glassmorphism.
+---
 
-## 2. Product Routes
-Each product has its own URL, enabling direct marketing and deep linking.
-- `src/app/consorcio/auto/page.tsx` -> **Automotive**
-- `src/app/consorcio/imovel/page.tsx` -> **Real Estate**
-- `src/app/consorcio/pesados/page.tsx` -> **Heavy Machinery**
-- `src/app/consorcio/servicos/page.tsx` -> **Services**
-- `src/app/consorcio/motos/page.tsx` -> **Motos**
-- `src/app/consorcio/pontual/page.tsx` -> **Pontual Protocol**
-- `src/app/consorcio/protecao/page.tsx` -> **Protection Layer**
+## Changes Made to `/consorcio/page.tsx`
 
-## 3. Intelligence Ingestion (Seguros)
-We created a Python script `scripts/ingest_insurance.py` to target the user's local OneDrive folder.
-- **Source:** `C:\Users\rodri\OneDrive\Rodobens\Treinamentos`
-- **Destination:** `docs/rodobens/insurance/*.md`
-- **Status:** Processing 14 PDF files (approx 50% complete at time of writing).
+### 1. Pontual Interstitial (Hero Product)
 
-## 4. Verification
-- **Build:** `npm run dev` compiled successfully after fixing `StaticParticles` import and `lucide-react` icons.
-- **Runtime:** `ReferenceError` for missing icons resolved.
-- **Navigation:** All "Simular" buttons on the main Consórcio page now route correctly.
+Injected after the main Hero section. Highlights "Consórcio Pontual" as a distinct product.
 
-## Next Steps
-- Verify the completion of PDF ingestion.
-- Implement the "Insurance Mapping" logic to use the new markdown files in the `Protecao` module.
+- **Location:** After line 92 (after Hero section)
+- **Visual:** Centered text, goldaccented "6 Meses", gradient background.
+- **CTA:** "Simular Pontual" button.
+
+### 2. Serviços Section
+
+Typography-focused section for "Consórcio de Serviços".
+
+- **Location:** After Motos & Náutica section.
+- **Visual:** No image, kinetic typography, centered layout.
+- **CTA:** "Explorar Serviços" button.
+
+### 3. Seguros Footer Redesign
+
+Replaced the 3-card bento grid with a single, powerful CTA block (Peak-End Rule).
+
+- **Location:** Footer section.
+- **Visual:** Large Shield icon, centered typography, single white button.
+- **CTA:** "Conhecer Proteções".
+
+### 4. ChatFAB Component
+
+Created `src/components/agent/ChatFAB.tsx`:
+
+- Floating Action Button in bottom-right.
+- Opens a modal chat interface.
+- Placeholder for AI integration (currently echoes messages).
+
+---
+
+## Whitespace Improvements
+
+- Changed `space-y-48` to `space-y-64` for increased vertical rhythm.
+- Changed `pb-48` to `pb-64`.
+
+---
+
+## Remaining Polish (Future)
+
+- Replace `<img>` tags with Next.js `<Image />` for LCP optimization (warnings).
+- Connect ChatFAB to actual AI backend.
+
+---
+
+## Verification
+
+Navigate to `http://localhost:3000/consorcio` to see the new architecture:
+
+1. **Pontual Interstitial** appears after the video hero.
+2. **Serviços** section appears after Motos.
+3. **Seguros** footer is a single, centered CTA block.
+4. **ChatFAB** appears in the bottom-right corner.

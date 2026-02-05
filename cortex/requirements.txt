@@ -4,3 +4,6 @@ langchain
 pydantic
 python-dotenv
 openai
+psycopg2-binary
+supabase
+langchain-openai

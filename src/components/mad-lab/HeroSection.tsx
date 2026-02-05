@@ -4,118 +4,82 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useNeuroSensor } from "@/hooks/useNeuroSensor";
 import { PromptChip } from "@/components/PromptChip";
+import { RevealText } from "@/components/ui/RevealText";
+import { TelhaImage } from "@/components/ui/TelhaImage";
 
 interface HeroSectionProps {
   mode: "dream" | "chat";
   onActivate: (prompt?: string) => void;
 }
 
-export function HeroSection({ mode, onActivate }: HeroSectionProps) {
+export function HeroSection({ onActivate }: HeroSectionProps) {
   const heroRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
 
-  // --- NEURO SENSOR INTEGRATION (Hero Specific) ---
+  // --- NEURO SENSOR INTEGRATION ---
   useNeuroSensor(async (signal) => {
-    // Client-Side Immediate Mutations (Latency < 16ms)
-    // Hesitation Check: Hovering "Initiate Protocol" (CTA)
+    // Hesitation Check
     if (signal.hoverTarget === 'cta-primary' && signal.dwellTime > 2000) {
-        gsap.to(".cta-pulse", { 
-            boxShadow: "0 0 30px rgba(236, 182, 19, 0.6)", 
-            scale: 1.05, 
-            duration: 0.5, 
-            yoyo: true, 
-            repeat: 1 
-        });
+        gsap.to(".cta-pulse", { scale: 1.05, duration: 0.5, yoyo: true, repeat: 1 });
     }
   });
 
   // GSAP Entrance
   useEffect(() => {
     const tl = gsap.timeline();
-
-    tl.fromTo(heroRef.current, { opacity: 0 }, { opacity: 1, duration: 1.5 })
-      .fromTo(
-        titleRef.current,
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out" },
-        "-=1"
-      );
+    tl.fromTo(heroRef.current, { opacity: 0 }, { opacity: 1, duration: 1 });
   }, []);
-
-  // GSAP Exit (Reacting to Mode Change)
-  useEffect(() => {
-    if (mode === "chat") {
-      gsap.to(titleRef.current, {
-        y: -50,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power2.in",
-      });
-      // Clarity Blur: Only 6px, preserving structure.
-      gsap.to(".hero-bg", {
-        filter: "blur(6px)",
-        duration: 1,
-        ease: "power2.out"
-      });
-    }
-  }, [mode]);
 
   return (
     <div
       ref={heroRef}
-      className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center p-4 z-10 bg-black text-white"
+      className="relative w-full min-h-screen flex flex-col md:flex-row items-center justify-between p-6 md:p-12 z-10 bg-[#F4F4F4] text-[#1A1A1A] overflow-hidden"
     >
-      {/* Background Layer */}
-      <div className="hero-bg absolute inset-0 z-0 flex items-center justify-center bg-black transition-all overflow-hidden">
-        <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover opacity-60"
-        >
-            <source src="/assets/Hero_Remaster_v3.mp4" type="video/mp4" />
-        </video>
-        {/* MVP: ultra-leve para deploy hoje (sem assets pesados) */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(236,182,19,0.16),_rgba(0,0,0,0.92)_55%,_#000_100%)] mix-blend-overlay" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/80" />
+        {/* Left: Typography (Dream Logic) */}
+        <div className="w-full md:w-1/2 flex flex-col items-start justify-center h-full z-20 pt-24 md:pt-0">
+            <RevealText delay={0.2}>
+                <h1 className="text-[12vw] md:text-[8vw] leading-[0.85] font-bold tracking-tighter uppercase text-[#1A1A1A]">
+                    Sovereign<br/>
+                    <span className="text-[#BFB38F]">Standard</span>
+                </h1>
+            </RevealText>
+            
+            <div className="mt-8 md:mt-12 flex flex-col md:flex-row gap-6 items-start">
+                 <p className="max-w-md text-sm md:text-base font-medium uppercase tracking-widest text-[#1A1A1A]/60 leading-relaxed">
+                    [ Arquitetura de Riqueza ]<br/>
+                    Preservação de Capital & Acesso a Ativos Reais através do Sistema de Consórcio.
+                 </p>
+            </div>
 
-        {/* Cinematic Letterboxing (The 'Film 4' Look) */}
-        <div className="absolute top-0 left-0 w-full h-[12vh] bg-black z-20 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-full h-[12vh] bg-black z-20 pointer-events-none" />
-      </div>
+            <div className="mt-12 flex flex-wrap gap-4">
+                 <PromptChip 
+                    englishLabel="INITIATE PROTOCOL"
+                    label="FALAR COM BANKER" 
+                    delay={0.8} 
+                    onClick={() => onActivate()}
+                    className="cta-pulse border-[#1A1A1A] text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-white" 
+                    data-neuro-target="cta-primary" 
+                />
+                 <PromptChip 
+                    englishLabel="EXPLORE ASSETS"
+                    label="VER PROJETOS" 
+                    delay={1.0} 
+                    onClick={() => onActivate("Mostre-me os ativos disponíveis.")}
+                    className="text-[#1A1A1A]/60 border-[#1A1A1A]/20 hover:border-[#1A1A1A]"
+                />
+            </div>
+        </div>
 
-        {/* Content Layer */}
-        <div ref={titleRef} className="text-center relative z-20">
-          {/* <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-white mb-4">
-            CENTRUM
-          </h1> */}
-          <p className="text-xl md:text-2xl font-light text-white/80 tracking-widest uppercase mb-12">
-            Arquitetura de Riqueza
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-4">
-            <PromptChip 
-              englishLabel="DESIGN VAULT"
-              label="SIMULAR CONSÓRCIO" 
-              delay={1} 
-              onClick={() => onActivate("Projete uma estrutura de cofre soberano para preservação de riqueza.")}
-            />
-            <PromptChip 
-              englishLabel="ANALYZE ENTROPY"
-              label="COTAR SEGURO" 
-              delay={1.2} 
-              onClick={() => onActivate("Analise a entropia atual do mercado e vetores de risco.")}
-            />
-            <PromptChip 
-              englishLabel="INITIATE PROTOCOL"
-              label="FALAR COM BANKER" 
-              delay={1.4} 
-              onClick={() => onActivate()}
-              className="cta-pulse border-[#ecb613]/50 text-[#ecb613]" 
-              data-neuro-target="cta-primary" 
-            />
-          </div>
+        {/* Right: Telha Image (Visual Anchor) */}
+        <div className="w-full md:w-1/2 h-[50vh] md:h-screen absolute top-0 right-0 md:relative z-0 md:z-10 opacity-40 md:opacity-100 pointer-events-none md:pointer-events-auto">
+             <div className="w-full h-full flex items-center justify-center p-4">
+                <TelhaImage 
+                    src="/assets/generated/real_estate_villa.png" 
+                    alt="Sovereign Villa"
+                    className="object-cover"
+                    containerClassName="w-full h-full md:h-[80vh] shadow-2xl"
+                    aspectRatio="auto"
+                />
+             </div>
         </div>
     </div>
   );

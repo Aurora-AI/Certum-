@@ -59,6 +59,7 @@ def main():
     parser.add_argument("--prompt", help="Prompt to apply for hive_swarm command")
     
     parser.add_argument("--crew", help="Target crew to run: genesis (default) or project_manager or backend", default="genesis")
+    parser.add_argument("--context-file", help="Path to a text file to append to the command context (useful for large inputs)")
     
     args = parser.parse_args()
 
@@ -174,19 +175,32 @@ def main():
     if not args.json:
         print(f"🚀 Kickoff {args.crew} for: {args.command}")
     
+    # Context File Injection
+    full_command = args.command
+    if args.context_file:
+        try:
+            with open(args.context_file, "r", encoding="utf-8") as f:
+                content = f.read()
+                full_command += f"\n\n[ADDITIONAL CONTEXT]:\n{content}"
+                if not args.json:
+                    print(f"📂 Loaded context from: {args.context_file} ({len(content)} bytes)")
+        except Exception as e:
+            if not args.json:
+                print(f"⚠️ Failed to read context file: {e}")
+
     try:
         result = None
         if args.crew == "project_manager":
             from cortex.crews.project_manager_crew import ProjectManagerCrew
-            result = ProjectManagerCrew().crew().kickoff(inputs={'topic': args.command})
+            result = ProjectManagerCrew().crew().kickoff(inputs={'topic': full_command})
         elif args.crew == "genesis":
             from cortex.crews.genesis_crew import GenesisCrew
-            result = GenesisCrew().crew().kickoff(inputs={'topic': args.command})
+            result = GenesisCrew().crew().kickoff(inputs={'topic': full_command})
         else:
              # Default fallback or error
              print(f"⚠️ Unknown crew '{args.crew}', defaulting to Genesis.")
              from cortex.crews.genesis_crew import GenesisCrew
-             result = GenesisCrew().crew().kickoff(inputs={'topic': args.command})
+             result = GenesisCrew().crew().kickoff(inputs={'topic': full_command})
 
         if args.json:
             print(json.dumps({"result": str(result)}))
