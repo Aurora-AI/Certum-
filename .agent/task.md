@@ -13,8 +13,28 @@
     - [x] Define the recalibrated `project_manager` agent (Python/CrewAI)
     - [x] Request User Review
 
-- [x] Execution
-    - [x] Create/Update Workflows
-    - [x] Update `project_manager` agent
-    - [x] Archive/Delete redundant workflows (Moved to `/modules`)
-    - [x] Verify functionality (Updated `cortex/main.py`)
+- [ ] Execution (Astro Chat Integration)
+    - [x] **Phase 1: The Sanctuary (Design System)**
+        - [x] Update `layout.tsx` (Fonts: Crimson Pro, Inter, Space Grotesk)
+        - [x] Update `tailwind.config.js` (Primary Gold #D4AF37, Charcoal #2D2D2D)
+        - [x] Update `globals.css` (Glass Aura, Warp Effects)
+    - [x] **Phase 2: The Substrate (Atmosphere)**
+        - [x] Update `AntigravityParticles.tsx` (Static Dots)
+    - [x] **Phase 3: The Structure (Layout)**
+        - [x] **[RESET]** Re-assemble using Modular Components (`ProductPortfolio`, `ActiveToolPanel`, `NeuralStream`)
+        - [x] Create clean `ConsoleLayout` composition
+        - [x] Restore `src/app/agent/page.tsx` (Migrated to ProductConsole)
+    - [x] **Phase 4: Consórcio Products Architecture**
+        - [x] Create `ProductConsole` (Shared Layout Wrapper)
+        - [x] Create `Auto` Module (`/consorcio/auto`)
+        - [x] Create `Imovel` Module (`/consorcio/imovel`)
+        - [x] Create `Pesados` Module (`/consorcio/pesados`)
+        - [x] Create `Servicos` Module (`/consorcio/servicos`)
+        - [x] Create `Protecao` Module (`/consorcio/protecao`)
+        - [x] Create `Motos` Module (`/consorcio/motos`)
+        - [x] Create `Pontual` Module (`/consorcio/pontual`)
+    - [/] **Phase 5: Insurance Intelligence (Seguros)**
+        - [x] **[NEW]** Ingest "Treinamentos" Folder (Convert to MD)
+        - [ ] Map Insurance Products to `Protecao` Module
+    - [x] **Phase 6: Verify**
+        - [x] Build Check

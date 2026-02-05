@@ -114,7 +114,7 @@ export default function ConsortiumPage() {
                     <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#bfb38f] rounded-full" /> Liberdade total de escolha</li>
                 </ul>
                 <div className="flex gap-4">
-                    <Link href="/agent?context=auto">
+                    <Link href="/consorcio/auto">
                         <button className="px-8 py-3 bg-[#bfb38f] text-black text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">
                             Simular Agora
                         </button>
@@ -164,7 +164,7 @@ export default function ConsortiumPage() {
                         <ArrowUpRight className="w-4 h-4" />
                         <span>Até 216 Meses</span>
                     </div>
-                    <Link href="/agent?context=imovel">
+                    <Link href="/consorcio/imovel">
                         <button className="px-8 py-3 border border-white text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
                             Simular Imóvel
                         </button>
@@ -187,7 +187,7 @@ export default function ConsortiumPage() {
                 <p className="text-gray-400 text-lg font-light leading-relaxed mb-8 max-w-md">
                     Para quem transporta o Brasil. Caminhões, máquinas e implementos com planos que respeitam o fluxo de caixa do seu negócio.
                 </p>
-                <Link href="/agent?context=frota">
+                <Link href="/consorcio/pesados">
                     <button className="px-8 py-3 border-2 border-[#bfb38f] text-[#bfb38f] text-xs font-bold uppercase tracking-widest hover:bg-[#bfb38f] hover:text-black transition-colors">
                         Cotar Pesados
                     </button>
@@ -227,9 +227,9 @@ export default function ConsortiumPage() {
                     Liberdade para conquistar motos de alta cilindrada e embarcações. Cartas de crédito versáteis para serviços estéticos, cirurgias e muito mais.
                 </p>
                 <div className="flex gap-4 justify-end w-full">
-                    <Link href="/agent?context=outros">
+                    <Link href="/consorcio/motos">
                         <button className="px-8 py-3 border border-white text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
-                            Simular Outros
+                            Simular Motos & Náutica
                         </button>
                     </Link>
                 </div>
@@ -252,14 +252,16 @@ export default function ConsortiumPage() {
                     { title: "Auto", desc: "Proteção total para seu veículo.", icon: Car },
                     { title: "Residencial", desc: "Segurança para seu patrimônio.", icon: Home }
                 ].map((item, i) => (
-                    <div key={i} className="group p-8 border border-white/5 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
-                        <div className="flex justify-between items-start">
-                             <item.icon className="w-8 h-8 text-[#bfb38f] mb-4 group-hover:scale-110 transition-transform" />
-                             <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 text-white/50" />
+                    <Link key={i} href="/consorcio/protecao">
+                        <div className="group p-8 border border-white/5 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer h-full">
+                            <div className="flex justify-between items-start">
+                                <item.icon className="w-8 h-8 text-[#bfb38f] mb-4 group-hover:scale-110 transition-transform" />
+                                <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 text-white/50" />
+                            </div>
+                            <h3 className="text-xl uppercase font-light mb-2">{item.title}</h3>
+                            <p className="text-gray-400 font-light text-sm">{item.desc}</p>
                         </div>
-                        <h3 className="text-xl uppercase font-light mb-2">{item.title}</h3>
-                        <p className="text-gray-400 font-light text-sm">{item.desc}</p>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>

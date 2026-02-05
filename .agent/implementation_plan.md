@@ -1,68 +1,73 @@
-# Implementation Plan - Workflow Consolidation & Agent Recalibration
+# Implementation Plan - Consórcio Product Architecture
 
-We will streamline the operations into two master workflows and empower the Project Manager agent with a Python-based CrewAI implementation ("Cortex") for autonomous orchestration.
+## Goal
+Implement dedicated sub-pages for each Consórcio product category (**Auto, Imóvel, Pesados, Serviços, Proteção**) within the `src/app/consorcio/` route. These pages will utilize the **Astro Chat Aesthetic** (Glass Layout, Sovereign Gold) and the modular components (`ProductPortfolio`, `ActiveToolPanel`, `NeuralStream`) to create an immersive, product-specific experience.
 
 ## User Review Required
-
 > [!IMPORTANT]
-> The existing `project_manager` agent will be upgraded from a passive documentation file to an active Python Crew (`cortex/crews/project_manager_crew.py`) capable of running via the terminal.
->
-> We will archive redundant workflows to avoiding confusion.
+> Since `src/app/agent/page.tsx` was deleted, these new product pages will serve as the primary interactive endpoints.
 
 ## Proposed Changes
 
-### 1. Workflow Consolidation (Documentation)
+### 1. Route Structure & Content Source
+- **`src/app/consorcio/auto/page.tsx`**
+  - Source: `04_consorcio_carros.md`
+  - Context: "Bem-vindo ao Consórcio Auto..."
+  - Defaults: R$ 50k / 60 months
+- **`src/app/consorcio/imovel/page.tsx`**
+  - Source: `05_consorcio_imoveis.md`
+  - Context: "Bem-vindo ao Consórcio Imóvel..."
+  - Defaults: R$ 300k / 180 months
+- **`src/app/consorcio/pesados/page.tsx`**
+  - Source: `07_consorcio_caminhoes.md`
+  - Context: "Bem-vindo ao Consórcio Pesados..."
+  - Defaults: R$ 250k / 120 months
+- **`src/app/consorcio/servicos/page.tsx`**
+  - Source: `08_consorcio_servicos.md`
+  - Context: "Bem-vindo ao Consórcio Serviços..."
+  - Defaults: R$ 20k / 24 months
+- **`src/app/consorcio/protecao/page.tsx`** (Index)
+  - Sources: `13_...`, `14_...`, `15_...`, `16_...`
+  - Context: "Bem-vindo à Proteção..."
+  - Defaults: N/A (Show Premium metrics)
+- **`src/app/consorcio/motos/page.tsx`** (NEW)
+  - Source: `06_consorcio_motos.md`
+  - Context: "Bem-vindo ao Consórcio Motos..."
+  - Defaults: R$ 15k / 36 months
+- **`src/app/consorcio/pontual/page.tsx`** (NEW)
+  - Source: `09_consorcio_pontual.md`
+  - Context: "Bem-vindo ao Consórcio Pontual..."
+  - Defaults: R$ 40k / 6 months
 
-We will create two "Master Workflows" in `.agent/workflows/` that serve as the single source of truth.
+### 2. Shared Product Layout (`ProductConsole`)
+Create **`src/components/agent/ProductConsole.tsx`** as the unified wrapper.
+**Props Interface:**
+```typescript
+interface ProductConsoleProps {
+  initialContext: string; // The welcome message
+  assetDefault: number;   // e.g. 50000
+  horizonDefault: number; // e.g. 60
+  activeCategory: string; // e.g. "AUTOMOTIVE"
+  children?: React.ReactNode; // Optional additional content
+}
+```
 
-#### [NEW] [zero-to-awwwards.md](file:///c:/Aurora/Projetos%20Mad%20Lab%20Aurora/Prime/.agent/workflows/zero-to-awwwards.md)
-*   Integrates `autonomous-site-construction.md` (Philosophy/Art Direction), `aurora-gold-pipeline.md` (Process), and `antigravity-cinematography.md` (Technique).
-*   **Phases**:
-    1.  **The Vision** (Director's Brief & OS Generation).
-    2.  **The Body** (Stitch MCP - HTML/Tailwind).
-    3.  **The Soul** (Cinematography - GSAP/React).
-    4.  **The Seal** (Awwwards Audit).
+### 3. Component Updates
+#### [MODIFY] `src/components/agent/ProductPortfolio.tsx`
+- Add `selectedCategory` prop.
+- Add `Motos` and `Pontual` navigation items if missing.
 
-#### [NEW] [aurora-backend-integration.md](file:///c:/Aurora/Projetos%20Mad%20Lab%20Aurora/Prime/.agent/workflows/aurora-backend-integration.md)
-*   Defines the protocol for connecting the frontend to the Aurora Backend.
-*   **Phases**:
-    1.  **Contract Definition** (Types/Interfaces).
-    2.  **Fixture Creation** (Mock Data).
-    3.  **Integration** (SWR/React Query hooks).
+#### [MODIFY] `src/components/agent/ActiveToolPanel.tsx`
+- Accept `assetValue` and `timeHorizon` as props (controlled by parent `ProductConsole`).
 
-#### [DELETE] Redundant Workflows
-*   `antigravity-cinematography.md`
-*   `aurora-gold-pipeline.md`
-*   `autonomous-site-construction.md`
-*   `manual-visual-generation.md` (Merged into Zero-to-Awwwards)
-
-### 2. Cortex Recalibration (Python Agents)
-
-We will implement the "Hive Mind" logic for the Project Manager.
-
-#### [MODIFY] [agents.yaml](file:///c:/Aurora/Projetos%20Mad%20Lab%20Aurora/Prime/cortex/config/agents.yaml)
-*   Add `project_manager`: The high-level orchestrator.
-*   Add `backend_specialist`: Specialist for the backend workflow.
-
-#### [MODIFY] [tasks.yaml](file:///c:/Aurora/Projetos%20Mad%20Lab%20Aurora/Prime/cortex/config/tasks.yaml)
-*   Add `orchestrate_mission`: Task to analyze a user request and trigger the correct sub-crew or workflow.
-
-#### [NEW] [project_manager_crew.py](file:///c:/Aurora/Projetos%20Mad%20Lab%20Aurora/Prime/cortex/crews/project_manager_crew.py)
-*   A new Crew that takes a high-level user request (e.g., "Build a landing page") and breaks it down into steps, potentially calling other crews (like `GenesisCrew` or `HiveMindCrew`).
-
-### 3. Agent Definition Update
-
-#### [MODIFY] [project_manager.md](file:///c:/Aurora/Projetos%20Mad%20Lab%20Aurora/Prime/.agent/agents/project_manager.md)
-*   Update instructions to explicitly use the `run_command` tool to invoke the Python Cortex system (e.g., `python -m cortex.main "manage project..."`).
+### 4. Updates to Landing Page
+#### [MODIFY] `src/app/consorcio/page.tsx`
+- Update `Link` hrefs from `/agent?context=...` to the new routes:
+    - `/consorcio/auto`
+    - `/consorcio/imovel`
+    - etc.
 
 ## Verification Plan
-
-### Automated Tests
-*   Run the new `ProjectManagerCrew` via CLI to verify it loads configs correctly:
-    ```powershell
-    python -m cortex.main --test "plan the new landing page"
-    ```
-
-### Manual Verification
-1.  **Workflow Check**: Read the new `zero-to-awwwards.md` to ensure it covers all steps from the archived files.
-2.  **Agent Check**: Verify `project_manager.md` instructions allow me to comfortably invoke the python script.
+- **Build Check:** Ensure all new routes build statically.
+- **Navigation Check:** Verify clicking "Simular Agora" on the Consórcio landing page takes the user to the correct styled product page.
+- **Context Check:** Verify the endpoint initializes with the correct context (e.g., Auto page says "Welcome to Auto Protocol").
