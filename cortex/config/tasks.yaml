@@ -34,3 +34,14 @@ adjust_atmosphere:
   expected_output: >
     A JSON object with specific commands: {"action": "BLUR_bg", "value": "10px", "duration": 1.5}
   agent: atmosphere
+
+orchestrate_mission:
+  description: >
+    Analyze the incoming request: "{topic}".
+    1. Classify the Intent: Is it FRONTEND (Visual/Experience) or BACKEND (Logic/Data)?
+    2. Select the Workflow: `zero-to-awwwards` OR `aurora-backend-integration`.
+    3. Define the Plan: Break it down into the canonical phases.
+    4. Delegation: Identify which sub-crew or agent should execute the first phase.
+  expected_output: >
+    A Strategic execution plan citing the correct Workflow and Phase to start.
+  agent: project_manager

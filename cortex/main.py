@@ -58,11 +58,14 @@ def main():
     parser.add_argument("--targets-file", help="Path to a JSON file containing an array of targets")
     parser.add_argument("--prompt", help="Prompt to apply for hive_swarm command")
     
+    parser.add_argument("--crew", help="Target crew to run: genesis (default) or project_manager or backend", default="genesis")
+    
     args = parser.parse_args()
 
     if not args.json:
         print(f"🔮 Cortex Online. Mode: {'TEST' if args.test else 'PRODUCTION'}")
         print(f"⚡ Input Command: {args.command}")
+        print(f"👥 Target Crew: {args.crew}")
 
     if args.command == "status":
         payload = {
@@ -167,12 +170,24 @@ def main():
             print(json.dumps(result, indent=2))
         return
 
-    # Execute Genesis Crew
+    # Execute Selected Crew
     if not args.json:
-        print(f"🚀 Kickoff Genesis Crew for: {args.command}")
+        print(f"🚀 Kickoff {args.crew} for: {args.command}")
+    
     try:
-        from cortex.crews.genesis_crew import GenesisCrew
-        result = GenesisCrew().crew().kickoff(inputs={'topic': args.command})
+        result = None
+        if args.crew == "project_manager":
+            from cortex.crews.project_manager_crew import ProjectManagerCrew
+            result = ProjectManagerCrew().crew().kickoff(inputs={'topic': args.command})
+        elif args.crew == "genesis":
+            from cortex.crews.genesis_crew import GenesisCrew
+            result = GenesisCrew().crew().kickoff(inputs={'topic': args.command})
+        else:
+             # Default fallback or error
+             print(f"⚠️ Unknown crew '{args.crew}', defaulting to Genesis.")
+             from cortex.crews.genesis_crew import GenesisCrew
+             result = GenesisCrew().crew().kickoff(inputs={'topic': args.command})
+
         if args.json:
             print(json.dumps({"result": str(result)}))
         else:
