@@ -24,7 +24,7 @@ export default function ConsortiumPage() {
   const chServicosRef = useRef<HTMLElement>(null);
   const finaleRef = useRef<HTMLElement>(null);
 
-  const scrollToSection = (ref: React.RefObject<HTMLElement>) => {
+  const scrollToSection = (ref: any) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -104,7 +104,7 @@ export default function ConsortiumPage() {
         if (imageWrap) {
           tl.to(imageWrap, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "power4.inOut" }, 0);
           // Zoom settle simulation via animation class or separate tween
-          if (img) gsap.to(img, { scale: 1.0, duration: 2.5, ease: "power2.out", delay: 0.2 }, 0); 
+          if (img) tl.to(img, { scale: 1.0, duration: 2.5, ease: "power2.out", delay: 0.2 }, 0); 
         }
 
         // Text Content
