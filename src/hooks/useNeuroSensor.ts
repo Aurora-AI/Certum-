@@ -6,6 +6,9 @@ type NeuroSignal = {
   dwellTime: number;
   hoverTarget: string | null;
   timestamp: number;
+  x: number;
+  y: number;
+  intensity: number; // calculated from velocity
 };
 
 export const useNeuroSensor = (onSignal: (data: NeuroSignal) => void) => {
@@ -41,7 +44,10 @@ export const useNeuroSensor = (onSignal: (data: NeuroSignal) => void) => {
         jitter,
         dwellTime,
         hoverTarget: hoverTarget.current,
-        timestamp: now
+        timestamp: now,
+        x: e.clientX,
+        y: e.clientY,
+        intensity: velocity // Simple mapping for now
       };
 
       // Throttle signal sending (e.g., only on significant events or intervals)

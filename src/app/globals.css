@@ -143,3 +143,18 @@ body {
 .asset-hover-trigger:hover .cluster-dot {
     opacity: 0.8;
 }
+
+/* 3D Utilities */
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.perspective-2000 {
+  perspective: 2000px;
+}
+.perspective-500 {
+  perspective: 500px;
+}

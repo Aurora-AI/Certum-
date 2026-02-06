@@ -15,15 +15,14 @@ export function Footer() {
         {/* Col 2 */}
         <div className="flex flex-col gap-2">
           <h4 className="text-xl font-medium mb-4">Contact</h4>
-          <p className="text-gray-400">hello@certum.prime</p>
-          <p className="text-gray-400">+55 11 99999-9999</p>
+          <p className="text-gray-400">rodrigo.winhaski@certumprime.com.br</p>
+          <p className="text-gray-400">41 99794-6451</p>
         </div>
 
         {/* Col 3 */}
         <div className="flex flex-col gap-2">
           <p className="text-gray-400">
-            Aurora Avenue 8<br />
-            São Paulo, SP<br />
+            Curitiba - Pr<br />
             Brasil
           </p>
         </div>
