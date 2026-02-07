@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import HeroParticleMorph from '../HeroParticleMorph';
+// import HeroParticleMorph from '../HeroParticleMorph'; // Removed for video focus
 import MagneticButton from '../ui/MagneticButton';
 
 type HeroVideo = {
@@ -148,19 +148,9 @@ export default function HeroVideoAurora() {
   return (
     <section ref={containerRef} className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-white">
       
-      {/* S-Tier Particle Layer (Background) */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <HeroParticleMorph 
-          particleCount={4000}
-          autoAdvance={false} 
-          dark={false} 
-          className="w-full h-full opacity-60"
-        />
-      </div>
-
-      <div className="relative h-[85%] w-[95%] md:h-[80%] md:w-[80%] overflow-hidden shadow-2xl z-10 transition-all duration-700 ease-out">
-      {/* Vídeos empilhados */}
-      <div className="absolute inset-0">
+      <div className="relative h-full w-full md:h-[80%] md:w-[80%] md:rounded-3xl overflow-hidden shadow-none md:shadow-2xl z-10 transition-all duration-700 ease-out">
+      {/* Vídeos empilhados (A/B Buffer) */}
+      <div className="absolute inset-0 bg-black">
         {VIDEOS.map((v, i) => {
           const isActive = i === active;
           const isNext = i === next;
@@ -176,10 +166,10 @@ export default function HeroVideoAurora() {
               style={{
                 opacity,
                 transition: `opacity ${FADE_MS}ms cubic-bezier(0.16,1,0.3,1)`,
-                filter: isActive ? 'blur(0px)' : isNext ? 'blur(2px)' : 'blur(0px)',
+                filter: isActive ? 'blur(0px)' : isNext ? 'blur(4px)' : 'blur(0px)', // Blur transition for smoothness
                 transform: prefersReducedMotion
                   ? 'none'
-                  : `translate3d(${parallax.x * 10}px, ${parallax.y * 10}px, 0) scale(1.02)`,
+                  : `translate3d(${parallax.x * 12}px, ${parallax.y * 12}px, 0) scale(1.05)`, // Increased scale for safety
               }}
               src={v.src}
               muted
@@ -190,22 +180,21 @@ export default function HeroVideoAurora() {
         })}
       </div>
 
-      {/* Aurora Field Overlay */}
+      {/* Aurora Field Overlay (Gradient Only - No Grain) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 z-20"
         style={{
-          // “densidade”: leve vinheta + micro-grain via gradient
+          // Gradient for legibility and atmosphere
           background:
-            'radial-gradient(1200px 700px at 50% 40%, rgba(255,255,255,0) 0%, rgba(255,255,255,0.02) 55%, rgba(0,0,0,0.06) 100%)',
+            'radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.6) 100%)',
           mixBlendMode: 'multiply',
-          opacity: 0.85,
         }}
       />
 
       {/* Conteúdo */}
-      <div className="relative z-10 flex h-full w-full items-center justify-start px-6 md:px-24">
-        <div className="max-w-xl rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-md shadow-2xl">
+      <div className="relative z-30 flex h-full w-full items-center justify-start px-6 md:px-24 pointer-events-none">
+        <div className="max-w-xl rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-md shadow-2xl pointer-events-auto">
           <div className="mb-4 text-[10px] tracking-[0.35em] uppercase text-black/60 font-medium">
             MAD LAB AURORA
           </div>
