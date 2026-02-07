@@ -158,7 +158,7 @@ export default function HeroVideoAurora() {
         />
       </div>
 
-      <div className="relative h-[80%] w-[80%] overflow-hidden shadow-2xl z-10">
+      <div className="relative h-[85%] w-[95%] md:h-[80%] md:w-[80%] overflow-hidden shadow-2xl z-10 transition-all duration-700 ease-out">
       {/* Vídeos empilhados */}
       <div className="absolute inset-0">
         {VIDEOS.map((v, i) => {
@@ -203,22 +203,8 @@ export default function HeroVideoAurora() {
         }}
       />
 
-      {/* Micro-grain (CSS-only). Se quiser, substitua por textura PNG depois */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage:
-            'repeating-linear-gradient(0deg, rgba(0,0,0,0.012) 0px, rgba(0,0,0,0.012) 1px, rgba(255,255,255,0) 2px, rgba(255,255,255,0) 3px)',
-          opacity: 0.10,
-          mixBlendMode: 'overlay',
-        }}
-      />
-
-
-
       {/* Conteúdo */}
-      <div className="relative z-10 flex h-full w-full items-center justify-start px-8 md:px-24">
+      <div className="relative z-10 flex h-full w-full items-center justify-start px-6 md:px-24">
         <div className="max-w-xl rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-md shadow-2xl">
           <div className="mb-4 text-[10px] tracking-[0.35em] uppercase text-black/60 font-medium">
             MAD LAB AURORA
