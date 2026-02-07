@@ -6,16 +6,18 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import ConsorcioHero from "./ConsorcioHero";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ConsortiumPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const heroParticlesRef = useRef<HTMLDivElement>(null);
   const [activeChapter, setActiveChapter] = useState(0);
 
   // SECTION REFS for Navigation
-  const heroRef = useRef<HTMLElement>(null);
+  // Hero is now self-contained, but we might want a ref for the top if needed, 
+  // though ConsorcioHero handles its own internal refs. 
+  // We'll keep chapter refs for the 'scrollToSection' (if we keep the dots).
   const chPontualRef = useRef<HTMLElement>(null);
   const chAutoRef = useRef<HTMLElement>(null);
   const chImovelRef = useRef<HTMLElement>(null);
@@ -31,53 +33,7 @@ export default function ConsortiumPage() {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       
-      // 1. HERO PARTICLES
-      if (heroParticlesRef.current) {
-        // Clear existing particles if any (React strict mode safety)
-        heroParticlesRef.current.innerHTML = '';
-        for (let i = 0; i < 25; i++) {
-          const p = document.createElement('div');
-          p.className = 'absolute rounded-full bg-[#BFB38F] opacity-0 animate-floatUp';
-          const size = 2 + Math.random() * 4;
-          p.style.width = size + 'px';
-          p.style.height = size + 'px';
-          p.style.left = Math.random() * 100 + '%';
-          p.style.animationDuration = (8 + Math.random() * 12) + 's';
-          p.style.animationDelay = Math.random() * 10 + 's';
-          // Define keyframes in global CSS or style tag below
-          heroParticlesRef.current.appendChild(p);
-        }
-      }
-
-      // 2. HERO ENTRANCE
-      const heroTl = gsap.timeline({ delay: 0.3 });
-      heroTl.to('.hero-overline', { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0)
-            .to('.hero-title-line1', { yPercent: 0, duration: 1.4, ease: "power4.out" }, 0.2)
-            .to('.hero-title-line2', { yPercent: 0, duration: 1.4, ease: "power4.out" }, 0.35)
-            .to('.hero-divider', { scaleX: 1, duration: 0.8, ease: "power3.inOut" }, 0.8)
-            .to('.hero-desc', { opacity: 1, y: 0, duration: 0.8 }, 1.0)
-            .to('.hero-scroll-cue', { opacity: 1, duration: 0.6 }, 1.4);
-
-      // Hero Scroll Cue Pulse
-      gsap.to('.scroll-line-fill', {
-        y: 30, duration: 1.4, ease: "power2.inOut", repeat: -1, yoyo: true, delay: 2
-      });
-
-      // Hero Parallax
-      ScrollTrigger.create({
-        trigger: heroRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-        onUpdate: (self) => {
-          gsap.set('.hero-content', {
-            yPercent: self.progress * -30,
-            opacity: 1 - self.progress * 1.5
-          });
-        }
-      });
-
-      // 3. CHAPTER REVEALS
+      // 3. CHAPTER REVEALS (Logic for chapters 1-6)
       const chapters = gsap.utils.toArray<HTMLElement>('.chapter');
       chapters.forEach((chapter, i) => {
         const imageWrap = chapter.querySelector('.chapter-image-wrap');
@@ -103,7 +59,6 @@ export default function ConsortiumPage() {
         // Image Reveal
         if (imageWrap) {
           tl.to(imageWrap, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "power4.inOut" }, 0);
-          // Zoom settle simulation via animation class or separate tween
           if (img) tl.to(img, { scale: 1.0, duration: 2.5, ease: "power2.out", delay: 0.2 }, 0); 
         }
 
@@ -191,13 +146,13 @@ export default function ConsortiumPage() {
           scale: 1.2, opacity: 0.8, duration: 4, ease: "power1.inOut", repeat: -1, yoyo: true
       });
 
-      // Update Nav Dots for Hero
+      // Explicitly set activeChapter to 0 when near top, 
+      // though ConsorcioHero is untracked by these triggers now.
       ScrollTrigger.create({
-          trigger: heroRef.current,
-          start: "top center",
-          end: "bottom center",
-          onEnter: () => setActiveChapter(0),
-          onEnterBack: () => setActiveChapter(0)
+        start: 0,
+        end: window.innerHeight,
+        onEnter: () => setActiveChapter(0),
+        onEnterBack: () => setActiveChapter(0)
       });
 
     }, containerRef);
@@ -207,24 +162,6 @@ export default function ConsortiumPage() {
   return (
     <main ref={containerRef} className="bg-[#1A1A1A] text-white min-h-screen relative font-sans overflow-x-hidden selection:bg-[#BFB38F] selection:text-[#1A1A1A]">
         
-        {/* GRAIN */}
-        <div className="fixed inset-0 z-[9999] pointer-events-none opacity-[0.04] mix-blend-overlay" 
-             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} 
-        />
-
-        {/* CSS FOR PARTICLES */}
-        <style jsx global>{`
-            @keyframes floatUp {
-                0% { transform: translateY(100vh) scale(0); opacity: 0; }
-                10% { opacity: 0.3; }
-                90% { opacity: 0.1; }
-                100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-            }
-            .animate-floatUp {
-                animation: floatUp linear infinite;
-            }
-        `}</style>
-
         {/* NAV */}
         <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-[5vw] py-6 mix-blend-difference pointer-events-none">
             <span className="text-[12px] font-bold tracking-[0.3em] uppercase text-white">Certum</span>
@@ -233,43 +170,23 @@ export default function ConsortiumPage() {
             </Link>
         </nav>
 
-        {/* CHAPTER TRACKER */}
+        {/* CHAPTER TRACKER - Updated to remove direct heroRef dependency since Hero is now a component */}
         <div className="fixed right-[5vw] top-1/2 -translate-y-1/2 z-[100] hidden md:flex flex-col gap-3 items-end mix-blend-difference">
-            {[heroRef, chPontualRef, chAutoRef, chImovelRef, chPesadosRef, chMotosRef, chServicosRef].map((ref, i) => (
+            {/* We map indexes to refs. 0 is Hero (no direct ref exposed easily but we can scroll top), 1-6 are chapters */}
+            {[0, chPontualRef, chAutoRef, chImovelRef, chPesadosRef, chMotosRef, chServicosRef].map((ref, i) => (
                 <div 
                     key={i}
-                    onClick={() => scrollToSection(ref)}
+                    onClick={() => {
+                        if (i === 0) window.scrollTo({ top: 0, behavior: 'smooth' });
+                        else scrollToSection(ref);
+                    }}
                     className={`w-1.5 h-1.5 rounded-full cursor-pointer transition-all duration-500 ${activeChapter === i ? 'bg-[#BFB38F] w-2 h-2 shadow-[0_0_12px_rgba(191,179,143,0.4)]' : 'bg-white/20 hover:bg-white/50'}`}
                 />
             ))}
         </div>
 
-        {/* 1. HERO */}
-        <section ref={heroRef} className="hero relative h-screen flex items-center justify-center bg-[#1A1A1A] overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(191,179,143,0.08)_0%,transparent_70%)]" />
-            <div ref={heroParticlesRef} className="absolute inset-0 overflow-hidden" />
-            
-            <div className="hero-content relative z-10 text-center flex flex-col items-center gap-6">
-                <div className="hero-overline text-[10px] font-medium tracking-[0.4em] uppercase text-[#BFB38F] opacity-0 translate-y-[20px]">Consórcio Rodobens — Certum Private</div>
-                <div className="hero-title overflow-hidden">
-                    <h1 className="hero-title-line1 text-[clamp(3rem,10vw,9rem)] font-bold uppercase tracking-[-0.04em] leading-[0.85] translate-y-[120%]">Seu Novo</h1>
-                </div>
-                <div className="hero-title overflow-hidden">
-                    <h1 className="hero-title-line2 text-[clamp(3rem,10vw,9rem)] font-bold uppercase tracking-[-0.04em] leading-[0.85] translate-y-[120%] text-[#BFB38F]">Patrimônio</h1>
-                </div>
-                <div className="hero-divider w-[60px] h-[1px] bg-[#BFB38F] scale-x-0 origin-center" />
-                <p className="hero-desc max-w-[500px] text-[14px] leading-[1.8] text-white/40 font-light opacity-0 translate-y-[20px]">
-                    Onde sonhos ganham forma através de planejamento estratégico. <br/> Cada capítulo abaixo é uma porta para o seu próximo ativo.
-                </p>
-            </div>
-
-            <div className="hero-scroll-cue absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0">
-                <span className="text-[9px] font-medium uppercase tracking-[0.4em] text-white/20">Explore</span>
-                <div className="scroll-line w-[1px] h-[40px] bg-white/10 relative overflow-hidden">
-                    <div className="scroll-line-fill absolute top-0 left-0 w-full h-[10px] bg-[#BFB38F] rounded-sm" />
-                </div>
-            </div>
-        </section>
+        {/* O NOVO CÉREBRO VISUAL */}
+        <ConsorcioHero />
 
         {/* CH.01 - PONTUAL */}
         <section ref={chPontualRef} className="chapter relative min-h-screen flex flex-col md:flex-row items-stretch bg-[#1A1A1A] text-white overflow-hidden">
@@ -397,12 +314,6 @@ export default function ConsortiumPage() {
                 </div>
             </div>
         </section>
-
-        {/* TRANSITION */}
-        <div className="scene-transition h-[35vh] flex items-center justify-center bg-[#1A1A1A] relative overflow-hidden">
-            <div className="transition-line absolute left-[5vw] right-[5vw] top-1/2 h-[1px] bg-white/5 scale-x-0 origin-center" />
-            <div className="transition-text text-[10px] font-mono tracking-[0.35em] uppercase text-white/10 opacity-0">Próximo Capítulo</div>
-        </div>
 
          {/* CH.04 - PESADOS */}
         <section ref={chPesadosRef} className="chapter chapter--light relative min-h-screen flex flex-col md:flex-row-reverse items-stretch bg-white text-[#1A1A1A] overflow-hidden">

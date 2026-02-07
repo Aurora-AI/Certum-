@@ -2,7 +2,9 @@ import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { AtmosphereProvider } from "@/context/AtmosphereContext"; // <--- Importação Nova
+import { AtmosphereProvider } from "@/context/AtmosphereContext";
+import { LenisWrapper } from "@/components/smooth-scroll/LenisWrapper";
+import { SovereignCursor } from "@/components/ui/SovereignCursor";
 
 export const metadata: Metadata = {
   title: "Certum Prime | Sovereign Wealth",
@@ -23,9 +25,12 @@ export default function RootLayout({
       <body className="antialiased bg-[#FFFFFF] text-[#2D2D2D]">
         {/* O AtmosphereProvider agora controla o "corpo" da aplicação */}
         <AtmosphereProvider>
-          <Navbar />
-          {children}
-          <Footer />
+          <SovereignCursor />
+          <LenisWrapper>
+            <Navbar />
+            {children}
+            <Footer />
+          </LenisWrapper>
         </AtmosphereProvider>
       </body>
     </html>
