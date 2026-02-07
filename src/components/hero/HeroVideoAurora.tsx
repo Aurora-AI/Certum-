@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { MoveRight } from 'lucide-react';
 // import HeroParticleMorph from '../HeroParticleMorph'; // Removed for video focus
 import MagneticButton from '../ui/MagneticButton';
 
@@ -148,7 +149,7 @@ export default function HeroVideoAurora() {
   return (
     <section ref={containerRef} className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-white">
       
-      <div className="relative h-full w-full md:h-[80%] md:w-[80%] md:rounded-3xl overflow-hidden shadow-none md:shadow-2xl z-10 transition-all duration-700 ease-out">
+      <div className="absolute inset-0 w-full h-full overflow-hidden z-10">
       {/* Vídeos empilhados (A/B Buffer) */}
       <div className="absolute inset-0 bg-black">
         {VIDEOS.map((v, i) => {
@@ -192,35 +193,64 @@ export default function HeroVideoAurora() {
         }}
       />
 
-      {/* Conteúdo */}
-      <div className="relative z-30 flex h-full w-full items-center justify-start px-6 md:px-24 pointer-events-none">
-        <div className="max-w-xl rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-md shadow-2xl pointer-events-auto">
-          <div className="mb-4 text-[10px] tracking-[0.35em] uppercase text-black/60 font-medium">
-            MAD LAB AURORA
+      {/* 2. O CONTÊINER RETANGULAR (A Realidade) - Sovereign Monolith */}
+      <div className="relative z-30 w-full h-full flex flex-col justify-end pb-12 px-6 md:pb-0 md:justify-center md:px-24 pointer-events-none">
+        
+        {/* O MONOLITO */}
+        <div className="
+            group
+            relative
+            max-w-lg w-full
+            bg-[#0A0A0A]/90 backdrop-blur-md /* Fundo escuro sólido com leve blur */
+            border border-white/10 /* Borda sutil de luxo */
+            p-8 md:p-10
+            shadow-2xl shadow-black/50
+            overflow-hidden
+            pointer-events-auto
+        ">
+          
+          {/* Efeito de brilho ao passar o mouse (opcional, Aurora touch) */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
+          {/* Tagline / Disclaimer */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-[1px] bg-amber-500/80"></div>
+            <span className="text-amber-500 text-xs font-bold tracking-[0.25em] uppercase">
+              Certum Private
+            </span>
           </div>
 
-          <h1 className="text-balance text-4xl font-light tracking-tight text-black md:text-5xl lg:text-6xl text-left drop-shadow-sm">
-            {VIDEOS[active]?.headline}
+          {/* Headline - Clara e Direta */}
+          <h1 className="text-white text-3xl md:text-4xl font-light leading-tight mb-4">
+            Não vendemos o carro.<br />
+            <span className="font-semibold text-white">Nós financiamos o acesso.</span>
           </h1>
 
-          <p className="mt-6 text-sm tracking-wide text-black/70 md:text-base text-left font-medium">
-            Consórcios · Seguros · Wealth Management
+          {/* Texto de Apoio - Legibilidade Máxima */}
+          <p className="text-gray-400 text-sm leading-relaxed mb-8 border-l-2 border-white/10 pl-4">
+            A inteligência financeira para adquirir ativos de alto valor sem descapitalização. 
+            O veículo é o alvo. O consórcio é a estratégia.
           </p>
 
-          <div className="mt-8 flex flex-col items-start justify-start gap-4 sm:flex-row pointer-events-auto">
-            <MagneticButton strength={0.2} radius={120}>
-              <span className="inline-block rounded-full bg-black px-6 py-3 text-[10px] font-bold tracking-[0.2em] uppercase text-white hover:bg-black/80 transition-colors shadow-lg">
-                Iniciar agora
-              </span>
-            </MagneticButton>
-            
-            <MagneticButton strength={0.2} radius={120}>
-              <span className="inline-block rounded-full border border-black/10 bg-white/40 px-6 py-3 text-[10px] font-bold tracking-[0.2em] uppercase text-black backdrop-blur hover:bg-white/60 transition-colors">
-                Ver opções
-              </span>
+          {/* CTA - Botão Sólido + Magnetic Wrapper */}
+          <div className="w-full md:w-auto">
+            <MagneticButton strength={0.1} radius={100}>
+                <button className="
+                    w-full
+                    flex items-center justify-between gap-6
+                    bg-white text-black 
+                    px-6 py-4 
+                    text-xs font-bold tracking-widest uppercase
+                    hover:bg-gray-200 transition-colors
+                ">
+                    <span>Entenda o Modelo</span>
+                    <MoveRight className="w-4 h-4" />
+                </button>
             </MagneticButton>
           </div>
+
         </div>
+
       </div>
 
       {/* Reduced motion: overlay leve */}
