@@ -46,8 +46,8 @@ export const LenisWrapper = ({ children }: { children: React.ReactNode }) => {
         if (window.innerWidth < 768) return;
         
         const vel = lenis.velocity;
-        // Subtle skew logic
-        const skew = Math.max(Math.min(vel * 0.05, 3), -3); 
+        // Subtle skew logic (Optimized for lightness)
+        const skew = Math.max(Math.min(vel * 0.02, 1.5), -1.5); 
         
         // Apply to body or specific wrapper? Applying to body is simplest for global effect
         // but wrapperRef is safer context.
