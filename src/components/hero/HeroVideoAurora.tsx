@@ -147,7 +147,18 @@ export default function HeroVideoAurora() {
 
   return (
     <section ref={containerRef} className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-white">
-      <div className="relative h-[80%] w-[80%] overflow-hidden shadow-2xl">
+      
+      {/* S-Tier Particle Layer (Background) */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <HeroParticleMorph 
+          particleCount={4000}
+          autoAdvance={false} 
+          dark={false} 
+          className="w-full h-full opacity-60"
+        />
+      </div>
+
+      <div className="relative h-[80%] w-[80%] overflow-hidden shadow-2xl z-10">
       {/* Vídeos empilhados */}
       <div className="absolute inset-0">
         {VIDEOS.map((v, i) => {
@@ -204,15 +215,7 @@ export default function HeroVideoAurora() {
         }}
       />
 
-      {/* S-Tier Particle Layer (Blend Mode: Screen/Overlay) */}
-      <div className="absolute inset-0 pointer-events-none mix-blend-screen opacity-60 z-10">
-        <HeroParticleMorph 
-          particleCount={4000}
-          autoAdvance={false} // We manually control via video
-          dark={false} // Light mode overlay
-          className="w-full h-full"
-        />
-      </div>
+
 
       {/* Conteúdo */}
       <div className="relative z-10 flex h-full w-full items-center justify-start px-8 md:px-24">
