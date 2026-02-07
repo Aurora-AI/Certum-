@@ -36,36 +36,31 @@ export const LenisWrapper = ({ children }: { children: React.ReactNode }) => {
 
     gsap.ticker.lagSmoothing(0);
 
-    // 3. FX-12 Velocity Distortion (Skew)
-    // We apply skew to a wrapper, or the body if possible, but wrapper is safer for React.
-    // However, skewing the entire layout can be jarring if not done carefully.
-    // The requirement is "O conteúdo estica levemente no eixo Y".
+    // 3. FX-12 Velocity Distortion (Skew) - DISABLED FOR PERFORMANCE
+    // The previous implementation of skewing the entire wrapper caused severe layout thrashing.
+    // We will re-enable it only on specific elements if needed, not globally.
     
-    // We'll use a GSAP ticker to monitor velocity and apply skew
+    // 3. FX-12 Velocity Distortion (Skew) - ENABLED (S-Tier)
     const updateSkew = () => {
-        if (!wrapperRef.current) return;
+        // Only apply on larger screens to save mobile performance
+        if (window.innerWidth < 768) return;
         
-        // Mobile Check: Disable on small screens
-        if (window.innerWidth < 768) {
-            gsap.set(wrapperRef.current, { skewY: 0 });
-            return;
-        }
-
         const vel = lenis.velocity;
-        // Limit skew to avoid breaking layout
-        const skew = Math.max(Math.min(vel * 0.05, 5), -5); 
+        // Subtle skew logic
+        const skew = Math.max(Math.min(vel * 0.05, 3), -3); 
         
-        gsap.to(wrapperRef.current, {
-            skewY: skew,
-            duration: 0.8,
-            ease: "power3.out",
-            overwrite: "auto"
-        });
+        // Apply to body or specific wrapper? Applying to body is simplest for global effect
+        // but wrapperRef is safer context.
+        if (wrapperRef.current) {
+            gsap.to(wrapperRef.current, {
+                skewY: skew,
+                duration: 0.8,
+                ease: "power3.out",
+                overwrite: "auto"
+            });
+        }
     };
     
-    // Attach listener to lenis scroll event for lighter updates, 
-    // or use ticker if we want constant monitoring. 
-    // Lenis 'scroll' event is sufficient.
     lenis.on('scroll', updateSkew);
 
 

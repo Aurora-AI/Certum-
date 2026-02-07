@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
+// import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SimulationCTA } from "./SimulationCTA";
@@ -76,26 +76,14 @@ export function VaultSection() {
             }
         });
 
-        // Magnetic Buttons (Simple GSAP implementation)
-        const ctas = document.querySelectorAll(".card-cta-link");
-        ctas.forEach((cta: any) => {
-             cta.addEventListener("mousemove", (e: MouseEvent) => {
-                const rect = cta.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                gsap.to(cta, { x: x * 0.15, y: y * 0.15, duration: 0.4, ease: "power3.out" });
-            });
-            cta.addEventListener("mouseleave", () => {
-                gsap.to(cta, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1,0.3)" });
-            });
-        });
+
 
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="vault relative w-full bg-white text-[#1A1A1A] py-[12vh] px-[5vw] overflow-hidden">
+    <section ref={sectionRef} className="vault relative w-full min-h-screen bg-white text-[#1A1A1A] py-[12vh] px-[5vw] overflow-hidden flex flex-col justify-center">
         
         {/* GRAIN */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.025] mix-blend-multiply" 
@@ -121,11 +109,11 @@ export function VaultSection() {
         </div>
 
         {/* GRID */}
-        <div className="vault-grid grid grid-cols-1 md:grid-cols-2 gap-[2vw]">
+        <div className="vault-grid grid grid-cols-1 md:grid-cols-3 gap-8 w-full items-stretch">
             
             {/* CARD 1: CARROS (row-span-2) */}
-            <div className="vault-card group relative cursor-pointer md:row-span-2" data-vault-card>
-                <div className="card-image-wrap relative w-full h-[45vh] md:h-[55vh] overflow-hidden" style={{ clipPath: "inset(100% 0% 0% 0%)" }}>
+            <div className="vault-card group relative cursor-pointer md:mt-0 z-10 hover:z-20 transition-all duration-500" data-vault-card>
+                <div className="card-image-wrap relative w-full h-[60vh] overflow-hidden" style={{ clipPath: "inset(100% 0% 0% 0%)" }}>
                     <Image 
                         src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=1000&q=80"
                         alt="Luxury Car"
@@ -160,8 +148,8 @@ export function VaultSection() {
             </div>
 
             {/* CARD 2: CASAS */}
-            <div className="vault-card group relative cursor-pointer" data-vault-card>
-                <div className="card-image-wrap relative w-full h-[45vh] md:h-[38vh] overflow-hidden" style={{ clipPath: "inset(100% 0% 0% 0%)" }}>
+            <div className="vault-card group relative cursor-pointer md:mt-12 z-10 hover:z-20 transition-all duration-500" data-vault-card>
+                <div className="card-image-wrap relative w-full h-[60vh] overflow-hidden" style={{ clipPath: "inset(100% 0% 0% 0%)" }}>
                     <Image 
                         src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1000&q=80"
                         alt="Luxury Home"
@@ -196,8 +184,8 @@ export function VaultSection() {
             </div>
 
             {/* CARD 3: SEGUROS */}
-            <div className="vault-card group relative cursor-pointer" data-vault-card>
-                <div className="card-image-wrap relative w-full h-[45vh] md:h-[38vh] overflow-hidden" style={{ clipPath: "inset(100% 0% 0% 0%)" }}>
+            <div className="vault-card group relative cursor-pointer md:mt-24 z-10 hover:z-20 transition-all duration-500" data-vault-card>
+                <div className="card-image-wrap relative w-full h-[60vh] overflow-hidden" style={{ clipPath: "inset(100% 0% 0% 0%)" }}>
                     <Image 
                         src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&q=80"
                         alt="Insurance Protection"

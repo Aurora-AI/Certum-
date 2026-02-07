@@ -6,13 +6,20 @@ import { cn } from "@/lib/utils";
 interface ProductPortfolioProps {
     onSelect?: (product: string) => void;
     selectedCategory?: string;
+    onHoverCategory?: (category: string | null) => void;
 }
 
-export function ProductPortfolio({ onSelect, selectedCategory }: ProductPortfolioProps) {
+export function ProductPortfolio({ onSelect, selectedCategory, onHoverCategory }: ProductPortfolioProps) {
     
     // Helper to handle click or link depending on usage
     const handleSelect = (category: string) => {
         if (onSelect) onSelect(category);
+    };
+    const handleHover = (category: string) => {
+        if (onHoverCategory) onHoverCategory(category);
+    };
+    const handleHoverEnd = () => {
+        if (onHoverCategory) onHoverCategory(null);
     };
 
     const isActive = (cat: string) => selectedCategory === cat;
@@ -35,6 +42,8 @@ export function ProductPortfolio({ onSelect, selectedCategory }: ProductPortfoli
                         isActive("PONTUAL") ? "gold-glow bg-white/60" : "hover:bg-white/40"
                     )}
                     onClick={() => handleSelect("PONTUAL")}
+                    onMouseEnter={() => handleHover("PONTUAL")}
+                    onMouseLeave={handleHoverEnd}
                 >
                     <div className="flex items-center gap-4">
                         <div className="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -57,6 +66,8 @@ export function ProductPortfolio({ onSelect, selectedCategory }: ProductPortfoli
                             isActive("AUTOMOTIVE") ? "opacity-100" : "opacity-40 hover:opacity-100"
                         )}
                         onClick={() => handleSelect("AUTOMOTIVE")}
+                        onMouseEnter={() => handleHover("AUTOMOTIVE")}
+                        onMouseLeave={handleHoverEnd}
                     >
                         {isActive("AUTOMOTIVE") && (
                             <div className="warp-container" style={{opacity: 1, transform: 'scale(1.1)'}}>
@@ -80,6 +91,8 @@ export function ProductPortfolio({ onSelect, selectedCategory }: ProductPortfoli
                             isActive("REAL_ESTATE") ? "opacity-100" : "opacity-40 hover:opacity-100"
                         )}
                         onClick={() => handleSelect("REAL_ESTATE")}
+                        onMouseEnter={() => handleHover("REAL_ESTATE")}
+                        onMouseLeave={handleHoverEnd}
                     >
                          {isActive("REAL_ESTATE") && (
                             <div className="warp-container" style={{opacity: 1, transform: 'scale(1.1)'}}>
@@ -103,6 +116,8 @@ export function ProductPortfolio({ onSelect, selectedCategory }: ProductPortfoli
                             isActive("HEAVY_MACHINERY") ? "opacity-100" : "opacity-40 hover:opacity-100"
                         )}
                         onClick={() => handleSelect("HEAVY_MACHINERY")}
+                        onMouseEnter={() => handleHover("HEAVY_MACHINERY")}
+                        onMouseLeave={handleHoverEnd}
                     >
                         <Truck className="w-6 h-6 font-extralight" />
                          <div>
@@ -118,6 +133,8 @@ export function ProductPortfolio({ onSelect, selectedCategory }: ProductPortfoli
                             isActive("MOTOS") ? "opacity-100" : "opacity-40 hover:opacity-100"
                         )}
                         onClick={() => handleSelect("MOTOS")}
+                        onMouseEnter={() => handleHover("MOTOS")}
+                        onMouseLeave={handleHoverEnd}
                     >
                         <Bike className="w-6 h-6 font-extralight" />
                          <div>
@@ -133,6 +150,8 @@ export function ProductPortfolio({ onSelect, selectedCategory }: ProductPortfoli
                             isActive("SERVICES") ? "opacity-100" : "opacity-40 hover:opacity-100"
                         )}
                         onClick={() => handleSelect("SERVICES")}
+                        onMouseEnter={() => handleHover("SERVICES")}
+                        onMouseLeave={handleHoverEnd}
                     >
                         <Briefcase className="w-6 h-6 font-extralight" />
                          <div>
@@ -148,6 +167,8 @@ export function ProductPortfolio({ onSelect, selectedCategory }: ProductPortfoli
                             isActive("PROTECTION") ? "opacity-100" : "opacity-40 hover:opacity-100"
                         )}
                         onClick={() => handleSelect("PROTECTION")}
+                        onMouseEnter={() => handleHover("PROTECTION")}
+                        onMouseLeave={handleHoverEnd}
                     >
                         <Shield className="w-6 h-6 font-extralight" />
                          <div>

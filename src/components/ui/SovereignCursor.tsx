@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 
 export const SovereignCursor = () => {
@@ -8,6 +9,13 @@ export const SovereignCursor = () => {
   const ringRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
   const isMobile = useRef(false);
+  const pathname = usePathname();
+
+  // Reset cursor on route change
+  useEffect(() => {
+    setIsHovering(false);
+    isMobile.current = false; // Re-check mobile just in case
+  }, [pathname]);
 
   useEffect(() => {
     // Mobile Check

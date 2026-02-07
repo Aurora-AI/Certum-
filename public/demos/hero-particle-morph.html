@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aurora — Hero Particle Morph Demo</title>
+
+  <link rel="stylesheet" href="/styles/aurora-hero.tokens.css" />
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { overflow:hidden; background: var(--aurora-hero-bg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#fff; }
+    #wrap { position: fixed; inset: 0; }
+    canvas { display:block; width:100%; height:100%; }
+
+    /* Minimal overlay to validate engine */
+    .overlay { position: fixed; inset: 0; pointer-events:none; display:flex; flex-direction:column; justify-content:space-between; padding: clamp(18px, 4vw, 56px); }
+    .top { display:flex; justify-content:space-between; align-items:flex-start; }
+    .brand { opacity:.7; font-size:11px; letter-spacing:4px; text-transform:uppercase; font-weight:300; }
+    .brand strong { display:block; font-weight:600; font-size:14px; letter-spacing:6px; margin-bottom:4px; opacity:1; }
+    .count { font-size:11px; opacity:.4; font-variant-numeric: tabular-nums; letter-spacing: 1px; }
+    .center { display:flex; justify-content:center; }
+    .headline { font-size: clamp(28px, 6vw, 72px); font-weight:200; letter-spacing:-.02em; line-height:1.1; opacity:.95; text-align:center; }
+    .bottom { display:flex; justify-content:space-between; align-items:flex-end; gap: 14px; }
+    .controls { pointer-events:auto; display:flex; gap:6px; flex-wrap:wrap; justify-content:center; }
+    .btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color:#fff;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      backdrop-filter: blur(12px);
+      transition: all .25s ease;
+    }
+    .btn:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.22); transform: translateY(-1px); }
+    .btn.active { background: rgba(255,255,255,0.92); color: #0a0a0f; border-color: transparent; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <canvas id="c"></canvas>
+  </div>
+
+  <div class="overlay">
+    <div class="top">
+      <div class="brand"><strong>MAD AURORA</strong>Particle Morph Demo</div>
+      <div class="count" id="count"></div>
+    </div>
+    <div class="center">
+      <div class="headline" id="headline">Onde matéria encontra ilusão</div>
+    </div>
+    <div class="bottom">
+      <div style="opacity:.35;font-size:10px;letter-spacing:2px;text-transform:uppercase;">Mouse para interagir</div>
+      <div class="controls" id="controls"></div>
+      <div class="controls" id="modes"></div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // NOTE: Demo-only. SSOT engine is the React component.
+    const CONFIG = {
+      PARTICLE_COUNT: 6000,
+      MORPH_SPEED: 0.018,
+      NOISE_SCALE: 0.003,
+      NOISE_AMPLITUDE: 0.12,
+      DAMPING: 0.93,
+      MOUSE_RADIUS: 2.8,
+      MOUSE_STRENGTH: 0.07,
+      GRAVITY_Y: -0.0002,
+      SAMPLE_RES: 512,
+      WORLD_SCALE: 5.5,
+    };
+
+    // You can point these to your assets:
+    const SHAPES = [
+      { key: 'cloud', name: 'Nuvem', headline: 'Onde matéria encontra ilusão', src: null },
+      { key: 'mercedes', name: 'Mercedes', headline: 'Mercedes-Benz', src: '/images/mercedes-8k.png' },
+      { key: 'house', name: 'Residência', headline: 'Arquitetura Viva', src: '/images/house-8k.jpg' },
+    ];
+
+    // (Noise + sampler + engine) intentionally omitted here to keep the demo short.
+    // Use the React component for the full canonical engine.
+    document.getElementById('count').textContent = CONFIG.PARTICLE_COUNT.toLocaleString() + ' partículas';
+    const controls = document.getElementById('controls');
+    const modes = document.getElementById('modes');
+
+    SHAPES.forEach((s, i) => {
+      const b = document.createElement('button');
+      b.className = 'btn' + (i===0 ? ' active' : '');
+      b.textContent = s.name;
+      b.onclick = () => {
+        document.querySelectorAll('#controls .btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        document.getElementById('headline').textContent = s.headline || '';
+      };
+      controls.appendChild(b);
+    });
+
+    ['repel','attract','orbit'].forEach((m) => {
+      const b = document.createElement('button');
+      b.className = 'btn' + (m==='repel' ? ' active' : '');
+      b.textContent = m === 'repel' ? 'Repelir' : m === 'attract' ? 'Atrair' : 'Orbitar';
+      b.onclick = () => {
+        document.querySelectorAll('#modes .btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        document.getElementById('headline').textContent = s.headline || '';
+      };
+      modes.appendChild(b);
+    });
+
+    // Placeholder clear: this file is intentionally a "shell demo".
+    const canvas = document.getElementById('c');
+    const r = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    r.setSize(innerWidth, innerHeight);
+    const s = new THREE.Scene();
+    s.background = new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--aurora-hero-bg').trim() || '#0a0a0f');
+    const cam = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.1, 100);
+    cam.position.set(0,0,8);
+    const geo = new THREE.SphereGeometry(1, 32, 16);
+    const mat = new THREE.MeshStandardMaterial({ color: 0xb0c8e0, roughness: 0.4, metalness: 0.08 });
+    const ball = new THREE.Mesh(geo, mat);
+    s.add(new THREE.AmbientLight(0xffffff, 0.6));
+    s.add(ball);
+    function loop(){ requestAnimationFrame(loop); ball.rotation.y += 0.005; r.render(s, cam); }
+    loop();
+
+    addEventListener('resize', () => {
+      cam.aspect = innerWidth/innerHeight; cam.updateProjectionMatrix();
+      r.setSize(innerWidth, innerHeight);
+    });
+  </script>
+</body>
+</html>

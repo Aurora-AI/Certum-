@@ -1,161 +1,134 @@
 "use client";
 
-import { useRef, useLayoutEffect, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { VolumetricBackground } from "./VolumetricBackground";
-
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-}
+import { useEffect, useRef, useState } from "react";
 
 interface HeroSectionProps {
   mode: "dream" | "chat";
   onActivate: (prompt?: string) => void;
 }
 
-export function HeroSection({ onActivate }: HeroSectionProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+export function HeroSection({ mode: _mode, onActivate }: HeroSectionProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const targetDurationSeconds = 7;
+  const [backgroundTone, setBackgroundTone] = useState("rgb(246, 246, 246)");
 
-  // ─── GSAP ANIMATION ───
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-            defaults: { ease: "power4.out" }
-        });
+  const syncPlaybackRate = () => {
+    if (!videoRef.current) return;
+    const { duration } = videoRef.current;
+    if (!Number.isFinite(duration) || duration <= 0) return;
+    videoRef.current.playbackRate = duration / targetDurationSeconds;
+  };
 
-        // 0. Preloader Sequence (Simulated or removed if handled globally)
-        // Assuming global preloader handles the initial wait. 
-        // We start the Hero Reveal immediately or with slight delay.
-        
-        const heroTl = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.5 });
-        
-        // 1. FX-11 Depth Stagger Reveal for Text
-        // "From the back" (z: -100, blur: 10) to origin
-        
-        const splitText = document.querySelectorAll('.hero-line span'); // Assuming we wrap text in spans
-        
-        if (splitText.length > 0) {
-             heroTl.from(splitText, {
-                z: -150,
-                filter: "blur(12px)",
-                opacity: 0,
-                duration: 2.2,
-                stagger: 0.1,
-                ease: "power2.out" // Smoother, dream-like
-            }, 0);
-        } else {
-             // Fallback if no spans
-             heroTl.from('.hero-line', {
-                z: -100,
-                filter: "blur(10px)",
-                opacity: 0,
-                y: 50,
-                duration: 2.0,
-                stagger: 0.15
-            }, 0);
-        }
+  const syncBackgroundTone = () => {
+    if (!videoRef.current) return;
+    const { videoWidth, videoHeight, readyState } = videoRef.current;
+    if (readyState < 2 || videoWidth <= 0 || videoHeight <= 0) return;
 
-        // 2. Divider & Bottom UI
-        heroTl.from('.hero-divider', { scaleX: 0, duration: 1.5, ease: "power3.inOut" }, 1.0);
-        
-        heroTl.from('.hero-tagline', { 
-            y: 20, 
-            opacity: 0, 
-            filter: "blur(5px)", 
-            duration: 1.2 
-        }, 1.2);
+    const canvas = document.createElement("canvas");
+    canvas.width = videoWidth;
+    canvas.height = videoHeight;
 
-        heroTl.from('.hero-cta', { 
-            y: 30, 
-            opacity: 0, 
-            duration: 1.0, 
-            stagger: 0.1,
-            ease: "back.out(1.2)"
-        }, 1.4);
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    if (!context) return;
 
-        // 3. Corners & Indicators
-        heroTl.from('.corner', { opacity: 0, duration: 2 }, 2);
-        heroTl.from('.scroll-indicator', { opacity: 0, y: -20, duration: 1.5 }, 2.5);
+    context.drawImage(videoRef.current, 0, 0, videoWidth, videoHeight);
 
-    }, containerRef);
-    return () => ctx.revert();
+    const marginX = Math.max(12, Math.floor(videoWidth * 0.03));
+    const marginY = Math.max(12, Math.floor(videoHeight * 0.03));
+    const points = [
+      [marginX, marginY],
+      [Math.floor(videoWidth * 0.25), marginY],
+      [Math.floor(videoWidth * 0.5), marginY],
+      [Math.floor(videoWidth * 0.75), marginY],
+      [videoWidth - marginX, marginY],
+    ];
+
+    let red = 0;
+    let green = 0;
+    let blue = 0;
+    let count = 0;
+
+    for (const [x, y] of points) {
+      const data = context.getImageData(x, y, 1, 1).data;
+      if (data[3] === 0) continue;
+      red += data[0];
+      green += data[1];
+      blue += data[2];
+      count += 1;
+    }
+
+    if (count === 0) return;
+
+    setBackgroundTone(
+      `rgb(${Math.round(red / count)}, ${Math.round(green / count)}, ${Math.round(blue / count)})`
+    );
+  };
+
+  useEffect(() => {
+    syncPlaybackRate();
   }, []);
 
+  const handleMetadata = () => {
+    syncPlaybackRate();
+  };
+
+  const handleLoadedData = () => {
+    setBackgroundTone("rgb(246, 246, 246)");
+    syncBackgroundTone();
+    window.setTimeout(syncBackgroundTone, 120);
+  };
+
   return (
-    <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-[#1A1A1A] text-[#1A1A1A] font-sans perspective-[1000px]">
-        {/* NEW ATMOSPHERE */}
-        <VolumetricBackground />
+    <section
+      className="relative w-full min-h-screen overflow-hidden text-[#111111]"
+      style={{ backgroundColor: backgroundTone }}
+    >
+      <div className="absolute inset-0 z-0 flex items-center justify-center">
+        <video
+          ref={videoRef}
+          className="h-[70%] w-[70%] object-contain"
+          src="/assets/Hero.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          onLoadedMetadata={handleMetadata}
+          onLoadedData={handleLoadedData}
+        />
+      </div>
 
-        {/* BOTTOM GRADIENT */}
-        <div className="hero-gradient absolute bottom-0 left-0 right-0 h-[40vh] z-10 pointer-events-none bg-gradient-to-t from-[#F4F4F4] via-[#F4F4F4]/80 to-transparent" />
+      <div className="relative z-20 pointer-events-none flex min-h-screen">
+        <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-between px-6 py-[9vh] md:px-10">
+          <div className="max-w-3xl">
+            <p className="hero-text-entry grain-text-soft text-[10px] uppercase tracking-[0.28em]">
+              Prime Private Architecture
+            </p>
+            <h1 className="hero-text-entry hero-text-entry-delay-1 grain-text mt-4 font-display text-[clamp(2.4rem,5.8vw,6.8rem)] leading-[0.92] uppercase tracking-tight">
+              White Field
+            </h1>
+            <p className="hero-text-entry hero-text-entry-delay-2 grain-text-soft mt-4 max-w-xl text-sm leading-relaxed md:text-base">
+              Campo visual em camada frontal com tipografia granular sobre vídeo centralizado.
+              Loop ajustado para 7 segundos por ciclo.
+            </p>
+          </div>
 
-        {/* TEXT CONTENT */}
-        <div className="hero-text-content absolute inset-0 z-20 flex flex-col justify-end p-[5vw] pb-[9vh] pointer-events-none">
-            <div className="flex flex-col gap-0 pointer-events-auto mix-blend-hard-light text-[#0A0A0A]">
-                <div className="overflow-visible">
-                    <h1 className="hero-line text-[clamp(3.2rem,12vw,11rem)] font-bold uppercase tracking-tighter leading-[0.85]">
-                        Sovereign
-                    </h1>
-                </div>
-                <div className="overflow-visible ml-0 md:ml-[12vw]">
-                    <h1 className="hero-line text-[#BFB38F] text-[clamp(3.2rem,12vw,11rem)] font-bold uppercase tracking-tighter leading-[0.85]">
-                        Standard
-                    </h1>
-                </div>
-            </div>
-
-            <div className="hero-divider mt-8 w-[400px] max-w-[50vw] h-[1px] bg-[#0A0A0A]/40 origin-left" />
-
-            <div className="hero-bottom mt-[1.8rem] flex flex-wrap items-end justify-between gap-12 pointer-events-auto">
-                <div className="hero-tagline max-w-[360px]">
-                    <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-[#0A0A0A]/60 mb-1.5 font-mono">
-                        Arquitetura de Riqueza
-                    </p>
-                    <p className="text-sm leading-relaxed text-[#0A0A0A]/80 font-light font-serif italic">
-                        "Preservação de Capital & Acesso a Ativos Reais através do Sistema de Consórcio."
-                    </p>
-                </div>
-
-                <div className="hero-ctas flex gap-3 flex-wrap">
-                    <div className="hero-cta">
-                        <button 
-                            onClick={() => onActivate()}
-                            data-magnetic="true"
-                            className="flex items-center gap-2.5 px-8 py-4 text-[11px] font-medium uppercase tracking-[0.25em] bg-[#0A0A0A] text-[#F4F4F4] hover:bg-[#2a2a2a] transition-colors border-none cursor-pointer font-sans"
-                        >
-                            Falar com Banker
-                        </button>
-                    </div>
-                    <div className="hero-cta">
-                        <button 
-                            onClick={() => onActivate("Mostre-me os ativos disponíveis.")}
-                            data-magnetic="true"
-                            className="flex items-center gap-2.5 px-8 py-4 text-[11px] font-medium uppercase tracking-[0.25em] bg-transparent text-[#0A0A0A] border border-[#0A0A0A]/30 hover:border-[#0A0A0A] transition-colors cursor-pointer font-sans"
-                        >
-                            Ver Projetos
-                        </button>
-                    </div>
-                </div>
-            </div>
+          <div className="pointer-events-auto hero-text-entry hero-text-entry-delay-3 mt-auto flex flex-wrap gap-3">
+            <button
+              onClick={() => onActivate("Quero simular um plano para Mercedes.")}
+              className="px-6 py-3 text-[11px] uppercase tracking-[0.2em] border border-black/20 bg-white/70 text-black hover:border-black transition-colors"
+            >
+              Simular Mercedes
+            </button>
+            <button
+              onClick={() => onActivate("Quero simular uma mansão padrão moderno.")}
+              className="px-6 py-3 text-[11px] uppercase tracking-[0.2em] border border-black/20 bg-white/70 text-black hover:border-black transition-colors"
+            >
+              Simular Mansão
+            </button>
+          </div>
         </div>
-
-        {/* CORNERS */}
-        <div className="corner absolute top-8 left-[5vw] z-30 pointer-events-none text-[10px] font-medium uppercase tracking-[0.35em] text-[#0A0A0A]/50">
-            Certum Private
-        </div>
-        <div className="corner absolute top-8 right-[5vw] z-30 pointer-events-none text-[10px] font-medium uppercase tracking-[0.2em] text-[#0A0A0A]/40 font-mono">
-            Protocol 002 — 2026
-        </div>
-        
-        {/* SCROLL INDICATOR */}
-        <div className="scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center gap-2">
-            <span className="text-[9px] font-medium uppercase tracking-[0.4em] text-[#0A0A0A]/40">Scroll</span>
-            <div className="w-[1px] h-[32px] bg-[#0A0A0A]/20 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-[8px] bg-[#0A0A0A]/60 animate-bounce" />
-            </div>
-        </div>
-    </div>
+      </div>
+    </section>
   );
 }
-

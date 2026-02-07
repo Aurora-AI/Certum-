@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import MagneticButton from "../ui/MagneticButton";
 
 interface SimulationCTAProps {
   href: string;
@@ -75,15 +76,17 @@ export function SimulationCTA({ href, label }: SimulationCTAProps) {
       <div ref={glowRef} className="absolute inset-0 bg-[#BFB38F]/10 rounded-sm opacity-0 pointer-events-none transition-opacity" />
 
       {/* Main Button */}
+      <MagneticButton strength={0.4} radius={100} className="z-10">
       <Link 
         href={href} 
-        className="relative z-10 inline-flex items-center gap-[10px] text-[11px] font-medium uppercase tracking-[0.2em] text-[#1A1A1A] py-3 px-4 border-b border-[#1A1A1A]/12 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-[#1A1A1A] hover:tracking-[0.28em] transition-all duration-500"
+        className="relative inline-flex items-center gap-[10px] text-[11px] font-medium uppercase tracking-[0.2em] text-[#1A1A1A] py-3 px-4 border-b border-[#1A1A1A]/12 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-[#1A1A1A] hover:tracking-[0.28em] transition-all duration-500"
       >
         {label}
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="transition-transform duration-500 group-hover:translate-x-1">
             <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </Link>
+      </MagneticButton>
     </div>
   );
 }

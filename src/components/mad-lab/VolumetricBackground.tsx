@@ -22,26 +22,29 @@ export const VolumetricBackground = () => {
 
                     // Back (Slower, reverse)
                     gsap.to(bgRef.current, {
-                        x: -x * 20,
-                        y: -y * 20,
+                        x: -x * 10, // Reduced from 20
+                        y: -y * 10,
                         duration: 1.5,
-                        ease: "power2.out"
+                        ease: "power2.out",
+                        overwrite: true // Important for perf
                     });
 
                     // Mid (Medium)
                     gsap.to(midRef.current, {
-                        x: -x * 40,
-                        y: -y * 40,
+                        x: -x * 20, // Reduced from 40
+                        y: -y * 20,
                         duration: 1.5,
-                        ease: "power2.out"
+                        ease: "power2.out",
+                        overwrite: true
                     });
 
                     // Front (Opposite/Deep)
                     gsap.to(fgRef.current, {
-                        x: x * 15,
-                        y: y * 15,
+                        x: x * 10, // Reduced from 15
+                        y: y * 10,
                         duration: 1.5,
-                        ease: "power2.out"
+                        ease: "power2.out",
+                        overwrite: true
                     });
                 };
 
@@ -49,60 +52,44 @@ export const VolumetricBackground = () => {
                 return () => window.removeEventListener("mousemove", handleMouseMove);
             });
             
-            // FX-08 Liquid Morph (Subtle breathing/distortion using simple scale/rotate)
-            // A true liquid morph needs SVG filters or Canvas, but we can approximate "living air" 
-            // with a slow, noise-based movement on the overlays.
-            gsap.to(".liquid-overlay", {
-                scale: 1.1,
-                opacity: 0.15,
-                duration: 8,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut"
-            });
+            // FX-08 Liquid Morph (Subtle breathing/distortion) - REDUCED/REMOVED for now.
+            // Replaced with a simple CSS pulse on the light leak to save FPS.
+            
         }, containerRef);
 
         return () => ctx.revert();
     }, []);
 
     return (
-        <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-            {/* Layer 1: Deep Background (Abstract/Dark) */}
-            <div ref={bgRef} className="absolute inset-[-5%] w-[110%] h-[110%] bg-[#0a0a0a]">
-                 <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent z-10" />
-                 {/* Placeholder for "Atmosphere" - could be a very dark image or gradient */}
+        <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none z-0 bg-[#0F0F0F]">
+            {/* Layer 1: Deep Background (Architectural Texture - Dark Stone/Marble) */}
+            <div ref={bgRef} className="absolute inset-[-5%] w-[110%] h-[110%]">
+                 <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] z-10" />
+                 {/* Better Context: A subtle abstract architectural curve or light play */}
                  <Image 
-                    src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1600&q=50" // Abstract fluid dark
-                    alt="Atmosphere"
+                    src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=60" // Architecture High Rise / Abstract
+                    alt="Sovereign Architecture"
                     fill
-                    className="object-cover opacity-60"
+                    className="object-cover opacity-20 grayscale mix-blend-overlay"
                     priority
                  />
             </div>
 
-            {/* FX-08 Liquid Morph Layer (Texture) */}
-            <div className="liquid-overlay absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.08] mix-blend-overlay pointer-events-none" />
-
-            {/* Layer 2: Subject/Mid (The Car or Lifestyle Image) */}
+            {/* Layer 2: Middle (Light Shafts) */}
             <div ref={midRef} className="absolute inset-[-2%] w-[104%] h-[104%] flex items-center justify-center">
-                 {/* Using the image from previous HeroSection but isolated if possible. 
-                     Since we don't have a segmented car, we'll use a high-quality lifestyle shot 
-                     that works well as a center piece.
-                 */}
-                 <div className="relative w-full h-full opacity-80 mix-blend-multiply">
-                    {/* Placeholder replacement or keeping original one but handled better */}
-                 </div>
+                 {/* A center light source or "Gold" hint */}
+                 <div className="absolute top-[20%] right-[30%] w-[40vw] h-[40vw] bg-[#BFB38F] rounded-full blur-[150px] opacity-[0.05]" />
+                 <div className="absolute bottom-[10%] left-[20%] w-[30vw] h-[30vw] bg-[#FFFFFF] rounded-full blur-[120px] opacity-[0.03]" />
             </div>
 
-            {/* Layer 3: Foreground (Dust/Light/Fog) */}
+            {/* Layer 3: Foreground (Grain + Vignette) */}
             <div ref={fgRef} className="absolute inset-0 z-20 pointer-events-none">
-                 {/* Fog elements */}
-                 <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-white/5 blur-[100px] rounded-full mix-blend-soft-light" />
-                 <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#BFB38F]/10 blur-[120px] rounded-full mix-blend-screen" />
+                 {/* Grain Overlay (CSS based) */}
+                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.04] mix-blend-overlay pointer-events-none" />
             </div>
             
             {/* Vignette */}
-            <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/20 to-black/80 z-30 pointer-events-none" />
+            <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/10 to-black/90 z-30 pointer-events-none" />
         </div>
     );
 };

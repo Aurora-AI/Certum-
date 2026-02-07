@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import gsap from "gsap";
 import { ProductPortfolio } from "./ProductPortfolio";
 import { NeuralStream } from "./NeuralStream";
 import { ActiveToolPanel } from "./ActiveToolPanel";
 import { AntigravityParticles as StaticParticles } from "./AntigravityParticles";
+import type { EmergentTarget } from "./AntigravityParticles";
 
 // Type definitions for Message (matching NeuralStream)
 type Message = {
@@ -33,6 +34,9 @@ export function ProductConsole({
     ]);
     const [input, setInput] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
+    const [hoverCategory, setHoverCategory] = useState<string | null>(null);
+    const [isExploring, setIsExploring] = useState(false);
+    const [isPreClick, setIsPreClick] = useState(false);
     
     // Lifted State for Tool Panel
     const [assetValue] = useState(assetDefault);
@@ -42,6 +46,8 @@ export function ProductConsole({
     const mainRef = useRef<HTMLElement>(null);
     const leftSidebarRef = useRef<HTMLElement>(null);
     const rightSidebarRef = useRef<HTMLElement>(null);
+    const explorationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const preClickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // --- ENTRANCE ANIMATION (GSAP) ---
     useEffect(() => {
@@ -49,6 +55,13 @@ export function ProductConsole({
         tl.from(leftSidebarRef.current, { x: -50, opacity: 0, duration: 0.8, ease: "power3.out" })
           .from(rightSidebarRef.current, { x: 50, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.6")
           .from(mainRef.current, { opacity: 0, y: 20, duration: 0.8, ease: "power3.out" }, "-=0.8");
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            if (explorationTimeoutRef.current) clearTimeout(explorationTimeoutRef.current);
+            if (preClickTimeoutRef.current) clearTimeout(preClickTimeoutRef.current);
+        };
     }, []);
 
     // --- HANDLERS ---
@@ -87,9 +100,44 @@ export function ProductConsole({
         }, 1500);
     };
 
+    const handleHoverCategory = (category: string | null) => {
+        setHoverCategory(category);
+    };
+
+    const triggerExploration = () => {
+        setIsExploring(true);
+        if (explorationTimeoutRef.current) clearTimeout(explorationTimeoutRef.current);
+        explorationTimeoutRef.current = setTimeout(() => setIsExploring(false), 900);
+    };
+
+    const startPreClick = () => {
+        if (preClickTimeoutRef.current) clearTimeout(preClickTimeoutRef.current);
+        preClickTimeoutRef.current = setTimeout(() => setIsPreClick(true), 900);
+    };
+
+    const endPreClick = () => {
+        if (preClickTimeoutRef.current) clearTimeout(preClickTimeoutRef.current);
+        setIsPreClick(false);
+    };
+
+    const particleTarget = useMemo<EmergentTarget>(() => {
+        if (isPreClick) return "abstract";
+        if (hoverCategory === "AUTOMOTIVE") return "car";
+        if (hoverCategory === "REAL_ESTATE") return "house";
+        if (hoverCategory || isExploring) return "abstract";
+        return "idle";
+    }, [hoverCategory, isExploring, isPreClick]);
+
+    const particleFactor = useMemo(() => {
+        if (isPreClick) return 0.82;
+        if (particleTarget === "idle") return 0.16;
+        if (particleTarget === "abstract" && isExploring) return 0.4;
+        return 0.46;
+    }, [isPreClick, isExploring, particleTarget]);
+
     return (
         <>
-            <StaticParticles />
+            <StaticParticles target={particleTarget} factor={particleFactor} />
             
             <main className="relative z-10 h-screen w-full flex overflow-hidden font-sans bg-[#F4F4F4] dark:bg-[#0a0a0a] text-charcoal dark:text-gray-100">
                 
@@ -98,6 +146,7 @@ export function ProductConsole({
                     <ProductPortfolio 
                         onSelect={handleProductSelect} 
                         selectedCategory={activeCategory}
+                        onHoverCategory={handleHoverCategory}
                     />
                 </aside>
 
@@ -111,7 +160,11 @@ export function ProductConsole({
                     </div>
 
                     {/* Stream Content */}
-                    <div className="flex-1 px-4 md:px-24 py-12 overflow-y-auto no-scrollbar flex flex-col items-center">
+                    <div
+                        className="flex-1 px-4 md:px-24 py-12 overflow-y-auto no-scrollbar flex flex-col items-center"
+                        onScroll={triggerExploration}
+                        onWheel={triggerExploration}
+                    >
                         <div className="max-w-2xl w-full h-full relative">
                             <NeuralStream messages={messages} isProcessing={isProcessing} />
                         </div>
@@ -134,7 +187,14 @@ export function ProductConsole({
                                     <button type="button" className="hover:text-primary transition-colors">
                                         <span className="material-symbols-outlined">mic</span>
                                     </button>
-                                    <button type="submit" className="hover:text-primary transition-colors">
+                                    <button
+                                        type="submit"
+                                        className="hover:text-primary transition-colors"
+                                        onPointerDown={startPreClick}
+                                        onPointerUp={endPreClick}
+                                        onPointerLeave={endPreClick}
+                                        onPointerCancel={endPreClick}
+                                    >
                                         <span className="material-symbols-outlined">send</span>
                                     </button>
                                 </div>

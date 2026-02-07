@@ -6,7 +6,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import ConsorcioHero from "./ConsorcioHero";
+import HeroParticleMorph from "@/components/HeroParticleMorph";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -186,7 +186,7 @@ export default function ConsortiumPage() {
         </div>
 
         {/* O NOVO CÉREBRO VISUAL */}
-        <ConsorcioHero />
+        <HeroParticleMorph />
 
         {/* CH.01 - PONTUAL */}
         <section ref={chPontualRef} className="chapter relative min-h-screen flex flex-col md:flex-row items-stretch bg-[#1A1A1A] text-white overflow-hidden">
