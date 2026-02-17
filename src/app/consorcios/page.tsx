@@ -24,48 +24,48 @@ const CONSORCIO_PRODUCTS = [
     title: 'ALGORITMO IMOBILIÁRIO',
     subtitle: 'Ativos de Permanência',
     description: 'Engenharia de aquisição para ativos físicos. Barreira contra a inflação com arquitetura de parcelas indexadas à valorização imobiliária.',
-    color: '#30D9C4', 
-    shapeId: 0
+    color: '#0F172A', // Deep Navy (Sober)
+    shapeId: 1
   },
   {
     id: 'auto',
     title: 'VETOR DE MOBILIDADE AUTO',
     subtitle: 'Frota Pessoal',
     description: 'Soberania na renovação de frota pessoal. Precisão na escolha de novos caminhos com custo zero de capital via alocação inteligente.',
-    color: '#FF5F6D',
-    shapeId: 1
+    color: '#450A0A', // Deep Burgundy (Sober Red)
+    shapeId: 2
   },
   {
     id: 'pesados',
     title: 'LOGÍSTICA DE PESADOS',
     subtitle: 'Expansão Industrial',
     description: 'Engenharia financeira para frotas e logística. Expansão de capacidade produtiva com previsibilidade absoluta e zero juros.',
-    color: '#FFA500',
-    shapeId: 2
+    color: '#713F12', // Dark Wood (Sober Gold/Brown)
+    shapeId: 3
   },
   {
     id: 'motos',
     title: 'VETOR DE AGILIDADE',
     subtitle: 'Mobilidade Urbana',
     description: 'Agilidade e fluxo para o cotidiano. Acesso facilitado ao movimento com estratégia de aporte reduzido e contemplação acelerada.',
-    color: '#FFD700',
-    shapeId: 3
+    color: '#1E293B', // Slate Charcoal (Sober Gray)
+    shapeId: 4
   },
   {
     id: 'servicos',
     title: 'ALGORITMO DE SERVIÇOS',
     subtitle: 'Infraestrutura Vital',
     description: 'Financiamento de experiências e infraestrutura vital. Da saúde à energia solar, planejamento que antecipa o futuro.',
-    color: '#9D50BB',
-    shapeId: 4
+    color: '#312E81', // Deep Indigo (Sober Blue/Purple)
+    shapeId: 5
   },
   {
     id: 'corporativo',
     title: 'SOBERANIA CORPORATIVA',
     subtitle: 'Blindagem CNPJ',
     description: 'Blindagem e crescimento para o CNPJ. Capital de giro via ativos e expansão física sem descapitalização operacional.',
-    color: '#D4AF37',
-    shapeId: 5
+    color: '#854D0E', // Muted Bronze (Sober Gold)
+    shapeId: 6
   }
 ];
 
@@ -128,40 +128,41 @@ export default function ConsorciosPage() {
 
       // Morphing Logic based on User Segments
       if (progress < 0.11) {
-        shapeA = 0; shapeB = 0; lerp = 0;
+        shapeA = 1; shapeB = 1; lerp = 0; // Starts with Shape 1 (Imovel)
         color = CONSORCIO_PRODUCTS[0].color;
       } else if (progress < 0.28) {
-        shapeA = 0; shapeB = 1; 
+        shapeA = 1; shapeB = 2; 
         const m = (progress - 0.15) / (0.28 - 0.15);
         lerp = Math.max(0, Math.min(1, m));
         color = lerp > 0.5 ? CONSORCIO_PRODUCTS[1].color : CONSORCIO_PRODUCTS[0].color;
       } else if (progress < 0.40) {
-        shapeA = 1; shapeB = 2;
+        shapeA = 2; shapeB = 3;
         const m = (progress - 0.37) / (0.40 - 0.37);
         lerp = Math.max(0, Math.min(1, m));
         color = lerp > 0.5 ? CONSORCIO_PRODUCTS[2].color : CONSORCIO_PRODUCTS[1].color;
       } else if (progress < 0.54) {
-        shapeA = 2; shapeB = 2; lerp = 1;
+        shapeA = 3; shapeB = 3; lerp = 1;
         color = CONSORCIO_PRODUCTS[2].color;
       } else if (progress < 0.85) {
         if (progress < 0.65) {
-          shapeA = 2; shapeB = 3; lerp = (progress - 0.54) / (0.65 - 0.54);
+          shapeA = 3; shapeB = 4; lerp = (progress - 0.54) / (0.65 - 0.54);
           noise = Math.sin(lerp * Math.PI) * 1.5;
           color = lerp > 0.5 ? CONSORCIO_PRODUCTS[3].color : CONSORCIO_PRODUCTS[2].color;
         } else if (progress < 0.75) {
-          shapeA = 3; shapeB = 4; lerp = (progress - 0.65) / (0.75 - 0.65);
+          shapeA = 4; shapeB = 5; lerp = (progress - 0.65) / (0.75 - 0.65);
           noise = Math.sin(lerp * Math.PI) * 1.0;
           color = lerp > 0.5 ? CONSORCIO_PRODUCTS[4].color : CONSORCIO_PRODUCTS[3].color;
         } else {
-          shapeA = 4; shapeB = 5; lerp = (progress - 0.75) / (0.85 - 0.75);
+          shapeA = 5; shapeB = 6; lerp = (progress - 0.75) / (0.85 - 0.75);
           noise = Math.sin(lerp * Math.PI) * 0.5;
           color = lerp > 0.5 ? CONSORCIO_PRODUCTS[5].color : CONSORCIO_PRODUCTS[4].color;
         }
       } else if (progress < 0.93) {
-        shapeA = 5; shapeB = 5; lerp = 1;
+        shapeA = 6; shapeB = 6; lerp = 1;
         color = CONSORCIO_PRODUCTS[5].color;
       } else {
-        shapeA = 5; shapeB = 5; lerp = 1;
+        shapeA = 6; shapeB = 0; // Morph back to Sphere on exit? Or just explode.
+        lerp = 0;
         noise = (progress - 0.93) * 10.0;
         color = '#000000';
       }

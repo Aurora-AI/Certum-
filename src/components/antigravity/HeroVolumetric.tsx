@@ -165,6 +165,7 @@ export default function HeroVolumetric({
                 const ctx = offscreen.getContext('2d');
                 
                 const labels = [
+                    'SPHERE', // Shape 0 (Original)
                     'IMOVEL', 
                     'AUTO', 
                     'PESADOS', 
@@ -181,11 +182,16 @@ export default function HeroVolumetric({
                     // Clear and Draw
                     ctx.fillStyle = 'black';
                     ctx.fillRect(0, 0, 1000, 300);
-                    ctx.fillStyle = 'white';
-                    ctx.font = '900 160px Arial, sans-serif'; 
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText(label, 500, 150);
+
+                    if (label === 'SPHERE') {
+                        // For Sphere, we keep it empty to trigger the fallback logic below
+                    } else {
+                        ctx.fillStyle = 'white';
+                        ctx.font = '900 160px Arial, sans-serif'; 
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(label, 500, 150);
+                    }
 
                     const imageData = ctx.getImageData(0, 0, 1000, 300);
                     const data = imageData.data;
@@ -208,14 +214,15 @@ export default function HeroVolumetric({
                             const rndIdx = Math.floor(Math.random() * (points.length / 2)) * 2;
                             totalData[off + 0] = points[rndIdx];
                             totalData[off + 1] = points[rndIdx + 1];
-                            totalData[off + 2] = (Math.random() - 0.5) * 2.0;
+                            totalData[off + 2] = (Math.random() - 0.5) * 4.0;
                         } else {
-                            // Fallback Sphere for this shape
+                            // Perfect Sphere Logic
                             const phi = Math.acos(1 - 2 * Math.random());
                             const theta = 2 * Math.PI * Math.random();
-                            totalData[off + 0] = 8 * Math.sin(phi) * Math.cos(theta);
-                            totalData[off + 1] = 8 * Math.sin(phi) * Math.sin(theta);
-                            totalData[off + 2] = 8 * Math.cos(phi);
+                            const r = 8 + (Math.random() - 0.5) * 1.5; // Slight depth variation
+                            totalData[off + 0] = r * Math.sin(phi) * Math.cos(theta);
+                            totalData[off + 1] = r * Math.sin(phi) * Math.sin(theta);
+                            totalData[off + 2] = r * Math.cos(phi);
                         }
                         totalData[off + 3] = 0;
                     }
@@ -580,18 +587,20 @@ export default function HeroVolumetric({
 
     return (
         <div className="w-full h-screen relative overflow-hidden bg-cosmic-cream">
-            {/* CSS Grid Background (Desktop) */}
+            {/* CSS Grid Background (Desktop) - Enhanced Visibility & Neutrality */}
             <div 
                 className="absolute inset-0 w-full h-full"
                 style={{
                     backgroundImage: `
-                        linear-gradient(to right, #E0F2FE 1px, transparent 1px),
-                        linear-gradient(to bottom, #E0F2FE 1px, transparent 1px)
+                        linear-gradient(to right, #000000 1px, transparent 1px),
+                        linear-gradient(to bottom, #000000 1px, transparent 1px)
                     `,
-                    backgroundSize: '50px 50px',
-                    opacity: 0.3
+                    backgroundSize: '80px 80px',
+                    opacity: 0.1 // Sober, but present black grid
                 }}
             />
+            {/* Texture Overlay (Grain) - Tactile feel */}
+            <div className="absolute inset-0 w-full h-full opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-multiply" />
             
             {/* WebGPU Canvas (Particles on top of grid) */}
             <canvas 

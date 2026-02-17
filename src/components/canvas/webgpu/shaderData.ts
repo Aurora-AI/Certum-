@@ -136,13 +136,13 @@ fn simulate(@builtin(global_invocation_id) global_id: vec3<u32>) {
     particlesB[index].pos_old = p.pos; 
     particlesB[index].pos = vec4<f32>(next_pos, p.pos.w);
     
-    // Color: Mix Semantic Color with Black Piano
+    // Color: Mix Muted Semantic Color with Black Piano
     let speed = length(velocity) / params.delta_time;
     let t = smoothstep(0.0, 5.0, speed * 100.0);
     let base_color = vec3<f32>(params.base_color_r, params.base_color_g, params.base_color_b);
-    let color_slow = base_color * 0.2; // Dim semantic color
-    let color_fast = base_color * 1.5; // Bright semantic color on move
-    particlesB[index].color = vec4<f32>(mix(color_slow, color_fast, t), 0.9);
+    let color_slow = base_color * 0.05; // Very dim semantic tint
+    let color_fast = base_color * 0.4;  // Muted color on move (instead of bright glowing)
+    particlesB[index].color = vec4<f32>(mix(color_slow, color_fast, t), 0.95);
     
     particlesB[index].velocity_field = vec4<f32>(velocity, 0.0);
 }
