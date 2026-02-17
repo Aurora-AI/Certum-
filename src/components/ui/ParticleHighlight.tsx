@@ -118,7 +118,7 @@ export default function ParticleHighlight({
 
     return (
         <Tag
-            ref={containerRef as React.Ref<HTMLSpanElement>}
+            ref={containerRef as any}
             className={`relative inline-block ${className}`}
         >
             {/* Particle Layer */}

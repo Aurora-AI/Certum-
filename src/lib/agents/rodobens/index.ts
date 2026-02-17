@@ -75,19 +75,19 @@ export const rpaCoreTools = {
     parameters: z.object({
       vehicleValue: z.number().describe('The value of the vehicle/credit letter in BRL.'),
     }),
-    execute: async ({ vehicleValue }: { vehicleValue: number }) => {
+    execute: async ({ vehicleValue }: any) => {
       return PontualMechanism.simulate(vehicleValue);
     },
-  }),
+  } as any),
 
   compareFinancials: tool({
     description: 'Compares Pontual Consortium vs Standard CDC Financing to show savings.',
     parameters: z.object({
       vehicleValue: z.number().describe('The value of the vehicle in BRL.'),
     }),
-    execute: async ({ vehicleValue }: { vehicleValue: number }) => {
+    execute: async ({ vehicleValue }: any) => {
       const pontual = PontualMechanism.simulate(vehicleValue);
       return FinancialComparativeEngine.compare(pontual, vehicleValue);
     },
-  }),
+  } as any),
 };

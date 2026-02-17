@@ -37,25 +37,10 @@ export async function POST(req: Request) {
         system: rpaCoreSystemPrompt,
         messages,
         tools: rpaCoreTools,
-        maxSteps: 5,
       });
 
-      // COMPATIBILITY LAYER
-      if (typeof result.toDataStreamResponse === 'function') {
-          return result.toDataStreamResponse();
-      } else if (typeof (result as any).toAIStreamResponse === 'function') {
-           console.log("[RPA-Core] Fallback to toAIStreamResponse (Older SDK)");
-           return (result as any).toAIStreamResponse();
-      } else {
-          console.log("[RPA-Core] Fallback to Text Stream (Unknown SDK Version)");
-          // Assuming result might be the stream itself or contain one
-          if (result.textStream) {
-              return new Response(result.textStream, {
-                  headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-              });
-          }
-           return new Response("Compatible stream method not found", { status: 500 });
-      }
+      // Return the text stream response for AI SDK v6
+      return result.toTextStreamResponse();
 
   } catch (error) {
       console.error("[RPA-Core] CRITICAL ERROR IN ROUTE:", error);

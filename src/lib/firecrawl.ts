@@ -25,7 +25,7 @@ export async function scrapeUrl(url: string) {
     // Handle v1 response structure (direct data or nested data)
     const markdown = response.markdown || (response as any).data?.markdown;
     
-    if (!markdown && !response.success && !(response as any).data) {
+    if (!markdown && !(response as any).success && !(response as any).data) {
         // Fallback check if it failed silently or has different structure
         throw new Error('No markdown found in response');
     }

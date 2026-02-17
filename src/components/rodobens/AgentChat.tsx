@@ -16,7 +16,7 @@ export function AgentChat() {
               content: "I am RPA-Core. I can simulate Consórcio Pontual and compare it with active financing rates. Give me a vehicle value (e.g. 50k) to start."
           } as any 
       ]
-  });
+  } as any);
   
   // Destructure what we know exists + fallback for others
   const { messages, sendMessage, isLoading, ...rest } = chatHelpers as any; 
