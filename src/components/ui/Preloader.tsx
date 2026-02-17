@@ -1,71 +1,157 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
+import { useState, useEffect } from 'react';
 
 export default function Preloader() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
-  const [complete, setComplete] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const [isFading, setIsFading] = useState(false);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        onComplete: () => {
-          setComplete(true);
+    useEffect(() => {
+        const minDisplayTime = 2500; // Minimum time to show preloader (ms)
+        const startTime = Date.now();
+
+        const dismiss = () => {
+            const elapsed = Date.now() - startTime;
+            const remaining = Math.max(0, minDisplayTime - elapsed);
+
+            setTimeout(() => {
+                setIsFading(true);
+                // Remove from DOM after fade animation completes
+                setTimeout(() => setIsVisible(false), 800);
+            }, remaining);
+        };
+
+        // Wait for everything to load
+        if (document.readyState === 'complete') {
+            dismiss();
+        } else {
+            window.addEventListener('load', dismiss);
+            return () => window.removeEventListener('load', dismiss);
         }
-      });
+    }, []);
 
-      // 1. Initial State
-      gsap.set(containerRef.current, { autoAlpha: 1 });
-      gsap.set(logoRef.current, { scale: 0.9, opacity: 0 });
+    if (!isVisible) return null;
 
-      // 2. Logo Pulse in
-      tl.to(logoRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 1.2,
-        ease: 'power3.out',
-      })
-      .to(logoRef.current, {
-        opacity: 0,
-        scale: 1.1,
-        duration: 0.8,
-        ease: 'power2.in',
-        delay: 0.3,
-      })
-      
-      // 3. Curtain Reveal
-      .to(containerRef.current, {
-        height: 0,
-        duration: 1.2,
-        ease: 'expo.inOut',
-      }, '-=0.4')
-      
-      // 4. Cleanup opacity to prevent clicks
-      .set(containerRef.current, { autoAlpha: 0 });
+    return (
+        <div
+            className={`preloader ${isFading ? 'preloader--fade' : ''}`}
+            style={{
+                position: 'fixed',
+                inset: 0,
+                zIndex: 9999,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#FFFFFF',
+                transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                opacity: isFading ? 0 : 1,
+                pointerEvents: isFading ? 'none' : 'auto',
+            }}
+        >
+            {/* Main Title */}
+            <h1
+                style={{
+                    fontSize: 'clamp(1.4rem, 3vw, 2.4rem)',
+                    fontFamily: '"Manrope", "Inter", sans-serif',
+                    fontWeight: 300,
+                    letterSpacing: '0.35em',
+                    color: '#0A0A0A',
+                    margin: 0,
+                    textTransform: 'uppercase',
+                    animation: 'preloader-title 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    opacity: 0,
+                }}
+            >
+                Centrum Private
+            </h1>
 
-    }, containerRef);
+            {/* Horizontal Line */}
+            <div
+                style={{
+                    width: '0%',
+                    maxWidth: '280px',
+                    height: '1px',
+                    backgroundColor: '#0A0A0A',
+                    margin: '20px 0 16px',
+                    animation: 'preloader-line 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards',
+                }}
+            />
 
-    return () => ctx.revert();
-  }, []);
+            {/* Subtitle */}
+            <p
+                style={{
+                    fontSize: 'clamp(0.6rem, 1vw, 0.75rem)',
+                    fontFamily: '"Space Mono", monospace',
+                    fontWeight: 400,
+                    letterSpacing: '0.2em',
+                    color: '#86868B',
+                    margin: 0,
+                    textTransform: 'lowercase',
+                    opacity: 0,
+                    animation: 'preloader-subtitle 0.8s ease-out 0.8s forwards',
+                }}
+            >
+                by Mad Lab Aurora
+            </p>
 
-  if (complete) return null;
+            {/* Minimal pulse indicator */}
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: '48px',
+                    width: '4px',
+                    height: '4px',
+                    borderRadius: '50%',
+                    backgroundColor: '#0A0A0A',
+                    animation: 'preloader-pulse 1.5s ease-in-out infinite',
+                }}
+            />
 
-  return (
-    <div 
-      ref={containerRef}
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#050505] text-white overflow-hidden origin-top"
-    >
-      <div ref={logoRef} className="flex flex-col items-center gap-4">
-        <div className="text-sm tracking-[0.5em] uppercase font-light text-white/40">
-          Mad Lab
+            {/* Inline keyframes — no external CSS dependency */}
+            <style>{`
+                @keyframes preloader-title {
+                    0% {
+                        opacity: 0;
+                        letter-spacing: 0.6em;
+                    }
+                    100% {
+                        opacity: 1;
+                        letter-spacing: 0.35em;
+                    }
+                }
+
+                @keyframes preloader-line {
+                    0% {
+                        width: 0%;
+                    }
+                    100% {
+                        width: 100%;
+                    }
+                }
+
+                @keyframes preloader-subtitle {
+                    0% {
+                        opacity: 0;
+                        transform: translateY(8px);
+                    }
+                    100% {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                @keyframes preloader-pulse {
+                    0%, 100% {
+                        opacity: 0.2;
+                        transform: scale(1);
+                    }
+                    50% {
+                        opacity: 1;
+                        transform: scale(1.5);
+                    }
+                }
+            `}</style>
         </div>
-        <h1 className="text-4xl md:text-6xl font-display font-medium tracking-tight text-white">
-          AURORA
-        </h1>
-        <div className="h-[1px] w-12 bg-white/20 mt-4" />
-      </div>
-    </div>
-  );
+    );
 }

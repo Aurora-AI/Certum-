@@ -88,7 +88,7 @@ export default function IdentitySection() {
         >
             SEU CARRO.<br/>
             <ParticleHighlight density={45} opacity={0.12} color="#007C4A" spread={1.3}>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#AA8A2E]">6 PARCELAS.</span>
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-[#D4AF37] to-[#AA8A2E]">6 PARCELAS.</span>
             </ParticleHighlight>
         </h2>
         
