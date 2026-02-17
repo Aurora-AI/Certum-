@@ -507,23 +507,55 @@ export default function WebGPUBarrierParticles() {
 
     if (error || isMobile) {
         // Fallback for non-WebGPU devices or mobile
-        // Returns a white gradient container with subtle animation
+        // Returns a white background with subtle light blue grid
         return (
-            <div className="w-full h-full bg-gradient-to-br from-white via-gray-50 to-gray-100 relative overflow-hidden">
+            <div className="w-full h-full relative overflow-hidden bg-white">
+                {/* SVG Grid Pattern */}
+                <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <pattern id="hero-grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                            <path 
+                                d="M 50 0 L 0 0 0 50" 
+                                fill="none" 
+                                stroke="#E0F2FE" 
+                                strokeWidth="1"
+                                opacity="0.3"
+                            />
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#hero-grid)" />
+                </svg>
+                
                 {/* Animated gradient orbs for visual interest */}
-                <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-white/40 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-                <div className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-gray-100/60 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
+                <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-sky-100/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
+                <div className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-blue-50/30 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
             </div>
         );
     }
 
     return (
-        <canvas 
-            ref={canvasRef} 
-            className="w-full h-full block touch-none cursor-crosshair"
-            width={window.innerWidth} 
-            height={window.innerHeight}
-            onPointerMove={handlePointerMove}
-        />
+        <div className="w-full h-full relative overflow-hidden bg-white">
+            {/* CSS Grid Background (Desktop) */}
+            <div 
+                className="absolute inset-0 w-full h-full"
+                style={{
+                    backgroundImage: `
+                        linear-gradient(to right, #E0F2FE 1px, transparent 1px),
+                        linear-gradient(to bottom, #E0F2FE 1px, transparent 1px)
+                    `,
+                    backgroundSize: '50px 50px',
+                    opacity: 0.3
+                }}
+            />
+            
+            {/* WebGPU Canvas (Particles on top of grid) */}
+            <canvas 
+                ref={canvasRef} 
+                className="absolute inset-0 w-full h-full block touch-none cursor-crosshair"
+                width={window.innerWidth} 
+                height={window.innerHeight}
+                onPointerMove={handlePointerMove}
+            />
+        </div>
     );
 }
