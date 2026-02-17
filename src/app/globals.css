@@ -107,7 +107,14 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-body);
-    @apply antialiased overflow-x-hidden selection:bg-carbon-black selection:text-absolute-white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  
+  ::selection {
+    background-color: var(--color-carbon-black);
+    color: var(--color-absolute-white);
   }
   
   h1, h2, h3, h4, p {

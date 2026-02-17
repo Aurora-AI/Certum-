@@ -17,7 +17,6 @@ export default function Home() {
   return (
     <main className="relative w-full min-h-screen bg-cosmic-cream text-carbon-black selection:bg-carbon-black selection:text-absolute-white overflow-x-hidden">
       
-      {/* Preloader */}
       <Preloader />
       
       {/* 1. HERO — Impacto + Declaração */}

@@ -25,10 +25,43 @@ const useIsMobile = () => {
     return isMobile;
 };
 
-export default function WebGPUBarrierParticles() {
+interface CinematicProps {
+    targetShapeA?: number;
+    targetShapeB?: number;
+    targetLerp?: number;
+    noiseIntensity?: number;
+    explosionSeed?: number;
+}
+
+export default function HeroVolumetric({ 
+    targetShapeA = 0, 
+    targetShapeB = 0, 
+    targetLerp = 0, 
+    noiseIntensity = 0,
+    explosionSeed = 0
+}: CinematicProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [error, setError] = useState<string | null>(null);
+    const [dimensions, setDimensions] = useState({ width: 1920, height: 1080 }); // Default
     const isMobile = useIsMobile();
+
+    // Cinematic Props Refs to avoid useEffect re-init
+    const propsRef = useRef({ targetShapeA, targetShapeB, targetLerp, noiseIntensity, explosionSeed });
+    useEffect(() => {
+        propsRef.current = { targetShapeA, targetShapeB, targetLerp, noiseIntensity, explosionSeed };
+    }, [targetShapeA, targetShapeB, targetLerp, noiseIntensity, explosionSeed]);
+
+    useEffect(() => {
+        const updateDimensions = () => {
+            setDimensions({
+                width: window.innerWidth,
+                height: window.innerHeight
+            });
+        };
+        updateDimensions();
+        window.addEventListener('resize', updateDimensions);
+        return () => window.removeEventListener('resize', updateDimensions);
+    }, []);
 
     useEffect(() => {
         // Skip WebGPU on mobile - use CSS fallback
@@ -122,78 +155,76 @@ export default function WebGPUBarrierParticles() {
                 usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
             });
 
-            // --- 2b. Generate Target Points (Logo with Fallback) ---
-            const getLogoPoints = (count: number): Float32Array => {
+            // --- 2b. Generate Target Points (6 Product Shapes) ---
+            const getMultiTargetPoints = (count: number): Float32Array => {
                 const offscreen = document.createElement('canvas');
                 offscreen.width = 1000;
                 offscreen.height = 300;
                 const ctx = offscreen.getContext('2d');
                 
-                // Fallback (Cube) function
-                const getCube = () => {
-                    const data = new Float32Array(count * 4);
-                    for(let i=0; i<count; i++) {
-                        const off = i*4;
-                        data[off+0] = (Math.random()-0.5)*15;
-                        data[off+1] = (Math.random()-0.5)*15;
-                        data[off+2] = (Math.random()-0.5)*15;
-                    }
-                    return data;
-                };
+                const labels = [
+                    'IMOVEL', 
+                    'AUTO', 
+                    'PESADOS', 
+                    'MOTOS', 
+                    'SERVICOS', 
+                    'CORP'
+                ];
 
-                if (!ctx) return getCube();
+                const totalData = new Float32Array(count * 4 * labels.length);
 
-                // Draw Text
-                ctx.fillStyle = 'black';
-                ctx.fillRect(0, 0, 1000, 300);
-                
-                ctx.fillStyle = 'white';
-                ctx.font = '900 200px Arial, sans-serif'; // Ultra-Safe
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('CERTUM', 500, 150);
+                labels.forEach((label, labelIdx) => {
+                    if (!ctx) return;
+                    
+                    // Clear and Draw
+                    ctx.fillStyle = 'black';
+                    ctx.fillRect(0, 0, 1000, 300);
+                    ctx.fillStyle = 'white';
+                    ctx.font = '900 160px Arial, sans-serif'; 
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(label, 500, 150);
 
-                const imageData = ctx.getImageData(0, 0, 1000, 300);
-                const data = imageData.data;
-                const points: number[] = [];
+                    const imageData = ctx.getImageData(0, 0, 1000, 300);
+                    const data = imageData.data;
+                    const points: number[] = [];
 
-                // Collect valid pixels
-                for (let y = 0; y < 300; y += 2) { // denser scan
-                    for (let x = 0; x < 1000; x += 2) {
-                        const i = (y * 1000 + x) * 4;
-                        if (data[i] > 100) { // If pixel is bright (Red channel)
-                            // Map to World Space (-20..20)
-                            const wx = (x - 500) / 20; // Scale 20
-                            const wy = -(y - 150) / 20; // Flip Y
-                            points.push(wx, wy);
+                    for (let y = 0; y < 300; y += 4) { // slightly sparser for speed
+                        for (let x = 0; x < 1000; x += 4) {
+                            const i = (y * 1000 + x) * 4;
+                            if (data[i] > 100) {
+                                points.push((x - 500) / 20, -(y - 150) / 20);
+                            }
                         }
                     }
-                }
-                
-                console.log(`[FlowField] Found ${points.length / 2} text points.`);
 
-                if (points.length < 100) {
-                    console.warn("[FlowField] Text generation failed (too few points). Using Cube fallback.");
-                    return getCube();
-                }
+                    // Fill segments of the total buffer
+                    const shapeOffset = labelIdx * count * 4;
+                    for (let i = 0; i < count; i++) {
+                        const off = shapeOffset + (i * 4);
+                        if (points.length > 0) {
+                            const rndIdx = Math.floor(Math.random() * (points.length / 2)) * 2;
+                            totalData[off + 0] = points[rndIdx];
+                            totalData[off + 1] = points[rndIdx + 1];
+                            totalData[off + 2] = (Math.random() - 0.5) * 2.0;
+                        } else {
+                            // Fallback Sphere for this shape
+                            const phi = Math.acos(1 - 2 * Math.random());
+                            const theta = 2 * Math.PI * Math.random();
+                            totalData[off + 0] = 8 * Math.sin(phi) * Math.cos(theta);
+                            totalData[off + 1] = 8 * Math.sin(phi) * Math.sin(theta);
+                            totalData[off + 2] = 8 * Math.cos(phi);
+                        }
+                        totalData[off + 3] = 0;
+                    }
+                });
 
-                // Fill buffer
-                const targetData = new Float32Array(count * 4);
-                for (let i = 0; i < count; i++) {
-                    const off = i * 4;
-                    // Randomly sample from points
-                    const rndIdx = Math.floor(Math.random() * (points.length / 2)) * 2;
-                    targetData[off + 0] = points[rndIdx];
-                    targetData[off + 1] = points[rndIdx + 1];
-                    targetData[off + 2] = (Math.random() - 0.5) * 2.0; // small z depth
-                    targetData[off + 3] = 0; // padding
-                }
-                return targetData;
+                return totalData;
             };
 
-            const targetPointsData = getLogoPoints(PARTICLE_COUNT);
+            const targetPointsData = getMultiTargetPoints(PARTICLE_COUNT);
             const targetBuffer = device.createBuffer({
-                size: totalBufferSize, // Same size as particles
+                size: targetPointsData.byteLength,
                 usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
                 mappedAtCreation: true,
             });
@@ -394,7 +425,6 @@ export default function WebGPUBarrierParticles() {
                 // Update SimParams (Mixed Types)
                 const simParamsBufferData = new ArrayBuffer(64); // 64 bytes
                 const f32 = new Float32Array(simParamsBufferData);
-                const u32 = new Uint32Array(simParamsBufferData);
 
                 f32[0] = dt;
                 f32[1] = 0.0; // grav x
@@ -412,15 +442,16 @@ export default function WebGPUBarrierParticles() {
                 f32[4] = mouseRef.current.x; // mouse x
                 f32[5] = mouseRef.current.y; // mouse y
                 f32[6] = 0.0; // mouse z
-                f32[7] = 3.0; // radius (increased for visibility)
-                f32[8] = 0.96; // damping (Bit more drag for liquid feel)
+                f32[7] = 3.0; // radius
+                f32[8] = 0.96; // damping
                 f32[9] = time;
                 
-                // Index 10 is target_shape (u32) - LOCKED TO SPHERE
-                u32[10] = 0; // Always Sphere 
-                
-                // Index 11 is padding
-                f32[11] = 0.0;
+                f32[10] = propsRef.current.targetShapeA;
+                f32[11] = propsRef.current.targetShapeB;
+                f32[12] = propsRef.current.targetLerp;
+                f32[13] = propsRef.current.noiseIntensity;
+                f32[14] = propsRef.current.explosionSeed;
+                f32[15] = 0.0; // padding
 
                 device.queue.writeBuffer(simParamsBuffer, 0, simParamsBufferData);
             
@@ -488,7 +519,7 @@ export default function WebGPUBarrierParticles() {
             cancelAnimationFrame(animationFrameId);
             // No interval to clear - shape is locked
         };
-    }, []);
+    }, [isMobile]);
 
     // Mouse Tracking State
     const mouseRef = useRef({ x: 0, y: 0 });
@@ -499,9 +530,6 @@ export default function WebGPUBarrierParticles() {
         const y = -(e.clientY / window.innerHeight) * 2 + 1;
         
         // Map to World Space (Approximate)
-        // Camera is at dist ~20, FOV ~45 deg. Visible range ~+/- 8 at z=0 without rotation
-        // But we have rotation. Let's send raw NDC or projected values?
-        // Simpler: Map directly to world limits (-20..20) for now to see effect
         mouseRef.current = { x: x * 20, y: y * 10 }; // Scale to match scene bounds
     };
 
@@ -509,7 +537,7 @@ export default function WebGPUBarrierParticles() {
         // Fallback for non-WebGPU devices or mobile
         // Returns a white background with subtle light blue grid
         return (
-            <div className="w-full h-full relative overflow-hidden bg-white">
+            <div className="w-full h-screen relative overflow-hidden bg-cosmic-cream">
                 {/* SVG Grid Pattern */}
                 <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
                     <defs>
@@ -534,7 +562,7 @@ export default function WebGPUBarrierParticles() {
     }
 
     return (
-        <div className="w-full h-full relative overflow-hidden bg-white">
+        <div className="w-full h-screen relative overflow-hidden bg-cosmic-cream">
             {/* CSS Grid Background (Desktop) */}
             <div 
                 className="absolute inset-0 w-full h-full"
@@ -552,8 +580,8 @@ export default function WebGPUBarrierParticles() {
             <canvas 
                 ref={canvasRef} 
                 className="absolute inset-0 w-full h-full block touch-none cursor-crosshair"
-                width={window.innerWidth} 
-                height={window.innerHeight}
+                width={dimensions.width} 
+                height={dimensions.height}
                 onPointerMove={handlePointerMove}
             />
         </div>

@@ -19,14 +19,17 @@ struct SimParams {
     mouse_radius: f32,    
     damping: f32,         
     time: f32,
-    target_shape: f32,    // Changed to f32 to match JS Float32Array
-    padding: f32          
+    target_shape_a: f32,    // Current shape index
+    target_shape_b: f32,    // Next shape index
+    target_lerp: f32,      // Morph progress 0..1
+    noise_intensity: f32,   // Explosion factor
+    explosion_seed: f32     // Randomness for explosion
 };
 
 @group(0) @binding(0) var<storage, read_write> particlesA : array<Particle>;
 @group(0) @binding(1) var<storage, read_write> particlesB : array<Particle>; // Ping-pong
 @group(0) @binding(2) var<uniform> params : SimParams;
-@group(0) @binding(3) var<storage, read> target_positions : array<vec4<f32>>; // xyz = target, w = ignored
+@group(0) @binding(3) var<storage, read> target_positions : array<vec4<f32>>; // All shapes concatenated
 
 // --- Hash Function (Pseudo-Random) ---
 fn hash3(p: vec3<f32>) -> vec3<f32> {
@@ -39,63 +42,22 @@ fn hash1(n: f32) -> f32 {
     return fract(sin(n) * 43758.5453123);
 }
 
-// --- Shape Generators (Target Pos) ---
-// Returns the target position for a particle based on its ID and the shape
-
-fn get_sphere_target(id: u32, total: u32) -> vec3<f32> {
-    // Fibonacci Sphere Distribution
-    let i = f32(id);
-    let n = f32(total);
+// --- Multi-Shape Target Resolver ---
+fn get_target_for_shape(shape_idx: u32, particle_idx: u32, total_per_shape: u32) -> vec3<f32> {
+    // Each shape has 'total_per_shape' points in the target_positions buffer
+    let offset = shape_idx * total_per_shape + particle_idx;
+    let t_total = arrayLength(&target_positions);
+    
+    if (offset < t_total) {
+        return target_positions[offset].xyz;
+    }
+    
+    // Fallback: Fibonacci Sphere if buffer is missing data
+    let i = f32(particle_idx);
+    let n = f32(total_per_shape);
     let phi = acos(1.0 - 2.0 * i / n);
-    let theta = 3.14159 * (1.0 + 2.23606) * i; // Golden Angle
-    
-    let radius = 8.0;
-    let x = radius * sin(phi) * cos(theta);
-    let y = radius * sin(phi) * sin(theta);
-    let z = radius * cos(phi);
-    
-    // Slow Y-axis rotation — keeps the orb alive
-    let rot_speed = params.time * 0.15;
-    let rx = x * cos(rot_speed) + z * sin(rot_speed);
-    let rz = -x * sin(rot_speed) + z * cos(rot_speed);
-    
-    return vec3<f32>(rx, y, rz);
-}
-
-fn get_shield_target(id: u32, total: u32) -> vec3<f32> {
-    // Curved Shield (Parametric Surface)
-    let i = f32(id);
-    let n = f32(total);
-    let grid_side = sqrt(n);
-    let u = (i % grid_side) / grid_side;     // 0..1 (Horizontal)
-    let v = floor(i / grid_side) / grid_side; // 0..1 (Vertical)
-    
-    // Map to Surface: X (-10..10), Y (-10..10), Z (Curvature)
-    let x = (u - 0.5) * 20.0;
-    let y = (v - 0.5) * 20.0;
-    let z = cos(u * 3.14159) * 5.0; // Arch effect
-    
-    // Tilt to face camera/diagonal
-    let tilted_y = y * cos(0.5) - z * sin(0.5);
-    let tilted_z = y * sin(0.5) + z * cos(0.5);
-    
-    return vec3<f32>(x, tilted_y, tilted_z);
-}
-
-fn get_stream_target(id: u32, total: u32) -> vec3<f32> {
-    // Spiral Stream / Tornado
-    let i = f32(id);
-    let n = f32(total);
-    let t = params.time * 0.5;
-    
-    let angle = i * 0.1 + t;
-    let radius = 2.0 + (i / n) * 8.0;
-    let height = (i / n) * 20.0 - 10.0;
-    
-    let x = radius * cos(angle);
-    let z = radius * sin(angle);
-    
-    return vec3<f32>(x, height, z);
+    let theta = 3.14159 * (1.0 + 2.23606) * i;
+    return vec3<f32>(8.0 * sin(phi) * cos(theta), 8.0 * sin(phi) * sin(theta), 8.0 * cos(phi));
 }
 
 @compute @workgroup_size(64)
@@ -106,42 +68,35 @@ fn simulate(@builtin(global_invocation_id) global_id: vec3<u32>) {
 
     var p = particlesA[index];
     
-    // 1. Determine Target Shape
-    var target_pos = vec3<f32>(0.0);
-    let shape_id = u32(params.target_shape + 0.1); // Safely cast float to uint
+    // 1. Determine Target Shape via Interpolation
+    let shape_a = u32(params.target_shape_a + 0.1);
+    let shape_b = u32(params.target_shape_b + 0.1);
     
-    if (shape_id == 0u) {
-        target_pos = get_sphere_target(index, total);
-    } else if (shape_id == 1u) {
-        target_pos = get_shield_target(index, total);
-    } else if (shape_id == 2u) {
-        target_pos = get_stream_target(index, total);
-    } else {
-        // Arbitrary Target Buffer (Shape 3)
-        // Ensure we don't read out of bounds if targets buffer is smaller
-        let t_total = arrayLength(&target_positions);
-        if (index < t_total) {
-             target_pos = target_positions[index].xyz;
-        } else {
-             target_pos = get_sphere_target(index, total); // Fallback
-        }
-    }
+    let pos_a = get_target_for_shape(shape_a, index, total);
+    let pos_b = get_target_for_shape(shape_b, index, total);
+    
+    var target_pos = mix(pos_a, pos_b, params.target_lerp);
     
     // 2. Physics & Forces
     
     // A. Seek Force (Attraction to Target)
-    // Spring-like behavior: F = k * (target - pos)
     let to_target = target_pos - p.pos.xyz;
     let dist_target = length(to_target);
     var seek_force = vec3<f32>(0.0);
     
     if (dist_target > 0.01) {
-        seek_force = normalize(to_target) * dist_target * 2.0; // Spring strength
+        seek_force = normalize(to_target) * dist_target * 2.5; // Slightly stronger seek
     }
     
-    // B. Curl Noise (Fluidity)
-    // Add turbulence so they don't move in straight lines
-    let noise = (hash3(p.pos.xyz * 0.2 + params.time * 0.5) - 0.5) * 4.0;
+    // B. Noise & Explosion
+    // Combine base "soul" noise with explicit explosion intensity
+    let noise_coord = p.pos.xyz * 0.15 + params.time * 0.3;
+    let base_noise = (hash3(noise_coord) - 0.5) * 2.0;
+    
+    // Explosion: Dynamic radial force + chaotic noise
+    let explosion_dir = normalize(p.pos.xyz + vec3<f32>(0.001));
+    let explosion_noise = (hash3(p.pos.xyz * 0.5 + params.explosion_seed) - 0.5) * 20.0;
+    let explosion_force = (explosion_dir * 15.0 + explosion_noise) * params.noise_intensity;
     
     // C. Mouse Interaction (Repulsion)
     let mouse_pos = vec3<f32>(params.mouse_pos_x, params.mouse_pos_y, params.mouse_pos_z);
@@ -161,7 +116,7 @@ fn simulate(@builtin(global_invocation_id) global_id: vec3<u32>) {
     var velocity = (p.pos.xyz - p.pos_old.xyz) * params.damping;
     
     // Total Force
-    let total_force = seek_force + noise + mouse_force;
+    let total_force = seek_force + base_noise + mouse_force + explosion_force;
     
     // Apply Force
     velocity += total_force * params.delta_time * params.delta_time;
