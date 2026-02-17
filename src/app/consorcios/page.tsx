@@ -79,7 +79,8 @@ export default function ConsorciosPage() {
     targetShapeB: 0,
     targetLerp: 0,
     noiseIntensity: 0,
-    explosionSeed: 0
+    explosionSeed: 0,
+    baseColor: '#000000'
   });
 
   // State for slides
@@ -105,14 +106,12 @@ export default function ConsorciosPage() {
         { pStart: 0.85, pEnd: 0.93 }  // Corporativo
       ];
 
-      // APPLY LEAD/LAG/OVERLAP LOGIC
-      // leadOut: 8% (0.08)
-      // lagIn: 10% (0.10)
+      // APPLY "IMAGE FIRST, TEXT SECOND" LOGIC
+      // Shift text entry by +2% of total progress for significant visual formation first
       const newStates = CONSORCIO_PRODUCTS.map((_, i) => {
         const win = windows[i];
-        // For text visibility, we use a slightly tighter window than the "Formation" phase
-        const textIn = win.pStart;
-        const textOut = win.pEnd;
+        const textIn = win.pStart + 0.02; // Text lags visual formation
+        const textOut = win.pEnd - 0.01; // Fade out slightly earlier
         
         const isActive = progress >= textIn && progress <= textOut;
         return { active: isActive, phase: 'depth' as const };
@@ -125,38 +124,46 @@ export default function ConsorciosPage() {
       let shapeB = 0;
       let lerp = 0;
       let noise = 0;
+      let color = '#000000';
 
       // Morphing Logic based on User Segments
       if (progress < 0.11) {
         shapeA = 0; shapeB = 0; lerp = 0;
-      } else if (progress < 0.28) { // Segment B: Silent Drift
+        color = CONSORCIO_PRODUCTS[0].color;
+      } else if (progress < 0.28) {
         shapeA = 0; shapeB = 1; 
-        // Morph begins at p=0.15 (leadOut from Imob)
-        const morphProgress = (progress - 0.15) / (0.28 - 0.15);
-        lerp = Math.max(0, Math.min(1, morphProgress));
-      } else if (progress < 0.40) { // Segment C: Auto -> Segment D: Pesados
+        const m = (progress - 0.15) / (0.28 - 0.15);
+        lerp = Math.max(0, Math.min(1, m));
+        color = lerp > 0.5 ? CONSORCIO_PRODUCTS[1].color : CONSORCIO_PRODUCTS[0].color;
+      } else if (progress < 0.40) {
         shapeA = 1; shapeB = 2;
-        // Morph happens in the small gap between C and D
-        const morphProgress = (progress - 0.37) / (0.40 - 0.37);
-        lerp = Math.max(0, Math.min(1, morphProgress));
+        const m = (progress - 0.37) / (0.40 - 0.37);
+        lerp = Math.max(0, Math.min(1, m));
+        color = lerp > 0.5 ? CONSORCIO_PRODUCTS[2].color : CONSORCIO_PRODUCTS[1].color;
       } else if (progress < 0.54) {
         shapeA = 2; shapeB = 2; lerp = 1;
-      } else if (progress < 0.85) { // Segment E: Long Drift through 3 & 4
+        color = CONSORCIO_PRODUCTS[2].color;
+      } else if (progress < 0.85) {
         if (progress < 0.65) {
           shapeA = 2; shapeB = 3; lerp = (progress - 0.54) / (0.65 - 0.54);
-          noise = Math.sin(lerp * Math.PI) * 1.5; // Explosion peak
+          noise = Math.sin(lerp * Math.PI) * 1.5;
+          color = lerp > 0.5 ? CONSORCIO_PRODUCTS[3].color : CONSORCIO_PRODUCTS[2].color;
         } else if (progress < 0.75) {
           shapeA = 3; shapeB = 4; lerp = (progress - 0.65) / (0.75 - 0.65);
           noise = Math.sin(lerp * Math.PI) * 1.0;
+          color = lerp > 0.5 ? CONSORCIO_PRODUCTS[4].color : CONSORCIO_PRODUCTS[3].color;
         } else {
           shapeA = 4; shapeB = 5; lerp = (progress - 0.75) / (0.85 - 0.75);
           noise = Math.sin(lerp * Math.PI) * 0.5;
+          color = lerp > 0.5 ? CONSORCIO_PRODUCTS[5].color : CONSORCIO_PRODUCTS[4].color;
         }
-      } else if (progress < 0.93) { // Segment F: Corporativo
+      } else if (progress < 0.93) {
         shapeA = 5; shapeB = 5; lerp = 1;
+        color = CONSORCIO_PRODUCTS[5].color;
       } else {
         shapeA = 5; shapeB = 5; lerp = 1;
-        noise = (progress - 0.93) * 10.0; // Break apart on exit
+        noise = (progress - 0.93) * 10.0;
+        color = '#000000';
       }
 
       setEngineState({
@@ -164,10 +171,10 @@ export default function ConsorciosPage() {
         targetShapeB: shapeB,
         targetLerp: lerp,
         noiseIntensity: noise,
-        explosionSeed: Math.floor(progress * 1000)
+        explosionSeed: Math.floor(progress * 1000),
+        baseColor: color
       });
 
-      // Update Active Index for Progress Bar
       const currentActive = windows.findIndex(w => progress >= w.pStart && progress <= w.pEnd);
       if (currentActive !== -1) setActiveIdx(currentActive);
     };
@@ -209,6 +216,7 @@ export default function ConsorciosPage() {
              targetLerp={engineState.targetLerp}
              noiseIntensity={engineState.noiseIntensity}
              explosionSeed={engineState.explosionSeed}
+             baseColor={engineState.baseColor}
           />
         </div>
 

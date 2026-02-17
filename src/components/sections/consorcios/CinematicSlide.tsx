@@ -23,8 +23,8 @@ export default function CinematicSlide({
   if (!active) return null;
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pointer-events-none">
-      <div className="max-w-4xl space-y-8">
+    <div className="absolute inset-0 flex flex-col items-start justify-center text-left px-12 md:px-24 pointer-events-none">
+      <div className="max-w-2xl space-y-8">
         
         {/* Hierarchy 1: Intro / Headline */}
         <div className={`transition-all duration-1000 ease-out transform
@@ -35,7 +35,7 @@ export default function CinematicSlide({
           <span className="inline-block px-3 py-1 bg-black/5 border border-black/10 text-[10px] tracking-[0.3em] uppercase rounded-full mb-6" style={{ color }}>
             {subtitle}
           </span>
-          <h2 className="text-6xl md:text-8xl font-medium tracking-tighter leading-[0.9] text-black selection:bg-black selection:text-white">
+          <h2 className="text-5xl md:text-7xl font-medium tracking-tighter leading-[0.9] text-black selection:bg-black selection:text-white">
             {title.split(' ').map((word, i) => (
               <span key={i} className="block">{word}</span>
             ))}
@@ -46,7 +46,7 @@ export default function CinematicSlide({
         <div className={`transition-all duration-1000 delay-100 ease-out
           ${phase === 'depth' ? 'opacity-100 translate-y-0 blur-0' : 'opacity-0 translate-y-4 blur-sm'}`}
         >
-          <p className="text-xl md:text-2xl text-black/70 font-light max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-black/70 font-light leading-relaxed">
             {description}
           </p>
         </div>
@@ -57,7 +57,7 @@ export default function CinematicSlide({
         >
           <Link 
             href="#contato"
-            className="group inline-flex items-center px-8 py-4 bg-black text-white rounded-full font-medium tracking-tight hover:bg-opacity-90 transition-all"
+            className="group inline-flex items-center px-6 py-3 bg-black text-white rounded-full text-sm font-medium tracking-tight hover:bg-opacity-90 transition-all"
           >
             Explorar Tecnologia
             <svg className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

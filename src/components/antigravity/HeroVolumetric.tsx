@@ -5,7 +5,7 @@ import { mat4 } from 'gl-matrix';
 import { PHYSICS_WGSL, RENDER_WGSL } from '../canvas/webgpu/shaderData';
 
 // Constants
-const PARTICLE_COUNT = 10000; // Start with 10k for verification
+const PARTICLE_COUNT = 40000; // Increased density
 const WORKGROUP_SIZE = 64;
 
 // Mobile Detection Hook
@@ -31,6 +31,7 @@ interface CinematicProps {
     targetLerp?: number;
     noiseIntensity?: number;
     explosionSeed?: number;
+    baseColor?: string;
 }
 
 export default function HeroVolumetric({ 
@@ -38,7 +39,8 @@ export default function HeroVolumetric({
     targetShapeB = 0, 
     targetLerp = 0, 
     noiseIntensity = 0,
-    explosionSeed = 0
+    explosionSeed = 0,
+    baseColor = '#000000'
 }: CinematicProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [error, setError] = useState<string | null>(null);
@@ -46,10 +48,10 @@ export default function HeroVolumetric({
     const isMobile = useIsMobile();
 
     // Cinematic Props Refs to avoid useEffect re-init
-    const propsRef = useRef({ targetShapeA, targetShapeB, targetLerp, noiseIntensity, explosionSeed });
+    const propsRef = useRef({ targetShapeA, targetShapeB, targetLerp, noiseIntensity, explosionSeed, baseColor });
     useEffect(() => {
-        propsRef.current = { targetShapeA, targetShapeB, targetLerp, noiseIntensity, explosionSeed };
-    }, [targetShapeA, targetShapeB, targetLerp, noiseIntensity, explosionSeed]);
+        propsRef.current = { targetShapeA, targetShapeB, targetLerp, noiseIntensity, explosionSeed, baseColor };
+    }, [targetShapeA, targetShapeB, targetLerp, noiseIntensity, explosionSeed, baseColor]);
 
     useEffect(() => {
         const updateDimensions = () => {
@@ -231,15 +233,20 @@ export default function HeroVolumetric({
             new Float32Array(targetBuffer.getMappedRange()).set(targetPointsData);
             targetBuffer.unmap();
 
-            // SimParams Uniform Buffer
-            // delta_time(f32), gravity(vec3), mouse_pos(vec3), radius(f32), damping(f32), time(f32)
-            // Struct alignment is tricky. Let's assume standard layout.
-            // 48 bytes approx.
-            const simParamsBufferSize = 64; // Safe size
+            // SimParams: 11 floats (original) + 3 morph floats + 3 color floats = 17 floats.
+            // Alignment: 4 floats (16 bytes) alignment boundary.
+            // Layout:
+            // [0..2] gravity, [3] pad
+            // [4..6] mouse_pos, [7] pad
+            // [8] radius, [9] damping, [10] time, [11] delta_time
+            // [12] sa, [13] sb, [14] lerp, [15] noise
+            // [16] seed, [17..19] color_rgb
+            const simParamsBufferSize = 80; // (20 floats * 4) 
             const simParamsBuffer = device.createBuffer({
                 size: simParamsBufferSize,
                 usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
             });
+            const simParamsValues = new Float32Array(20);
 
             // Render Uniforms
             const renderUniformsBufferSize = 64 + 16 + 16; // Mat4 + Vec3 + Pad
@@ -422,8 +429,15 @@ export default function HeroVolumetric({
                 const time = (performance.now() - startTime) / 1000;
                 const dt = 0.016; // Fixed step for now
 
+                const parseColor = (hex: string) => {
+                    const r = parseInt(hex.slice(1, 3), 16) / 255;
+                    const g = parseInt(hex.slice(3, 5), 16) / 255;
+                    const b = parseInt(hex.slice(5, 7), 16) / 255;
+                    return [r, g, b];
+                };
+
                 // Update SimParams (Mixed Types)
-                const simParamsBufferData = new ArrayBuffer(64); // 64 bytes
+                const simParamsBufferData = new ArrayBuffer(80); // 20 floats (80 bytes)
                 const f32 = new Float32Array(simParamsBufferData);
 
                 f32[0] = dt;
@@ -448,10 +462,13 @@ export default function HeroVolumetric({
                 
                 f32[10] = propsRef.current.targetShapeA;
                 f32[11] = propsRef.current.targetShapeB;
-                f32[12] = propsRef.current.targetLerp;
-                f32[13] = propsRef.current.noiseIntensity;
-                f32[14] = propsRef.current.explosionSeed;
-                f32[15] = 0.0; // padding
+                f32[14] = propsRef.current.targetLerp;
+                f32[15] = propsRef.current.noiseIntensity;
+                f32[16] = propsRef.current.explosionSeed;
+                const [cr, cg, cb] = parseColor(propsRef.current.baseColor || '#000000');
+                f32[17] = cr;
+                f32[18] = cg;
+                f32[19] = cb;
 
                 device.queue.writeBuffer(simParamsBuffer, 0, simParamsBufferData);
             

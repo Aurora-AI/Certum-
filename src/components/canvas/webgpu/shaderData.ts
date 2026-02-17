@@ -23,7 +23,10 @@ struct SimParams {
     target_shape_b: f32,    // Next shape index
     target_lerp: f32,      // Morph progress 0..1
     noise_intensity: f32,   // Explosion factor
-    explosion_seed: f32     // Randomness for explosion
+    explosion_seed: f32,    // Randomness for explosion
+    base_color_r: f32,
+    base_color_g: f32,
+    base_color_b: f32
 };
 
 @group(0) @binding(0) var<storage, read_write> particlesA : array<Particle>;
@@ -133,11 +136,12 @@ fn simulate(@builtin(global_invocation_id) global_id: vec3<u32>) {
     particlesB[index].pos_old = p.pos; 
     particlesB[index].pos = vec4<f32>(next_pos, p.pos.w);
     
-    // Color: Black Piano — Pure black with micro-variation on velocity
+    // Color: Mix Semantic Color with Black Piano
     let speed = length(velocity) / params.delta_time;
     let t = smoothstep(0.0, 5.0, speed * 100.0);
-    let color_slow = vec3<f32>(0.0, 0.0, 0.0);       // Pure Black
-    let color_fast = vec3<f32>(0.06, 0.06, 0.06);     // Near-Black (Piano key sheen)
+    let base_color = vec3<f32>(params.base_color_r, params.base_color_g, params.base_color_b);
+    let color_slow = base_color * 0.2; // Dim semantic color
+    let color_fast = base_color * 1.5; // Bright semantic color on move
     particlesB[index].color = vec4<f32>(mix(color_slow, color_fast, t), 0.9);
     
     particlesB[index].velocity_field = vec4<f32>(velocity, 0.0);
@@ -240,8 +244,10 @@ fn fs_main(input : VertexOutput) -> @location(0) vec4<f32> {
     // 4. Tone Mapping
     let mapped_color = aces_tone_mapping(base_color);
     
-    // 5. Final Alpha
-    let final_alpha = input.color.a * texColor.a * (0.3 + 0.7 * dof_alpha);
+    // 5. Final Alpha & Texture Presence
+    // Increase grain/texture visibility for the background
+    let tex_presence = mix(1.0, texColor.a, 0.8);
+    let final_alpha = input.color.a * tex_presence * (0.3 + 0.7 * dof_alpha);
     
     if (final_alpha < 0.01) { discard; }
 
