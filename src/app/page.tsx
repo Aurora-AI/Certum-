@@ -5,7 +5,6 @@ import { Suspense } from 'react';
 import IdentitySection from '@/components/sections/IdentitySection';
 import ProductShowcase from '@/components/sections/ProductShowcase';
 import Preloader from '@/components/ui/Preloader';
-import ParticleHighlight from '@/components/ui/ParticleHighlight';
 
 // Dynamic import for heavy 3D components
 const HeroVolumetric = dynamic(() => import('@/components/antigravity/HeroVolumetric'), { 
@@ -44,7 +43,7 @@ export default function Home() {
 
             <p className="mt-6 md:mt-8 text-sm md:text-lg font-light text-gray-600 max-w-xl leading-relaxed opacity-0 animate-fade-in"
                style={{ animationFillMode: 'forwards', animationDelay: '1.5s' }}>
-                Consórcios e seguros <ParticleHighlight density={35} opacity={0.15}>Rodobens</ParticleHighlight> com a precisão que o seu futuro exige.
+                Consórcios e seguros com a precisão que o seu futuro exige. Planejamento financeiro inteligente, sem juros abusivos.
             </p>
       </div>
 

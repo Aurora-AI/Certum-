@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Certum Prime | Consórcios e Seguros Rodobens',
-  description: 'Representante autorizado Rodobens. Consórcios de automóveis, imóveis e veículos comerciais. Seguros auto, vida, residencial e saúde. Plano Pontual exclusivo: seu carro 0km em 6 parcelas.',
+  title: 'Certum Prime | Consórcios e Seguros',
+  description: 'Representante autorizado Rodobens. Consórcios de automóveis, imóveis e veículos comerciais com as melhores condições do mercado. Adquira seu bem sem juros e com planejamento financeiro inteligente.',
 };
 
 export default function RootLayout({

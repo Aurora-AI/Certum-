@@ -8,11 +8,35 @@ import { PHYSICS_WGSL, RENDER_WGSL } from '../canvas/webgpu/shaderData';
 const PARTICLE_COUNT = 10000; // Start with 10k for verification
 const WORKGROUP_SIZE = 64;
 
+// Mobile Detection Hook
+const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false);
+    
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+        };
+        
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+    
+    return isMobile;
+};
+
 export default function WebGPUBarrierParticles() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [error, setError] = useState<string | null>(null);
+    const isMobile = useIsMobile();
 
     useEffect(() => {
+        // Skip WebGPU on mobile - use CSS fallback
+        if (isMobile) {
+            setError("Mobile device detected - using CSS fallback");
+            return;
+        }
+        
         if (!navigator.gpu) {
             setError("WebGPU not supported.");
             return;
@@ -481,10 +505,16 @@ export default function WebGPUBarrierParticles() {
         mouseRef.current = { x: x * 20, y: y * 10 }; // Scale to match scene bounds
     };
 
-    if (error) {
-        // Fallback for non-WebGPU devices (or error state)
-        // Returns a deep void container to maintain aesthetic
-        return <div className="w-full h-full bg-deep-void" />;
+    if (error || isMobile) {
+        // Fallback for non-WebGPU devices or mobile
+        // Returns a white gradient container with subtle animation
+        return (
+            <div className="w-full h-full bg-gradient-to-br from-white via-gray-50 to-gray-100 relative overflow-hidden">
+                {/* Animated gradient orbs for visual interest */}
+                <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-white/40 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
+                <div className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-gray-100/60 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
+            </div>
+        );
     }
 
     return (

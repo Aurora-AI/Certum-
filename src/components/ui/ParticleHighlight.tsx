@@ -8,13 +8,13 @@ import { useGSAP } from '@gsap/react';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * ParticleHighlight — Rodobens Visual Identity
+ * ParticleHighlight — Visual Identity Enhancement
  * 
  * Renders a scattered particle cloud (SVG dots) behind text,
  * matching the Hero particle sphere aesthetic.
  * Animates in via scroll trigger.
  * 
- * @prop color - Particle color (default: Rodobens green #007C4A)
+ * @prop color - Particle color (default: brand green #007C4A)
  * @prop opacity - Overall opacity (default: 0.18)
  * @prop density - Number of particles (default: 40)
  * @prop spread - Vertical spread ratio (default: 1.0)

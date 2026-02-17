@@ -43,3 +43,7 @@ madlab-agents
 madlab-core
 madlab-studio
 test-payload.json
+
+# legal compliance - rodobens materials
+docs/Rodobens/
+*.rodobens.md

@@ -9,7 +9,7 @@ export default function AgentPage() {
                 RPA-Core <span className="text-sovereign-gold">v1.0</span>
             </h1>
             <div className="flex gap-2 text-mono-xs text-graphite-grey">
-                <span>Rodobens Product Architect</span>
+                <span>Consórcio Product Architect</span>
                 <span>•</span>
                 <span className="text-emerald-600">Online</span>
             </div>
