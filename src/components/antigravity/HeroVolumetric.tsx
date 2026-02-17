@@ -5,7 +5,7 @@ import { mat4 } from 'gl-matrix';
 import { PHYSICS_WGSL, RENDER_WGSL } from '../canvas/webgpu/shaderData';
 
 // Constants
-const PARTICLE_COUNT = 40000; // Increased density
+const PARTICLE_COUNT = 10000; // Original density for optimal quality
 const WORKGROUP_SIZE = 64;
 
 // Mobile Detection Hook
