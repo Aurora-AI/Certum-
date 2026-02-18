@@ -1,0 +1,886 @@
+{
+    "project": "Prime - Mad Lab Aurora",
+    "last_scan": "",
+    "files": [
+        {
+            "name": "next-env.d.ts",
+            "path": "next-env.d.ts",
+            "components": [],
+            "dependencies": [],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "next.config.ts",
+            "path": "next.config.ts",
+            "components": [],
+            "dependencies": [
+                "next"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "globals.css",
+            "path": "app\\globals.css",
+            "components": [],
+            "dependencies": [],
+            "visual_tokens": {
+                "css_vars": [
+                    "--color-background",
+                    "--color-white-08",
+                    "--color-absolute-white",
+                    "--color-white-06",
+                    "--color-dark",
+                    "--color-foreground",
+                    "--color-accent",
+                    "--color-dark-04",
+                    "--color-white",
+                    "--color-white-02",
+                    "--color-white-04",
+                    "--color-light",
+                    "--color-carbon-black",
+                    "--color-dark-02",
+                    "--color-cosmic-cream",
+                    "--color-dark-06"
+                ],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 16 CSS tokens."
+        },
+        {
+            "name": "layout.tsx",
+            "path": "app\\layout.tsx",
+            "components": [],
+            "dependencies": [
+                "next"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "page.tsx",
+            "path": "app\\page.tsx",
+            "components": [],
+            "dependencies": [
+                "next/dynamic",
+                "react",
+                "@/components/ui/Preloader",
+                "@/components/antigravity/HeroVolumetric",
+                "@/components/sections/AboutManifesto",
+                "@/components/sections/AuthorityBlock",
+                "@/components/sections/ServicesList",
+                "@/components/sections/ContactFooter"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "page.tsx",
+            "path": "app\\agent\\page.tsx",
+            "components": [],
+            "dependencies": [
+                "@/components/rodobens/AgentChat"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "route.ts",
+            "path": "app\\api\\chat\\rodobens\\route.ts",
+            "components": [],
+            "dependencies": [
+                "@ai-sdk/openai",
+                "ai",
+                "@/lib/agents/rodobens"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "route.ts",
+            "path": "app\\api\\debug\\pontual\\route.ts",
+            "components": [],
+            "dependencies": [
+                "next/server",
+                "@/lib/rodobens/PontualMechanism",
+                "@/lib/rodobens/FinancialComparative"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "GenesisPreloader.tsx",
+            "path": "app\\components\\ui\\GenesisPreloader.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "gsap"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "SovereignCursor.tsx",
+            "path": "app\\components\\ui\\SovereignCursor.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "gsap"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "TextSplitReveal.tsx",
+            "path": "app\\components\\ui\\TextSplitReveal.tsx",
+            "components": [
+                "Component"
+            ],
+            "dependencies": [
+                "react",
+                "gsap",
+                "@gsap/react",
+                "gsap/ScrollTrigger"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 2
+            },
+            "summary": "File with 1 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "page.tsx",
+            "path": "app\\consorcios\\page.tsx",
+            "components": [
+                "HeroVolumetric"
+            ],
+            "dependencies": [
+                "react",
+                "next/dynamic",
+                "gsap",
+                "gsap/dist/ScrollTrigger",
+                "@gsap/react",
+                "@/components/sections/consorcios/CinematicSlide",
+                "@/components/sections/consorcios/ConsortiumHero"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 1 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "page.tsx",
+            "path": "app\\webgpu-test\\page.tsx",
+            "components": [
+                "WebGPUBarrierParticles"
+            ],
+            "dependencies": [
+                "next/dynamic"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 1 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "HeroVolumetric.tsx",
+            "path": "components\\antigravity\\HeroVolumetric.tsx",
+            "components": [
+                "ScrambleText"
+            ],
+            "dependencies": [
+                "react",
+                "gl-matrix",
+                "gsap",
+                "gsap/ScrollTrigger",
+                "lenis",
+                "../canvas/webgpu/shaderData"
+            ],
+            "visual_tokens": {
+                "css_vars": [
+                    "--color-white-08",
+                    "--color-light",
+                    "--color-white"
+                ],
+                "has_gsap": true,
+                "scroll_triggers_count": 1
+            },
+            "summary": "File with 1 component(s) and 3 CSS tokens."
+        },
+        {
+            "name": "BarrierParticles.tsx",
+            "path": "components\\canvas\\BarrierParticles.tsx",
+            "components": [
+                "COUNT",
+                "BarrierShader"
+            ],
+            "dependencies": [
+                "react",
+                "@react-three/fiber",
+                "three"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 2 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "FinancialParticles.tsx",
+            "path": "components\\canvas\\FinancialParticles.tsx",
+            "components": [
+                "COUNT",
+                "PRESET"
+            ],
+            "dependencies": [
+                "react",
+                "@react-three/fiber",
+                "three",
+                "simplex-noise"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 2 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "HeroParticlesScene.tsx",
+            "path": "components\\canvas\\HeroParticlesScene.tsx",
+            "components": [],
+            "dependencies": [
+                "@react-three/fiber",
+                "react",
+                "./InfinityParticles"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "HeroPhase03.tsx",
+            "path": "components\\canvas\\HeroPhase03.tsx",
+            "components": [],
+            "dependencies": [
+                "@react-three/fiber",
+                "@react-three/drei",
+                "./FinancialParticles"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "InfinityParticles.tsx",
+            "path": "components\\canvas\\InfinityParticles.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "three",
+                "@react-three/fiber"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "WebGPUBarrierParticles.tsx",
+            "path": "components\\canvas\\WebGPUBarrierParticles.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "gl-matrix",
+                "./webgpu/shaderData"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "shaderData.ts",
+            "path": "components\\canvas\\webgpu\\shaderData.ts",
+            "components": [],
+            "dependencies": [],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "GravitationalScroll.ts",
+            "path": "components\\effects\\GravitationalScroll.ts",
+            "components": [],
+            "dependencies": [
+                "react"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "SpectralPressure.tsx",
+            "path": "components\\effects\\SpectralPressure.tsx",
+            "components": [],
+            "dependencies": [
+                "react"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "VolumetricDrift.tsx",
+            "path": "components\\effects\\VolumetricDrift.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "gsap"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "AgentChat.tsx",
+            "path": "components\\rodobens\\AgentChat.tsx",
+            "components": [],
+            "dependencies": [
+                "@ai-sdk/react",
+                "react",
+                "./tools/PontualCard",
+                "./tools/ComparisonCard",
+                "@/types/rodobens.schema"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "ComparisonCard.tsx",
+            "path": "components\\rodobens\\tools\\ComparisonCard.tsx",
+            "components": [],
+            "dependencies": [
+                "@/types/rodobens.schema"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "PontualCard.tsx",
+            "path": "components\\rodobens\\tools\\PontualCard.tsx",
+            "components": [],
+            "dependencies": [
+                "@/types/rodobens.schema"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "AboutManifesto.tsx",
+            "path": "components\\sections\\AboutManifesto.tsx",
+            "components": [
+                "LineReveal",
+                "ParagraphReveal",
+                "AboutManifesto"
+            ],
+            "dependencies": [
+                "react",
+                "gsap",
+                "gsap/ScrollTrigger",
+                "@/components/ui/MagneticButton",
+                "next/image"
+            ],
+            "visual_tokens": {
+                "css_vars": [
+                    "--color-dark"
+                ],
+                "has_gsap": true,
+                "scroll_triggers_count": 4
+            },
+            "summary": "File with 3 component(s) and 1 CSS tokens."
+        },
+        {
+            "name": "AuthorityBlock.tsx",
+            "path": "components\\sections\\AuthorityBlock.tsx",
+            "components": [
+                "AuthorityBlock"
+            ],
+            "dependencies": [
+                "react",
+                "gsap",
+                "gsap/ScrollTrigger"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 2
+            },
+            "summary": "File with 1 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "BarrierTechnology.tsx",
+            "path": "components\\sections\\BarrierTechnology.tsx",
+            "components": [
+                "GlassCard",
+                "LiquidSphere"
+            ],
+            "dependencies": [
+                "react",
+                "@react-three/fiber",
+                "@react-three/drei",
+                "gsap",
+                "gsap/ScrollTrigger",
+                "@/components/ui/ParticleHighlight"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 2
+            },
+            "summary": "File with 2 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "ContactFooter.tsx",
+            "path": "components\\sections\\ContactFooter.tsx",
+            "components": [
+                "ContactFooter"
+            ],
+            "dependencies": [
+                "react",
+                "gsap",
+                "gsap/ScrollTrigger"
+            ],
+            "visual_tokens": {
+                "css_vars": [
+                    "--color-accent"
+                ],
+                "has_gsap": true,
+                "scroll_triggers_count": 1
+            },
+            "summary": "File with 1 component(s) and 1 CSS tokens."
+        },
+        {
+            "name": "IdentitySection.tsx",
+            "path": "components\\sections\\IdentitySection.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "gsap",
+                "gsap/ScrollTrigger",
+                "@/components/ui/ParticleHighlight"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 3
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "ProductShowcase.tsx",
+            "path": "components\\sections\\ProductShowcase.tsx",
+            "components": [
+                "ProductColumn"
+            ],
+            "dependencies": [
+                "react",
+                "gsap",
+                "gsap/ScrollTrigger",
+                "@gsap/react",
+                "@/components/ui/ParticleHighlight"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 1
+            },
+            "summary": "File with 1 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "ServicesList.tsx",
+            "path": "components\\sections\\ServicesList.tsx",
+            "components": [
+                "ServicesList"
+            ],
+            "dependencies": [
+                "react",
+                "gsap"
+            ],
+            "visual_tokens": {
+                "css_vars": [
+                    "--color-accent"
+                ],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 1 component(s) and 1 CSS tokens."
+        },
+        {
+            "name": "CinematicSlide.tsx",
+            "path": "components\\sections\\consorcios\\CinematicSlide.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "next/link"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "ConsortiumHero.tsx",
+            "path": "components\\sections\\consorcios\\ConsortiumHero.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "next/link"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "BentoGrid.tsx",
+            "path": "components\\ui\\BentoGrid.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "./KineticCard"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "GlassMonolith.tsx",
+            "path": "components\\ui\\GlassMonolith.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "gsap",
+                "@gsap/react"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "InfiniteLedger.tsx",
+            "path": "components\\ui\\InfiniteLedger.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "gsap",
+                "lenis/react",
+                "./GlassMonolith"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "KineticCard.tsx",
+            "path": "components\\ui\\KineticCard.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "gsap"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "MagneticButton.tsx",
+            "path": "components\\ui\\MagneticButton.tsx",
+            "components": [
+                "MagneticButton",
+                "Component"
+            ],
+            "dependencies": [
+                "react",
+                "gsap"
+            ],
+            "visual_tokens": {
+                "css_vars": [
+                    "--color-accent"
+                ],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 2 component(s) and 1 CSS tokens."
+        },
+        {
+            "name": "ParticleHighlight.tsx",
+            "path": "components\\ui\\ParticleHighlight.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "gsap",
+                "gsap/ScrollTrigger",
+                "@gsap/react"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 2
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "Preloader.tsx",
+            "path": "components\\ui\\Preloader.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "gsap"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "firecrawl.ts",
+            "path": "lib\\firecrawl.ts",
+            "components": [],
+            "dependencies": [
+                "@mendable/firecrawl-js"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "index.ts",
+            "path": "lib\\agents\\rodobens\\index.ts",
+            "components": [],
+            "dependencies": [
+                "ai",
+                "zod",
+                "@/lib/rodobens/PontualMechanism",
+                "@/lib/rodobens/FinancialComparative"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "FinancialComparative.ts",
+            "path": "lib\\rodobens\\FinancialComparative.ts",
+            "components": [],
+            "dependencies": [],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "PontualMechanism.ts",
+            "path": "lib\\rodobens\\PontualMechanism.ts",
+            "components": [],
+            "dependencies": [
+                "@/types/rodobens.schema"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "FieldEngine.ts",
+            "path": "madlab-effects\\core\\FieldEngine.ts",
+            "components": [],
+            "dependencies": [
+                "three",
+                "./governance",
+                "gsap"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "governance.ts",
+            "path": "madlab-effects\\core\\governance.ts",
+            "components": [
+                "InteractionThresholds",
+                "AmplitudeCaps"
+            ],
+            "dependencies": [
+                "react"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 2 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "GravitationalWellCTA.tsx",
+            "path": "madlab-effects\\effects\\GravitationalWellCTA.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "gsap",
+                "../core/governance"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": true,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "VolumetricField.tsx",
+            "path": "madlab-effects\\effects\\VolumetricField.tsx",
+            "components": [],
+            "dependencies": [
+                "react",
+                "../core/FieldEngine",
+                "../core/governance"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 0 component(s) and 0 CSS tokens."
+        },
+        {
+            "name": "rodobens.schema.ts",
+            "path": "types\\rodobens.schema.ts",
+            "components": [
+                "PontualModalitySchema",
+                "PontualOfferSchema",
+                "FinancingScenarioSchema",
+                "FinancialComparisonSchema",
+                "DigiMedPlanSchema",
+                "RodobensProductDataSchema"
+            ],
+            "dependencies": [
+                "zod"
+            ],
+            "visual_tokens": {
+                "css_vars": [],
+                "has_gsap": false,
+                "scroll_triggers_count": 0
+            },
+            "summary": "File with 6 component(s) and 0 CSS tokens."
+        }
+    ]
+}

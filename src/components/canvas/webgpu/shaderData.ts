@@ -79,6 +79,12 @@ fn simulate(@builtin(global_invocation_id) global_id: vec3<u32>) {
     let pos_b = get_target_for_shape(shape_b, index, total);
     
     var target_pos = mix(pos_a, pos_b, params.target_lerp);
+
+    // 1.5 ORGANIC BREATHING (The Lung Effect)
+    // S-Tier Vitality: The field expands and contracts slowly (6s cycle)
+    // We modify the target position radially.
+    let breath_cycle = sin(params.time * 0.8) * 0.03; // +/- 3% expansion
+    target_pos = target_pos * (1.0 + breath_cycle);
     
     // 2. Physics & Forces
     
@@ -140,8 +146,8 @@ fn simulate(@builtin(global_invocation_id) global_id: vec3<u32>) {
     let speed = length(velocity) / params.delta_time;
     let t = smoothstep(0.0, 5.0, speed * 100.0);
     let base_color = vec3<f32>(params.base_color_r, params.base_color_g, params.base_color_b);
-    let color_slow = base_color * 0.05; // Very dim semantic tint
-    let color_fast = base_color * 0.4;  // Muted color on move (instead of bright glowing)
+    let color_slow = base_color * 0.5; // Visible White (S-Tier)
+    let color_fast = base_color * 1.0;  // Full Brightness on move
     particlesB[index].color = vec4<f32>(mix(color_slow, color_fast, t), 0.95);
     
     particlesB[index].velocity_field = vec4<f32>(velocity, 0.0);

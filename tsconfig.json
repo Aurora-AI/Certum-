@@ -37,6 +37,7 @@
   ],
   "exclude": [
     "node_modules",
-    "_BKP_ANTIGO"
+    "_BKP_ANTIGO",
+    "open-lovable"
   ]
 }

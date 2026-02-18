@@ -1,153 +1,294 @@
 @import "tailwindcss";
 
 @theme {
-  /* --- 2.1 Color Space (lab / oklch) --- */
-  /* Phase 03: White/Light Mode Palette */
+  /* -----------------------------------------------------------------
+   * 01. PALETA CROMÁTICA: ECONOMIA RADICAL
+   * Baseada no padrão ExoApe: Dark + Off-White + Layers de Opacidade.
+   * ----------------------------------------------------------------- */
   
-  /* Core Colors */
-  --color-absolute-white: lab(99% 0 0);
-  --color-cosmic-cream: #FFFFFF;
-  --color-carbon-black: lab(10% 0 0);
-  --color-graphite-grey: lab(40% 0 0);
+  /* Cores Base - Ajustadas para "Certum Prime" (Luxo Financeiro) */
+  --color-dark:       #0d0e13;   /* Quase preto, levemente azulado (Deep Space) */
+  --color-light:      #e4e0db;   /* Off-white quente (Papel Moeda Antigo) */
+  --color-white:      #f8f8f8;   /* Branco puro suavizado */
+  --color-accent:     #e0ccbb;   /* Areia/Gold (Ouro Pálido - Silent Luxury) */
+
+  /* Camadas de Opacidade (A mágica da profundidade) */
+  --color-white-08:   rgba(248, 248, 248, 0.8);
+
+  /* -----------------------------------------------------------------
+   * 02. SISTEMA TIPOGRÁFICO: FLUIDEZ MATEMÁTICA (VW)
+   * Tudo em VW. Sem breakpoints manuais. O layout "cura" a si mesmo.
+   * Base de cálculo: Viewport de 1440px ou 1920px.
+   * ----------------------------------------------------------------- */
   
-  /* Legacy/Transition Colors (Mapped to new theme or kept for accents) */
-  --color-sovereign-gold: lab(85% 5 20); /* Adjusted for light bg */
-  --color-deep-void: var(--color-absolute-white); /* Mapping old void to white for instant switch */
-  --color-starlight: var(--color-carbon-black); /* Mapping old text to black */
+  /* Font Sizes */
+  --font-s-hero:      10.5vw;    /* O H1 Gigante */
+  --font-s-h1:        5.5vw;     /* Títulos de Seção */
+  --font-s-h2:        3.6111vw;  /* Subtítulos */
+  --font-s-p:         1.1111vw;  /* Corpo de texto (~16px em 1440px) */
+  --font-s-label:     0.85vw;    /* Pequenos labels técnicos */
 
-  /* Semantic Aliases */
-  --color-background: var(--color-cosmic-cream);
-  --color-foreground: var(--color-carbon-black);
-  --color-primary: var(--color-carbon-black);
-  --color-accent: var(--color-sovereign-gold);
-  --color-glass-border: lab(10% 0 0 / 0.1); 
+  /* Letter Spacing (Tracking) - O segredo editorial */
+  /* Quanto maior a fonte, mais negativo é o tracking */
+  --font-ls-hero:     -0.45vw;   /* Apertado para impacto */
+  --font-ls-h1:       -0.2vw;
+  --font-ls-p:        +0.01vw;   /* Leitura confortável */
 
-  /* --- 2.2 Fluid Typography (vw based) --- */
-  /* Increased scale for "Punch in the face" impact */
+  /* Line Height (Leading) */
+  --font-lh-hero:     0.9;       /* Títulos quase tocando */
+  --font-lh-p:        1.4;
+
+  /* -----------------------------------------------------------------
+   * 03. GRID & ESTRUTURA
+   * ----------------------------------------------------------------- */
+  --grid-columns:     12;
+  --grid-gap:         2.2222vw;  /* Gap fluido */
+  --page-margin:      4.4444vw;  /* Margem lateral fluida */
+
+  /* -----------------------------------------------------------------
+   * 04. FÍSICA & MOVIMENTO (MOTION)
+   * A assinatura cinética S-Tier.
+   * ----------------------------------------------------------------- */
+  --ease-s-tier:      cubic-bezier(1, 0, 0, 1); /* Expo Ease In-Out */
+  --anim-duration-l:  1.6s;      /* Entrada Hero */
+  --anim-duration-m:  1.0s;      /* Elementos médios */
   
-  --text-h0: 14vw;
-  --text-h1: 7.5vw;
-  --text-h2: 4vw;
-  --text-body: 1.2vw;
-  --text-mono: 0.85vw;
+  /* -----------------------------------------------------------------
+   * 05. Z-INDEX ARCHITECTURE
+   * ----------------------------------------------------------------- */
+  --z-back:           -1;
+  --z-canvas:         1;         /* A Esfera vive aqui */
+  --z-content:        2;         /* Texto vive aqui */
+  --z-nav:            14;        /* Menu */
+  --z-cursor:         9999;      /* Custom Cursor */
 
-  /* Nfinite Paper Colors */
-  --color-nfinite-bg: #16161D;
-  --color-nfinite-card: #1E1E26;
-  --color-aquagard: #30D9C4;
-  --color-thermoshield: #FF5F6D;
-  --color-oxyblock: #9D50BB;
-
-  /* Fonts */
-  --font-display: "Manrope", "Inter", sans-serif;
-  --font-body: "Manrope", "Inter", sans-serif;
-  --font-nfinite: "Poppins", sans-serif;
-  --font-mono: "Space Mono", monospace;
-
-  /* --- 2.3 Spacing & Grid --- */
-  --grid-unit: 4.16vw;
-  --gap-fluid: 0.833vw;
-  --radius-physics: 0px; /* Sharp corners for "Paper" aesthetic */
-  
-  /* --- 3. Interaction Physics --- */
-  --ease-physics: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Semantic Aliases for compatibility */
+  --color-background: var(--color-dark);
 }
 
-/* Custom Utilities */
-@utility no-scrollbar {
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-@utility text-h0 {
-  font-size: var(--text-h0);
-  line-height: 0.85;
-  letter-spacing: -0.05em;
-  font-weight: 600;
-}
-
-@utility text-h1 {
-  font-size: var(--text-h1);
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  font-weight: 500;
-}
-
-@utility text-h2 {
-  font-size: var(--text-h2);
-  line-height: 1.0;
-  letter-spacing: -0.03em;
-  font-weight: 500;
-}
-
-@utility text-body {
-  font-size: var(--text-body);
-  line-height: 1.4;
-  letter-spacing: -0.01em;
-}
-
-@utility text-mono-xs {
-  font-size: var(--text-mono);
-  line-height: 1.2;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-/* Base Styles */
+/* RESET PREMIUM - Obrigatório para renderização limpa */
 @layer base {
-  html {
-    scroll-behavior: smooth;
-    background-color: var(--color-cosmic-cream);
-  }
-
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    font-family: var(--font-body);
+    background-color: var(--color-dark);
+    color: var(--color-white);
+    margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Previne scroll horizontal acidental */
+    /* Recomendo usar font-family: 'Inter', 'Lausanne', ou similar Grotesque */
   }
+}
+
+/* CONTAINER GRID S-TIER */
+@utility s-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--grid-gap);
+  padding-left: var(--page-margin);
+  padding-right: var(--page-margin);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* TYPOGRAPHY CLASSES */
+@utility text-hero {
+  font-size: var(--font-s-hero);
+  line-height: var(--font-lh-hero);
+  letter-spacing: var(--font-ls-hero);
+  font-weight: 400; /* Letra fina em tamanho gigante é mais elegante */
+  text-transform: uppercase;
+  color: var(--color-light); /* Enforce visibility against dark bg */
+  margin: 0;
+}
+
+@utility text-label {
+  font-size: var(--font-s-label);
+  letter-spacing: 0.1vw;
+  text-transform: uppercase;
+  color: var(--color-white-06); /* Transparência técnica */
+  margin-bottom: 1vw;
+  display: block;
+}
+
+/* CLIP REVEAL UTILITY (Para animação) 
+   */
+@utility u-clip-parent {
+  overflow: hidden; /* Corta o que está fora */
+  display: block;
+  line-height: var(--font-lh-hero); /* Importante para não cortar descendentes */
+}
+
+@utility u-clip-child {
+  display: block;
+  will-change: transform; /* Otimização de GPU */
+  transform: translateY(110%); /* Começa escondido em baixo */
+  /* A animação será injetada via GSAP */
+}
+
+/* Typography Updates (Section 02 - The Thesis) */
+@utility text-h2 {
+  font-size: var(--font-s-h2); /* ~3.6vw */
+  letter-spacing: -0.1vw;
+  font-weight: 400;
+  line-height: 1.1;
+  font-family: var(--font-geist-sans); /* Ensure font consistency */
+}
+
+@utility manifesto-body {
+  font-family: var(--font-geist-sans);
+  font-weight: 300;
+}
+
+/* --- THEME FLIP: LIGHT MODE (S-TIER) --- */
+.theme-light {
+  /* 1. O Fundo vira a cor clara (Platina Quente) */
+  background-color: var(--color-light); /* #e4e0db */
   
-  ::selection {
-    background-color: var(--color-carbon-black);
-    color: var(--color-absolute-white);
-  }
+  /* 2. O Texto vira a cor escura (Deep Space) */
+  color: var(--color-dark); /* #0d0e13 */
   
-  h1, h2, h3, h4, p {
-    margin: 0;
-    font-weight: normal;
-  }
+  /* 3. Redefine variáveis locais para elementos filhos */
+  --current-text: var(--color-dark);
+  --current-line: rgba(13, 14, 19, 0.2); /* Linhas divisórias viram cinza escuro suave */
+  
+  /* Override do Accent para garantir contraste no fundo claro */
+  --color-accent: rgba(13, 14, 19, 0.6); /* Dark Grey com opacidade (ExoApe Style) */
+}
 
-  /* Hero Typography Animations */
-  @keyframes fade-in-up {
-    from {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+/* Títulos na seção clara */
+.theme-light .text-h2 {
+  color: var(--current-text); /* Garante que o H2 fique escuro */
+}
 
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
+/* Corpo do Manifesto */
+.theme-light .manifesto-body {
+  color: rgba(13, 14, 19, 0.8); /* Cinza escuro para leitura confortável (não preto puro) */
+}
 
-  .animate-fade-in-up {
-    animation: fade-in-up 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+/* Linhas e Detalhes */
+.theme-light .vertical-line,
+.theme-light hr {
+  background: var(--current-line);
+}
 
-  .animate-fade-in {
-    animation: fade-in 1.2s ease-out;
-  }
+/* Labels Técnicos */
+.theme-light .text-label {
+  color: rgba(13, 14, 19, 0.5); /* Label técnico escuro */
+  border-color: rgba(13, 14, 19, 0.2);
+}
+/* --- CORREÇÃO DA LISTA DE SERVIÇOS (HYPER-FOCUS) --- */
+
+/* 1. Estado Padrão (Sem mouse na lista) */
+.service-item {
+  /* Garante que o texto seja legível por padrão */
+  color: var(--color-white); /* ou #e4e0db */
+  opacity: 1; 
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 2. O "Dimming" (Apagar os outros) */
+/* Quando o mouse entra no CONTAINER, todos os itens baixam a opacidade */
+.service-list-container:hover .service-item {
+  opacity: 0.4; /* Ajuste aqui: 0.4 é legível, 0.1 é invisível */
+  filter: blur(0px); /* Garante que não haja desfoque acidental */
+}
+
+/* 3. O "Highlight" (O item escolhido) */
+/* Força o item sob o mouse a voltar para 100% e brilhar */
+.service-list-container .service-item:hover {
+  opacity: 1 !important; /* O !important garante que vença a regra anterior */
+  color: #ffffff; /* Branco puro para contraste máximo */
+  padding-left: 2vw; /* O movimento físico */
+  border-color: #ffffff; /* A linha também brilha */
+  z-index: 20; /* Traz para frente de qualquer efeito */
+}
+
+/* 4. Título do Serviço Específico */
+.service-item:hover .service-title {
+  /* Garante que o título não fique cinza */
+  color: #ffffff; 
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); /* Brilho sutil S-Tier */
+}
+/* 5. Subtítulo do Serviço (Reveal) */
+.service-subtitle {
+  font-size: 1vw; /* Pequeno e elegante */
+  color: var(--color-accent); /* Dourado/Bege */
+  margin: 0.5vw 0 0 0;
+  opacity: 0; /* Escondido por padrão (Clean) */
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.05vw;
+  display: block;
+}
+
+/* Revelar no Hover */
+.service-item:hover .service-subtitle {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- MAGNETIC BUTTON PHYSICS (THE ANCHORING) --- */
+.magnetic-btn {
+  position: relative;
+  width: 12vw;  /* Tamanho grande (Fitts's Law) */
+  height: 12vw;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+}
+
+/* O PREENCHIMENTO (Aparece no Hover) */
+.magnetic-fill {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: var(--color-accent); /* Dourado/Areia */
+  border-radius: 50%;
+  transform: scale(0); /* Invisível por padrão */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+/* O TEXTO */
+.magnetic-text {
+  position: relative;
+  z-index: 2;
+  color: var(--color-white);
+  text-align: center;
+  font-size: 1vw;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+
+/* HOVER STATE */
+.magnetic-btn:hover {
+  border-color: var(--color-accent);
+}
+
+.magnetic-btn:hover .magnetic-fill {
+  transform: scale(1); /* Preenche o botão */
+}
+
+.magnetic-btn:hover .magnetic-text {
+  color: var(--color-dark); /* Inverte cor para leitura */
+}
+
+.magnetic-icon {
+  font-size: 1.5vw;
+  margin-top: 0.5vw;
+  position: relative;
+  z-index: 2;
+  color: var(--color-white);
+  transition: color 0.3s ease;
+}
+
+.magnetic-btn:hover .magnetic-icon {
+   color: var(--color-dark);
 }

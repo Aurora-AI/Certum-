@@ -24,11 +24,6 @@ export function AgentChat() {
   // Manual State Management
   const [input, setInput] = useState('');
 
-  // DEBUG LOGGING
-  useEffect(() => {
-      console.log("useChat helpers (REFRESHED):", chatHelpers);
-  }, [chatHelpers]);
-
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const safeMessages = messages ?? [];
@@ -62,7 +57,6 @@ export function AgentChat() {
                    // Fallback: assume sendMessage handles request construction
                    // We need to verify signature. 
                    // If we can't, we might need to rely on 'append' if it exists in prototype.
-                   console.log("Attempting sendMessage...");
                    await sendMessage({ role: 'user', content: userMessage });
                }
           } else if (typeof rest.append === 'function') {

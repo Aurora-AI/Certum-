@@ -1,0 +1,90 @@
+{
+    "orphaned_components": [
+        "app\\globals.css",
+        "app\\agent\\page.tsx",
+        "app\\api\\chat\\rodobens\\route.ts",
+        "app\\api\\debug\\pontual\\route.ts",
+        "app\\components\\ui\\GenesisPreloader.tsx",
+        "app\\components\\ui\\SovereignCursor.tsx",
+        "app\\components\\ui\\TextSplitReveal.tsx",
+        "app\\consorcios\\page.tsx",
+        "app\\webgpu-test\\page.tsx",
+        "components\\antigravity\\HeroVolumetric.tsx",
+        "components\\canvas\\BarrierParticles.tsx",
+        "components\\canvas\\FinancialParticles.tsx",
+        "components\\canvas\\HeroParticlesScene.tsx",
+        "components\\canvas\\HeroPhase03.tsx",
+        "components\\canvas\\InfinityParticles.tsx",
+        "components\\canvas\\WebGPUBarrierParticles.tsx",
+        "components\\canvas\\webgpu\\shaderData.ts",
+        "components\\effects\\GravitationalScroll.ts",
+        "components\\effects\\SpectralPressure.tsx",
+        "components\\effects\\VolumetricDrift.tsx",
+        "components\\rodobens\\AgentChat.tsx",
+        "components\\rodobens\\tools\\ComparisonCard.tsx",
+        "components\\rodobens\\tools\\PontualCard.tsx",
+        "components\\sections\\AboutManifesto.tsx",
+        "components\\sections\\AuthorityBlock.tsx",
+        "components\\sections\\BarrierTechnology.tsx",
+        "components\\sections\\ContactFooter.tsx",
+        "components\\sections\\IdentitySection.tsx",
+        "components\\sections\\ProductShowcase.tsx",
+        "components\\sections\\ServicesList.tsx",
+        "components\\sections\\consorcios\\CinematicSlide.tsx",
+        "components\\sections\\consorcios\\ConsortiumHero.tsx",
+        "components\\ui\\BentoGrid.tsx",
+        "components\\ui\\GlassMonolith.tsx",
+        "components\\ui\\InfiniteLedger.tsx",
+        "components\\ui\\KineticCard.tsx",
+        "components\\ui\\MagneticButton.tsx",
+        "components\\ui\\ParticleHighlight.tsx",
+        "components\\ui\\Preloader.tsx",
+        "lib\\firecrawl.ts",
+        "lib\\agents\\rodobens\\index.ts",
+        "lib\\rodobens\\FinancialComparative.ts",
+        "lib\\rodobens\\PontualMechanism.ts",
+        "madlab-effects\\core\\FieldEngine.ts",
+        "madlab-effects\\core\\governance.ts",
+        "madlab-effects\\effects\\GravitationalWellCTA.tsx",
+        "madlab-effects\\effects\\VolumetricField.tsx",
+        "types\\rodobens.schema.ts"
+    ],
+    "unused_css_vars": [
+        "--color-background",
+        "--color-absolute-white",
+        "--color-white-06",
+        "--color-foreground",
+        "--color-dark-04",
+        "--color-white-02",
+        "--color-white-04",
+        "--color-carbon-black",
+        "--color-dark-02",
+        "--color-cosmic-cream",
+        "--color-dark-06"
+    ],
+    "physics_non_compliance": [
+        {
+            "path": "components\\sections\\consorcios\\CinematicSlide.tsx",
+            "issue": "Static section detected in high-physics zone (no GSAP)."
+        },
+        {
+            "path": "components\\sections\\consorcios\\ConsortiumHero.tsx",
+            "issue": "Static section detected in high-physics zone (no GSAP)."
+        }
+    ],
+    "syntax_debris": [
+        {
+            "path": "app\\globals.css",
+            "issue": "TODO label pending."
+        },
+        {
+            "path": "components\\canvas\\WebGPUBarrierParticles.tsx",
+            "issue": "console.log left behind."
+        },
+        {
+            "path": "components\\rodobens\\AgentChat.tsx",
+            "issue": "console.log left behind."
+        }
+    ],
+    "broken_imports": []
+}

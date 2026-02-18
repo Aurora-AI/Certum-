@@ -1,8 +1,16 @@
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
 import { mat4 } from 'gl-matrix';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
 import { PHYSICS_WGSL, RENDER_WGSL } from '../canvas/webgpu/shaderData';
+
+// Register GSAP Plugins
+if (typeof window !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+}
 
 // Constants
 const PARTICLE_COUNT = 10000; // Original density for optimal quality
@@ -25,6 +33,64 @@ const useIsMobile = () => {
     return isMobile;
 };
 
+// --- SCRAMBLE TEXT COMPONENT ---
+const ScrambleText = ({ text, className, finishedClassName, delay = 0 }: { text: string, className?: string, finishedClassName?: string, delay?: number }) => {
+    // 1. Initial State: Start with target text (SSR safe) or empty string to avoid mismatch
+    // We use the target text so it's readable if JS fails, but we'll scramble it immediately on mount.
+    const [display, setDisplay] = useState(text);
+    const [progress, setProgress] = useState(0);
+    
+    useEffect(() => {
+        let frameRequest: number;
+        let startTime: number;
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // Alphanumeric vault style
+        const duration = 1500; 
+        
+        // Wait for start time
+
+
+        const animate = (time: number) => {
+            if (!startTime) startTime = time;
+            const currentProgress = (time - startTime) / duration;
+            setProgress(currentProgress); // Store progress for render logic
+            
+            if (currentProgress >= 1) {
+                setDisplay(text);
+                return;
+            }
+            
+            // Vault Decryption Logic:
+            // 1. Calculate how many characters should be revealed based on progress
+            const revealIndex = Math.floor(currentProgress * text.length);
+            
+            const scrambled = text.split('').map((char, i) => {
+                // 2. If index < revealIndex, show real character (Left-to-Right lock)
+                if (i < revealIndex) {
+                    return char;
+                }
+                // 3. Otherwise, show random character (shuffling)
+                return chars[Math.floor(Math.random() * chars.length)];
+            }).join('');
+            
+            setDisplay(scrambled);
+            frameRequest = requestAnimationFrame(animate);
+        };
+
+        const timeout = setTimeout(() => {
+            frameRequest = requestAnimationFrame(animate);
+        }, delay);
+
+        return () => {
+            clearTimeout(timeout);
+            if (frameRequest) cancelAnimationFrame(frameRequest);
+        };
+    }, [text, delay]);
+
+    // Added 'inline-block' to prevent layout collapse during render
+    // Use 'finishedClassName' when scramble is done, otherwise use 'className'
+    return <span className={progress >= 1 && finishedClassName ? finishedClassName : className} style={{ display: 'inline-block', minWidth: '1em' }}>{display}</span>; 
+};
+
 interface CinematicProps {
     targetShapeA?: number;
     targetShapeB?: number;
@@ -40,9 +106,10 @@ export default function HeroVolumetric({
     targetLerp = 0, 
     noiseIntensity = 0,
     explosionSeed = 0,
-    baseColor = '#000000'
+    baseColor = '#FFFFFF' // Force White Default
 }: CinematicProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
     const [error, setError] = useState<string | null>(null);
     const [dimensions, setDimensions] = useState({ width: 1920, height: 1080 }); // Default
     const isMobile = useIsMobile();
@@ -52,6 +119,96 @@ export default function HeroVolumetric({
     useEffect(() => {
         propsRef.current = { targetShapeA, targetShapeB, targetLerp, noiseIntensity, explosionSeed, baseColor };
     }, [targetShapeA, targetShapeB, targetLerp, noiseIntensity, explosionSeed, baseColor]);
+
+    // --- S-TIER: LENIS INIT ---
+    useEffect(() => {
+        const lenis = new Lenis({
+            lerp: 0.08, // Inertia Engine
+            duration: 1.2,
+            smoothWheel: true,
+        });
+
+        function raf(time: number) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        return () => {
+            lenis.destroy();
+        };
+    }, []);
+
+    // --- S-TIER: GSAP RITUAL INIT ---
+    useLayoutEffect(() => {
+        const ctx = gsap.context(() => {
+            const S_TIER_EASE = "cubic-bezier(0.16, 1, 0.3, 1)"; // ExoApe Signature
+
+            const runHeroSequence = () => {
+                const tl = gsap.timeline({ defaults: { ease: S_TIER_EASE, duration: 1.8 } });
+
+                // 1. Reveal Canvas (Atmosphere)
+                tl.fromTo("#canvas-container", 
+                    { opacity: 0, scale: 0.9 }, 
+                    { opacity: 1, scale: 1, duration: 2.0, ease: "power2.out" }
+                )
+                // 2. The Label (Context)
+                .to(".text-label .u-clip-child", {
+                    y: "0%",
+                    duration: 1.4,
+                }, "-=1.5")
+                // 3. The Title (Subject)
+                .to(".text-hero .u-clip-child", {
+                    y: "0%",
+                    stagger: 0.1,
+                    rotateX: 0,
+                }, "-=1.2")
+                // 4. The Body/CTA (Detail)
+                .to(".text-hero-desc .u-clip-child", {
+                    y: "0%",
+                    opacity: 1
+                }, "-=1.0");
+
+                // 5. THE SCALE-OUT (Transition Outro)
+                // Prevents the "cut-off" feel by shrinking and fading slightly as we scroll away
+                gsap.to(containerRef.current, {
+                    scale: 0.95,
+                    opacity: 0.2,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top top",
+                        end: "bottom center",
+                        scrub: true
+                    }
+                });
+            };
+
+            // Check if preloader is already done (fallback) or wait for event
+            // For now, simpler: Just listen for event. 
+            // In a real app, strict mode might mess this up, so we'd check global flag.
+            // Let's assume Preloader always runs on mount if present.
+            
+            const handlePreloaderComplete = () => {
+                runHeroSequence();
+            };
+
+            window.addEventListener('preloader-complete', handlePreloaderComplete);
+            
+            // Failsafe: If no preloader event after 3s, force start
+            const failsafe = setTimeout(runHeroSequence, 3500);
+
+            return () => {
+                window.removeEventListener('preloader-complete', handlePreloaderComplete);
+                clearTimeout(failsafe);
+            };
+
+        }, containerRef);
+
+        return () => ctx.revert();
+    }, []);
+
 
     useEffect(() => {
         const updateDimensions = () => {
@@ -111,12 +268,12 @@ export default function HeroVolumetric({
 
             // --- 2. Create Buffers ---
             
-            // Particle Struct: 4 vec4s = 4 * 4 * 4 bytes = 64 bytes
+            // Particle Struct: 64 bytes
             const particleSize = 64;
             const totalBufferSize = particleSize * PARTICLE_COUNT;
 
             // Initial Data
-            const initialParticleData = new Float32Array(PARTICLE_COUNT * 16); // 16 floats per particle
+            const initialParticleData = new Float32Array(PARTICLE_COUNT * 16); 
             for (let i = 0; i < PARTICLE_COUNT; i++) {
                 const off = i * 16;
                 // pos (xyz, w=radius)
@@ -131,11 +288,11 @@ export default function HeroVolumetric({
                 initialParticleData[off + 6] = initialParticleData[off + 2];
                 initialParticleData[off + 7] = 1.0;
 
-                // color (rgba) - Pure Black for Maximum Contrast
-                initialParticleData[off + 8] = 0.0; // r (Pure Black)
-                initialParticleData[off + 9] = 0.0; // g
-                initialParticleData[off + 10] = 0.0; // b
-                initialParticleData[off + 11] = 0.9 + Math.random() * 0.1; // a (Very High opacity)
+                // color (rgba) - S-Tier Platinum (#e4e0db -> 0.894, 0.878, 0.859)
+                initialParticleData[off + 8] = 0.894; // r
+                initialParticleData[off + 9] = 0.878; // g
+                initialParticleData[off + 10] = 0.859; // b (Platinum Warmth)
+                initialParticleData[off + 11] = 0.6; // a (Translucent "Dust")
 
                 // velocity_field (flow, w=turb)
                 initialParticleData[off + 12] = 0;
@@ -157,7 +314,7 @@ export default function HeroVolumetric({
                 usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
             });
 
-            // --- 2b. Generate Target Points (6 Product Shapes) ---
+            // --- 2b. Generate Target Points ---
             const getMultiTargetPoints = (count: number): Float32Array => {
                 const offscreen = document.createElement('canvas');
                 offscreen.width = 1000;
@@ -197,7 +354,7 @@ export default function HeroVolumetric({
                     const data = imageData.data;
                     const points: number[] = [];
 
-                    for (let y = 0; y < 300; y += 4) { // slightly sparser for speed
+                    for (let y = 0; y < 300; y += 4) { 
                         for (let x = 0; x < 1000; x += 4) {
                             const i = (y * 1000 + x) * 4;
                             if (data[i] > 100) {
@@ -219,7 +376,7 @@ export default function HeroVolumetric({
                             // Perfect Sphere Logic
                             const phi = Math.acos(1 - 2 * Math.random());
                             const theta = 2 * Math.PI * Math.random();
-                            const r = 8 + (Math.random() - 0.5) * 1.5; // Slight depth variation
+                            const r = 8 + (Math.random() - 0.5) * 1.5; 
                             totalData[off + 0] = r * Math.sin(phi) * Math.cos(theta);
                             totalData[off + 1] = r * Math.sin(phi) * Math.sin(theta);
                             totalData[off + 2] = r * Math.cos(phi);
@@ -240,20 +397,12 @@ export default function HeroVolumetric({
             new Float32Array(targetBuffer.getMappedRange()).set(targetPointsData);
             targetBuffer.unmap();
 
-            // SimParams: 11 floats (original) + 3 morph floats + 3 color floats = 17 floats.
-            // Alignment: 4 floats (16 bytes) alignment boundary.
-            // Layout:
-            // [0..2] gravity, [3] pad
-            // [4..6] mouse_pos, [7] pad
-            // [8] radius, [9] damping, [10] time, [11] delta_time
-            // [12] sa, [13] sb, [14] lerp, [15] noise
-            // [16] seed, [17..19] color_rgb
-            const simParamsBufferSize = 80; // (20 floats * 4) 
+            // SimParams
+            const simParamsBufferSize = 80; 
             const simParamsBuffer = device.createBuffer({
                 size: simParamsBufferSize,
                 usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
             });
-            const simParamsValues = new Float32Array(20);
 
             // Render Uniforms
             const renderUniformsBufferSize = 64 + 16 + 16; // Mat4 + Vec3 + Pad
@@ -274,28 +423,22 @@ export default function HeroVolumetric({
                 // 1. Clear with transparent
                 ctx.clearRect(0, 0, size, size);
 
-                // 2. Soft Glow Core (Radial Gradient)
+                // 2. DIAMOND CLEANSE: Pure Soft Light (No Dust Artifacts)
                 const center = size / 2;
                 const grad = ctx.createRadialGradient(center, center, 0, center, center, center);
-                grad.addColorStop(0.0, 'rgba(255, 255, 255, 1.0)'); // Hot core
-                grad.addColorStop(0.2, 'rgba(255, 255, 255, 0.8)'); // Bright aura
-                grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.2)'); // Soft falloff
-                grad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');         // Fade to zero
-                
-                ctx.fillStyle = grad;
-                ctx.fillRect(0, 0, size, size);
+                grad.addColorStop(0.0, 'rgba(255, 255, 255, 1.0)'); // Pure Hot Core
+                grad.addColorStop(0.15, 'rgba(255, 255, 255, 0.9)'); // High brightness area
+                grad.addColorStop(0.4, 'rgba(255, 255, 255, 0.3)'); // Soft aura
+                grad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');         // Smooth falloff
 
-                // 3. Bokeh / Dust Artifacts (Imperfections)
-                // Adds that "lens dirt" look
-                for (let i = 0; i < 20; i++) {
-                    const x = Math.random() * size;
-                    const y = Math.random() * size;
-                    const r = Math.random() * 2 + 0.5;
-                    ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.3})`; // Subtle specs
-                    ctx.beginPath();
-                    ctx.arc(x, y, r, 0, Math.PI * 2);
-                    ctx.fill();
-                }
+                ctx.fillStyle = grad;
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.beginPath();
+                ctx.arc(center, center, center, 0, Math.PI * 2);
+                ctx.fill();
+
+                // REMOVED: Dust Artifacts Loop (The "Dirty" Look source)
+                // We want pure light, not dirt.
 
                 return ctx.getImageData(0, 0, size, size).data;
             };
@@ -427,9 +570,6 @@ export default function HeroVolumetric({
             let frame = 0;
             const startTime = performance.now();
 
-            // --- State Locked to Sphere (No Morph) ---
-            // Shape is hardcoded to 0 (Sphere) in render loop
-
             const render = () => {
                 if (canceled) return;
 
@@ -453,13 +593,6 @@ export default function HeroVolumetric({
                 f32[3] = 0.0; // grav z
                 
                 // Mouse Interaction (Live)
-                // We use a mutable ref outside the useEffect enclosure, 
-                // but wait, we need access to it.
-                // The init function is inside useEffect, so it captures scope.
-                // We need a way to read latest mouse. 
-                // Let's use a mutable object defined in useEffect scope?
-                // OR better: The ref is defined in component scope. 
-                
                 f32[4] = mouseRef.current.x; // mouse x
                 f32[5] = mouseRef.current.y; // mouse y
                 f32[6] = 0.0; // mouse z
@@ -469,13 +602,14 @@ export default function HeroVolumetric({
                 
                 f32[10] = propsRef.current.targetShapeA;
                 f32[11] = propsRef.current.targetShapeB;
-                f32[14] = propsRef.current.targetLerp;
-                f32[15] = propsRef.current.noiseIntensity;
-                f32[16] = propsRef.current.explosionSeed;
-                const [cr, cg, cb] = parseColor(propsRef.current.baseColor || '#000000');
-                f32[17] = cr;
-                f32[18] = cg;
-                f32[19] = cb;
+                f32[12] = propsRef.current.targetLerp;
+                f32[13] = propsRef.current.noiseIntensity;
+                f32[14] = propsRef.current.explosionSeed;
+                const [cr, cg, cb] = parseColor(propsRef.current.baseColor || '#e4e0db'); // Default to Platinum
+                f32[15] = cr;
+                f32[16] = cg;
+                f32[17] = cb;
+                f32[18] = 0.6; // Alpha (Opacity) - Boosted to 0.6 for "Diamond" Brightness (Clean White)
 
                 device.queue.writeBuffer(simParamsBuffer, 0, simParamsBufferData);
             
@@ -485,10 +619,15 @@ export default function HeroVolumetric({
                 mat4.perspective(projectionMatrix, Math.PI / 4, aspect, 0.1, 100.0);
                 
                 const viewMatrix = mat4.create();
-                // Static camera with subtle drift, offset to show sphere on RIGHT
-                const camX = Math.sin(time * 0.08) * 1.5; // Gentle drift
-                const camZ = 22; // Pull back
-                // Look at [-6, 0, 0] to shift sphere (at origin) to the RIGHT of viewport
+                
+                // --- S-TIER: ROTATION (CLOCKWISE) ---
+                const rotationSpeed = 0.2;
+                const radius = 22;
+                // Clockwise: +sin for X, +cos for Z (Orbit)
+                const camX = Math.sin(time * rotationSpeed) * radius + (Math.sin(time * 0.08) * 1.5); // Rotation + Drift
+                const camZ = Math.cos(time * rotationSpeed) * radius; 
+                
+                // Look at origin (Sphere center)
                 mat4.lookAt(viewMatrix, [camX, 2, camZ], [-6, 0, 0], [0, 1, 0]);
                 
                 const viewProj = mat4.create();
@@ -541,7 +680,6 @@ export default function HeroVolumetric({
         return () => {
             canceled = true;
             cancelAnimationFrame(animationFrameId);
-            // No interval to clear - shape is locked
         };
     }, [isMobile]);
 
@@ -559,57 +697,84 @@ export default function HeroVolumetric({
 
     if (error || isMobile) {
         // Fallback for non-WebGPU devices or mobile
-        // Returns a white background with subtle light blue grid
         return (
             <div className="w-full h-screen relative overflow-hidden bg-cosmic-cream">
-                {/* SVG Grid Pattern */}
-                <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <pattern id="hero-grid" width="50" height="50" patternUnits="userSpaceOnUse">
-                            <path 
-                                d="M 50 0 L 0 0 0 50" 
-                                fill="none" 
-                                stroke="#E0F2FE" 
-                                strokeWidth="1"
-                                opacity="0.3"
-                            />
-                        </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#hero-grid)" />
-                </svg>
-                
-                {/* Animated gradient orbs for visual interest */}
-                <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-sky-100/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-                <div className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-blue-50/30 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
+                 <div className="s-grid" style={{position: 'relative', zIndex: 2, height: '100%', alignContent: 'center'}}>
+                    <div style={{gridColumn: '1 / span 9'}}>
+                         <span className="text-label">
+                            <div className="u-clip-parent"><span className="u-clip-child">Wealth Management</span></div>
+                        </span>
+                        <h1 className="text-hero">
+                            <div className="u-clip-parent"><span className="u-clip-child">Certum</span></div>
+                            <div className="u-clip-parent"><span className="u-clip-child text-accent">Prime</span></div>
+                        </h1>
+                        <div style={{fontSize: 'var(--font-s-p)', maxWidth: '30vw', marginTop: '2vw', color: 'var(--color-white-08)'}}>
+                             <div className="u-clip-parent"><span className="u-clip-child">
+                                Preservação de patrimônio através de inteligência soberana.
+                            </span></div>
+                        </div>
+                    </div>
+                 </div>
+                <div className="absolute inset-0 w-full h-full bg-slate-900/5" />
             </div>
         );
     }
 
     return (
-        <div className="w-full h-screen relative overflow-hidden bg-cosmic-cream">
+        <div ref={containerRef} className="w-full h-screen relative overflow-hidden bg-background">
+            
             {/* CSS Grid Background (Desktop) - Enhanced Visibility & Neutrality */}
             <div 
-                className="absolute inset-0 w-full h-full"
+                className="absolute inset-0 w-full h-full pointer-events-none"
                 style={{
                     backgroundImage: `
-                        linear-gradient(to right, #000000 1px, transparent 1px),
-                        linear-gradient(to bottom, #000000 1px, transparent 1px)
+                        linear-gradient(to right, #ffffff 1px, transparent 1px),
+                        linear-gradient(to bottom, #ffffff 1px, transparent 1px)
                     `,
                     backgroundSize: '80px 80px',
-                    opacity: 0.1 // Sober, but present black grid
+                    opacity: 0.05 // Subtle grid
                 }}
             />
-            {/* Texture Overlay (Grain) - Tactile feel */}
-            <div className="absolute inset-0 w-full h-full opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-multiply" />
-            
-            {/* WebGPU Canvas (Particles on top of grid) */}
-            <canvas 
-                ref={canvasRef} 
-                className="absolute inset-0 w-full h-full block touch-none cursor-crosshair"
-                width={dimensions.width} 
-                height={dimensions.height}
-                onPointerMove={handlePointerMove}
-            />
+
+            {/* LAYER 1: CANVAS (THE SPHERE) */}
+            <div id="canvas-container" className="absolute inset-0 w-full h-full z-(--z-canvas) opacity-0">
+                <canvas 
+                    ref={canvasRef} 
+                    className="absolute inset-0 w-full h-full block touch-none cursor-crosshair"
+                    width={dimensions.width} 
+                    height={dimensions.height}
+                    onPointerMove={handlePointerMove}
+                />
+            </div>
+
+            {/* LAYER 2: CONTENT (THE GRID) */}
+            <div className="s-grid relative z-(--z-content) h-full content-center pointer-events-none">
+                <div className="col-span-9 pointer-events-auto">
+                    
+                    <span className="text-label">
+                        <div className="u-clip-parent"><span className="u-clip-child">Wealth Management</span></div>
+                    </span>
+
+                    <h1 className="text-hero">
+                        <div className="u-clip-parent"><span className="u-clip-child text-(--color-light)">
+                            {/* Force Platinum Color for Certum */}
+                            <ScrambleText text="Certum" delay={600} />
+                        </span></div>
+                        <div className="u-clip-parent"><span className="u-clip-child text-(--color-light)">
+                            {/* Prime starts Platinum, resolves to White */}
+                            <ScrambleText text="Prime" finishedClassName="text-[var(--color-white)]" delay={800} />
+                        </span></div>
+                    </h1>
+
+                    <div className="text-hero-desc" style={{fontSize: 'var(--font-s-p)', maxWidth: '24vw', marginTop: '2vw', color: 'var(--color-white-08)'}}>
+                        <div className="u-clip-parent"><span className="u-clip-child">
+                            Preservação de patrimônio através de inteligência soberana.
+                        </span></div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     );
 }
