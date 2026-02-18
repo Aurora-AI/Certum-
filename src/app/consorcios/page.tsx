@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import CinematicSlide from '@/components/sections/consorcios/CinematicSlide';
+import ConsortiumHero from '@/components/sections/consorcios/ConsortiumHero';
 
 // Register GSAP Plugin
 if (typeof window !== 'undefined') {
@@ -203,6 +204,9 @@ export default function ConsorciosPage() {
 
   return (
     <main className="relative w-full bg-cosmic-cream text-black selection:bg-black selection:text-white">
+      
+      {/* S-Tier Hero Section */}
+      <ConsortiumHero />
       
       {/* Cinematic Viewport Container */}
       <div 
