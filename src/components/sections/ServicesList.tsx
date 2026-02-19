@@ -17,31 +17,55 @@ const ServicesList = () => {
 
     useLayoutEffect(() => {
         const ctx = gsap.context(() => {
-            // Mouse Follower
+            // Mouse Follower Setup
             const xTo = gsap.quickTo(revealImgRef.current, "x", { duration: 0.6, ease: "power3", anchor: 0.5 });
             const yTo = gsap.quickTo(revealImgRef.current, "y", { duration: 0.6, ease: "power3", anchor: 0.5 });
 
-            window.addEventListener("mousemove", (e) => {
+            // Shared mouse move handler
+            const handleMouseMove = (e: MouseEvent) => {
                 if (!revealImgRef.current) return;
-                // Move image to cursor position
                 xTo(e.clientX);
                 yTo(e.clientY);
+            };
+
+            // Add Listener
+            window.addEventListener("mousemove", handleMouseMove);
+
+            // AUTO-HIDE MECHANISM: Force hide lens when scrolling away
+            ScrollTrigger.create({
+                trigger: containerRef.current,
+                start: "top bottom",
+                end: "bottom top",
+                onLeave: () => {
+                    gsap.to(revealImgRef.current, { scale: 0, opacity: 0, duration: 0.3, overwrite: true });
+                    setActiveIndex(null);
+                },
+                onLeaveBack: () => {
+                    gsap.to(revealImgRef.current, { scale: 0, opacity: 0, duration: 0.3, overwrite: true });
+                    setActiveIndex(null);
+                }
             });
+
+            // Return cleanup function for the listener specifically
+            return () => {
+                window.removeEventListener("mousemove", handleMouseMove);
+            };
 
         }, containerRef);
 
+        // React Cleanup: Revert GSAP + Remove Listener (redundancy safety)
         return () => ctx.revert();
     }, []);
 
     // Handle Hover Reveal
     const handleMouseEnter = (index: number) => {
         setActiveIndex(index);
-        gsap.to(revealImgRef.current, { scale: 1, opacity: 1, duration: 0.4, ease: "power2.out" });
+        gsap.to(revealImgRef.current, { scale: 1, opacity: 1, duration: 0.4, ease: "power2.out", overwrite: true });
     };
 
     const handleMouseLeave = () => {
         setActiveIndex(null);
-        gsap.to(revealImgRef.current, { scale: 0, opacity: 0, duration: 0.3, ease: "power2.in" });
+        gsap.to(revealImgRef.current, { scale: 0, opacity: 0, duration: 0.3, ease: "power2.in", overwrite: true });
     };
 
     return (

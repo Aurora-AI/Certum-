@@ -122,7 +122,7 @@ const ContactFooter = () => {
                 
                 <address style={{ fontStyle: 'normal', fontSize: '0.9vw', color: 'rgba(255,255,255,0.4)', lineHeight: '1.6' }}>
                     <strong>Certum Prime Headquarters</strong><br/>
-                    Av. do Batel, 1230 - Curitiba, PR<br/>
+                    Curitiba, PR<br/>
                     Brasil - 80420-090
                 </address>
 
@@ -152,7 +152,6 @@ const ContactFooter = () => {
                 },
                 "address": {
                     "@type": "PostalAddress",
-                    "streetAddress": "Av. do Batel, 1230",
                     "addressLocality": "Curitiba",
                     "addressRegion": "PR",
                     "postalCode": "80420-090",
