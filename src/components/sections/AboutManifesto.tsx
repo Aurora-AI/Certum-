@@ -367,18 +367,19 @@ const AboutManifesto = () => {
                     <div className="col-span-12 lg:col-start-8 lg:col-span-5 flex flex-col justify-center">
                          <LineReveal delay={0}>
                              <h2 className="text-[clamp(32px,4vw,64px)] leading-[1.1] tracking-[-0.02em] font-normal text-(--color-dark) mb-[3vw]">
-                                Onde o seu legado é inquestionável.
+                                Para quem chegou ao topo, a missão é nunca mais voltar.
                              </h2>
                         </LineReveal>
                         <ParagraphReveal delay={0.2}>
                             <p className="text-[clamp(20px,1.6vw,32px)] leading-[1.3] font-normal text-(--color-dark) mb-[2.5vw]">
-                                O protocolo definitivo de proteção e seguros de elite. Para quem já chegou lá e não pretende voltar.
+                                Blindagem patrimonial e segurança biológica. Do Seguro de Vida com saque programado à gestão de saúde de elite. 
+                                Proteção inexpugnável para o seu legado hoje.
                             </p>
                         </ParagraphReveal>
                         <ParagraphReveal delay={0.4}>
                             <MagneticButton href="#insurance">
                                 <span className="text-[14px] tracking-[0.15em] uppercase text-(--color-dark) font-bold group-hover:text-amber-700 transition-colors">
-                                    Conhecer Protocolos
+                                    Garantir Minha Blindagem
                                 </span>
                             </MagneticButton>
                         </ParagraphReveal>
