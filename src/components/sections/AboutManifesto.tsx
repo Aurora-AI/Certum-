@@ -207,9 +207,9 @@ const AboutManifesto = () => {
                                          </div>
                                      </div>
                                 </div>
-                                <div ref={photo1Ref} className="portal-photo-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] z-20 overflow-hidden shadow-xl">
+                                <div ref={photo1Ref} className="portal-photo-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] z-20 overflow-hidden shadow-xl will-change-transform">
                                     <video 
-                                        className="w-full h-full object-cover sepia-15 contrast-120 grayscale group-hover:grayscale-0 transition-all duration-700"
+                                        className="w-full h-full object-cover sepia-15 contrast-120 grayscale group-hover:grayscale-0 transition-all duration-700 will-change-transform"
                                         autoPlay muted loop playsInline
                                         src="/assets/manifesto_video_2.mp4"
                                     />
@@ -283,9 +283,9 @@ const AboutManifesto = () => {
                                 </div>
 
                                 {/* THE SEED */}
-                                <div ref={photo2Ref} className="portal-photo-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] z-20 overflow-hidden shadow-xl">
+                                <div ref={photo2Ref} className="portal-photo-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] z-20 overflow-hidden shadow-xl will-change-transform">
                                     <video 
-                                        className="w-full h-full object-cover contrast-110 saturate-110"
+                                        className="w-full h-full object-cover contrast-110 saturate-110 will-change-transform"
                                         autoPlay muted loop playsInline
                                         src="/assets/manifesto_video1.mp4"
                                     />

@@ -2,6 +2,9 @@
 
 import React, { useRef, useLayoutEffect, useState } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const services = [
     { id: "01", title: "Alavancagem Patrimonial", subtitle: "Imóveis, Terrenos e Construção", meta: "High-Ticket Real Estate", imageColor: "#4a4a4a" },
