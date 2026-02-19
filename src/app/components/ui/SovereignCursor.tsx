@@ -34,6 +34,19 @@ export default function SovereignCursor({
   const isHovering = useRef(false);
   const currentTarget = useRef<HTMLElement | null>(null);
 
+  // Mobile detection
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Trail configuration
   const trailColors = [
     `${color}40`,
@@ -268,6 +281,8 @@ export default function SovereignCursor({
       document.removeEventListener("mouseleave", handleMouseLeave, true);
     };
   }, [updateCursor, handleMouseMove, handleMouseEnter, handleMouseLeave, handleClick]);
+
+  if (isMobile) return null;
 
   return (
     <>
