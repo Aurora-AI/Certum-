@@ -8,6 +8,14 @@ const spaceMono = Space_Mono({ weight: '400', subsets: ['latin'], variable: '--f
 const newsreader = Newsreader({ subsets: ['latin'], style: 'italic', variable: '--font-newsreader' });
 const poppins = Poppins({ weight: ['300', '400', '500', '600', '700'], subsets: ['latin'], variable: '--font-poppins' });
 
+export const viewport = {
+  themeColor: '#0d0e13',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
   title: 'Certum Prime | Consórcios e Seguros',
   description: 'Representante autorizado Rodobens. Consórcios de automóveis, imóveis e veículos comerciais com as melhores condições do mercado. Adquira seu bem sem juros e com planejamento financeiro inteligente.',

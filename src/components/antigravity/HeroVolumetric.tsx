@@ -700,7 +700,7 @@ export default function HeroVolumetric({
         return (
             <div className="w-full h-screen relative overflow-hidden bg-cosmic-cream">
                  <div className="s-grid" style={{position: 'relative', zIndex: 2, height: '100%', alignContent: 'center'}}>
-                    <div style={{gridColumn: '1 / span 9'}}>
+                    <div className="col-span-12 md:col-span-9">
                          <span className="text-label">
                             <div className="u-clip-parent"><span className="u-clip-child">Wealth Management</span></div>
                         </span>
@@ -708,7 +708,7 @@ export default function HeroVolumetric({
                             <div className="u-clip-parent"><span className="u-clip-child">Certum</span></div>
                             <div className="u-clip-parent"><span className="u-clip-child text-accent">Prime</span></div>
                         </h1>
-                        <div style={{fontSize: 'var(--font-s-p)', maxWidth: '30vw', marginTop: '2vw', color: 'var(--color-white-08)'}}>
+                        <div className="text-[var(--font-s-p)] max-w-[80vw] md:max-w-[30vw] mt-[2vw] text-white/80">
                              <div className="u-clip-parent"><span className="u-clip-child">
                                 Não preservamos patrimônio. Criamos.
                             </span></div>
@@ -747,9 +747,8 @@ export default function HeroVolumetric({
                 />
             </div>
 
-            {/* LAYER 2: CONTENT (THE GRID) */}
-            <div className="s-grid relative z-(--z-content) h-full content-center pointer-events-none">
-                <div className="col-span-9 pointer-events-auto">
+            <div className="s-grid relative z-(--z-content) h-full content-center pointer-events-none px-[5vw]">
+                <div className="col-span-12 md:col-span-9 pointer-events-auto">
                     
                     <span className="text-label">
                         <div className="u-clip-parent"><span className="u-clip-child">Wealth Management</span></div>
@@ -766,7 +765,7 @@ export default function HeroVolumetric({
                         </span></div>
                     </h1>
 
-                    <div className="text-hero-desc" style={{fontSize: 'var(--font-s-p)', maxWidth: '24vw', marginTop: '2vw', color: 'var(--color-white-08)'}}>
+                    <div className="text-hero-desc text-[var(--font-s-p)] max-w-[80vw] md:max-w-[24vw] mt-[4vw] md:mt-[2vw] text-white/80">
                         <div className="u-clip-parent"><span className="u-clip-child">
                             Não preservamos patrimônio. Criamos.
                         </span></div>

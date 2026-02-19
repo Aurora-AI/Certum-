@@ -22,11 +22,11 @@
    * ----------------------------------------------------------------- */
   
   /* Font Sizes */
-  --font-s-hero:      10.5vw;    /* O H1 Gigante */
-  --font-s-h1:        5.5vw;     /* Títulos de Seção */
-  --font-s-h2:        3.6111vw;  /* Subtítulos */
-  --font-s-p:         1.1111vw;  /* Corpo de texto (~16px em 1440px) */
-  --font-s-label:     0.85vw;    /* Pequenos labels técnicos */
+  --font-s-hero:      clamp(48px, 10.5vw, 220px);    /* O H1 Gigante (Min 48px) */
+  --font-s-h1:        clamp(32px, 5.5vw, 120px);     /* Títulos de Seção (Min 32px) */
+  --font-s-h2:        clamp(22px, 3.6111vw, 80px);   /* Subtítulos (Min 22px) */
+  --font-s-p:         clamp(16px, 1.1111vw, 24px);   /* Corpo de texto (Min 16px - Leitura) */
+  --font-s-label:     clamp(12px, 0.85vw, 16px);     /* Pequenos labels técnicos (Min 12px) */
 
   /* Letter Spacing (Tracking) - O segredo editorial */
   /* Quanto maior a fonte, mais negativo é o tracking */
@@ -42,8 +42,8 @@
    * 03. GRID & ESTRUTURA
    * ----------------------------------------------------------------- */
   --grid-columns:     12;
-  --grid-gap:         2.2222vw;  /* Gap fluido */
-  --page-margin:      4.4444vw;  /* Margem lateral fluida */
+  --grid-gap:         clamp(16px, 2.2222vw, 40px);  /* Gap fluido (Min 10px) */
+  --page-margin:      clamp(20px, 4.4444vw, 100px);  /* Margem lateral fluida (Min 20px - Safe Area) */
 
   /* -----------------------------------------------------------------
    * 04. FÍSICA & MOVIMENTO (MOTION)

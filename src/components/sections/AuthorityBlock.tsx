@@ -66,7 +66,7 @@ const AuthorityBlock = () => {
                 </div>
 
                 {/* 18 Bi Monument */}
-                <div className="monumental-number relative text-[25vw] leading-none font-bold text-white opacity-[0.03] mix-blend-overlay transform translate-x-[5vw]">
+                <div className="monumental-number relative text-[35vw] lg:text-[25vw] leading-none font-bold text-white opacity-[0.03] mix-blend-overlay transform translate-x-[5vw]">
                     18
                     <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] animate-[shimmer_8s_infinite_2s] pointer-events-none"></div>
                 </div>
@@ -86,7 +86,7 @@ const AuthorityBlock = () => {
                 {/* 2.2 The Partnership (Centerpiece) */}
                 <div className="flex items-center gap-[4vw] mb-[2vw]">
                     {/* CERTUM */}
-                    <h2 className="text-[5vw] font-bold tracking-tighter text-white">
+                    <h2 className="text-[10vw] lg:text-[5vw] font-bold tracking-tighter text-white">
                         CERTUM
                     </h2>
                     
@@ -94,13 +94,13 @@ const AuthorityBlock = () => {
                     <div className="h-[4vw] w-px bg-linear-to-b from-transparent via-accent to-transparent opacity-50"></div>
 
                     {/* RODOBENS */}
-                    <h2 className="text-[5vw] font-bold tracking-tighter text-white">
+                    <h2 className="text-[10vw] lg:text-[5vw] font-bold tracking-tighter text-white">
                         RODOBENS
                     </h2>
                 </div>
 
                 {/* 2.3 The Explanation (Subtitle) */}
-                <p className="text-[1.2vw] font-light max-w-[40vw] leading-relaxed text-white/50">
+                <p className="text-[3.5vw] lg:text-[1.2vw] font-light max-w-[85vw] lg:max-w-[40vw] leading-relaxed text-white/50">
                     A solidez de <strong className="text-white">70 anos de história</strong> e <strong className="text-white">18 bilhões</strong> em ativos sob gestão. 
                     <br/>Uma aliança forjada em performance absoluta.
                 </p>

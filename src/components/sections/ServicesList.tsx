@@ -75,14 +75,14 @@ const ServicesList = () => {
         <section ref={containerRef} className="services-section s-grid relative w-full bg-[#0d0e13] text-light" style={{paddingTop: '10vw', paddingBottom: '10vw'}}>
             
             {/* Context Label */}
-            <div className="col-start-2 col-span-3 mb-[4vw]">
+            <div className="col-span-12 lg:col-start-2 lg:col-span-3 mb-[8vw] lg:mb-[4vw]">
                 <span className="text-label block opacity-60 tracking-widest text-xs uppercase" style={{ color: 'var(--color-accent)' }}>
                     /// 03. Expertise
                 </span>
             </div>
 
             {/* List Container */}
-            <div className="service-list-container col-start-5 col-span-8 flex flex-col group relative z-20">
+            <div className="service-list-container col-span-12 lg:col-start-5 lg:col-span-8 flex flex-col group relative z-20">
                 
                 {services.map((service, index) => (
                     <div 
@@ -96,7 +96,7 @@ const ServicesList = () => {
                                 {service.id}
                             </span>
                             <div>
-                                <h3 className="service-title text-[4vw] font-light text-white m-0 tracking-tight transition-transform duration-400">
+                                <h3 className="service-title text-[6vw] lg:text-[4vw] font-light text-white m-0 tracking-tight transition-transform duration-400">
                                     {service.title}
                                 </h3>
                                 <p className="service-subtitle">
