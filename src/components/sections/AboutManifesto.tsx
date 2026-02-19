@@ -95,6 +95,8 @@ const AboutManifesto = () => {
     // Act II: O Manifesto (Restored)
     const frame2Ref = useRef<HTMLDivElement>(null);
     const photo2Ref = useRef<HTMLDivElement>(null);
+    const frame3Ref = useRef<HTMLDivElement>(null);
+    const photo3Ref = useRef<HTMLDivElement>(null);
 
     useLayoutEffect(() => {
         const ctx = gsap.context(() => {
@@ -328,16 +330,40 @@ const AboutManifesto = () => {
 
                 </div>
 
-                {/* --- ACT III: PROTEÇÃO (COMING SOON) --- */}
-                <div className="s-grid relative items-center px-[5vw] opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-1000">
+                {/* --- ACT III: PROTEÇÃO (THE SHIELD) --- */}
+                <div className="s-grid relative items-center px-[5vw] mb-[10vw]">
+                    {/* LEFT: PORTAL VISUAL */}
                     <div className="col-span-12 lg:col-span-6 relative mb-[10vw] lg:mb-0">
-                         <div className="portal-container relative w-full md:w-[35vw] mx-auto lg:mx-0" style={{ aspectRatio: '9/16' }}>
-                             <div className="portal-frame-wrapper absolute inset-0 z-10 overflow-hidden rounded-[4px] border border-dashed border-dark/20 flex flex-col items-center justify-center">
-                                 <span className="text-[clamp(10px,0.75vw,14px)] tracking-[0.3em] uppercase opacity-40 mb-4">Em Breve</span>
-                                 <h3 className="text-xl font-mono opacity-20 select-none">Protection Layer</h3>
-                             </div>
-                         </div>
+                         <a href="#insurance" className="group block cursor-pointer">
+                            <div className="portal-container relative w-full md:w-[35vw] mx-auto lg:mx-0" style={{ aspectRatio: '9/16' }}>
+                                <div ref={frame3Ref} className="portal-frame-wrapper absolute inset-0 z-10 overflow-hidden rounded-[4px] shadow-[0_20px_60px_rgba(0,0,0,0.3)] origin-center transition-transform duration-700 group-hover:scale-[1.02]">
+                                     <Image
+                                        src="/assets/The_Shield.png"
+                                        alt="The Shield Frame"
+                                        fill
+                                        className="object-cover scale-[1.05]"
+                                     />
+                                     <div className="absolute inset-0 group-hover:bg-transparent transition-colors duration-500"></div>
+                                     
+                                     {/* HOVER LABEL */}
+                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                         <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 text-white uppercase tracking-widest text-xs font-medium">
+                                             Ativar Proteção
+                                         </div>
+                                     </div>
+                                </div>
+                                <div ref={photo3Ref} className="portal-photo-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] z-20 overflow-hidden shadow-xl will-change-transform">
+                                    <video 
+                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 will-change-transform"
+                                        autoPlay muted loop playsInline
+                                        src="/assets/The_Shield.mp4"
+                                    />
+                                </div>
+                            </div>
+                        </a>
                     </div>
+
+                    {/* RIGHT: TEXT CONTENT */}
                     <div className="col-span-12 lg:col-start-8 lg:col-span-5 flex flex-col justify-center">
                          <LineReveal delay={0}>
                              <h2 className="text-[clamp(32px,4vw,64px)] leading-[1.1] tracking-[-0.02em] font-normal text-(--color-dark) mb-[3vw]">
@@ -346,8 +372,15 @@ const AboutManifesto = () => {
                         </LineReveal>
                         <ParagraphReveal delay={0.2}>
                             <p className="text-[clamp(20px,1.6vw,32px)] leading-[1.3] font-normal text-(--color-dark) mb-[2.5vw]">
-                                Em breve: O protocolo definitivo de proteção e seguros de elite. Para quem já chegou lá e não pretende voltar.
+                                O protocolo definitivo de proteção e seguros de elite. Para quem já chegou lá e não pretende voltar.
                             </p>
+                        </ParagraphReveal>
+                        <ParagraphReveal delay={0.4}>
+                            <MagneticButton href="#insurance">
+                                <span className="text-[14px] tracking-[0.15em] uppercase text-(--color-dark) font-bold group-hover:text-amber-700 transition-colors">
+                                    Conhecer Protocolos
+                                </span>
+                            </MagneticButton>
                         </ParagraphReveal>
                     </div>
                 </div>
