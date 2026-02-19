@@ -698,24 +698,26 @@ export default function HeroVolumetric({
     if (error || isMobile) {
         // Fallback for non-WebGPU devices or mobile
         return (
-            <div className="w-full h-screen relative overflow-hidden bg-cosmic-cream">
-                 <div className="s-grid" style={{position: 'relative', zIndex: 2, height: '100%', alignContent: 'center'}}>
-                    <div className="col-span-12 md:col-span-9">
-                         <span className="text-label">
+            <div className="w-full h-screen relative overflow-hidden bg-[#0d0e13]">
+                 {/* Volumetric Gradient Simulation */}
+                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,_rgba(228,224,219,0.15)_0%,_rgba(13,14,19,1)_70%)]" />
+                 
+                 <div className="s-grid relative z-10 h-full content-center px-[5vw]">
+                    <div className="col-span-12">
+                         <span className="text-label block mb-[4vw] opacity-60 tracking-widest uppercase text-xs">
                             <div className="u-clip-parent"><span className="u-clip-child">Wealth Management</span></div>
                         </span>
-                        <h1 className="text-hero">
-                            <div className="u-clip-parent"><span className="u-clip-child">Certum</span></div>
-                            <div className="u-clip-parent"><span className="u-clip-child text-accent">Prime</span></div>
+                        <h1 className="text-hero leading-[0.9]">
+                            <div className="u-clip-parent mb-[1vw]"><span className="u-clip-child text-white text-[15vw] font-light tracking-[-0.03em]">Certum</span></div>
+                            <div className="u-clip-parent"><span className="u-clip-child text-accent text-[15vw] font-light tracking-[-0.03em]">Prime</span></div>
                         </h1>
-                        <div className="text-[var(--font-s-p)] max-w-[80vw] md:max-w-[30vw] mt-[2vw] text-white/80">
-                             <div className="u-clip-parent"><span className="u-clip-child">
-                                Não preservamos patrimônio. Criamos.
+                        <div className="mt-[6vw] max-w-[80vw] text-white/60">
+                             <div className="u-clip-parent"><span className="u-clip-child text-[1.1rem] leading-[1.4]">
+                                Não preservamos patrimônio.<br />Criamos.
                             </span></div>
                         </div>
                     </div>
                  </div>
-                <div className="absolute inset-0 w-full h-full bg-slate-900/5" />
             </div>
         );
     }
