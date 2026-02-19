@@ -63,6 +63,8 @@ export const metadata: Metadata = {
   },
 };
 
+import SovereignCursor from '@/app/components/ui/SovereignCursor';
+
 export default function RootLayout({
   children,
 }: {
@@ -76,6 +78,7 @@ export default function RootLayout({
         <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap" rel="stylesheet" />
       </head>
       <body className="bg-cosmic-cream text-carbon-black antialiased overflow-x-hidden selection:bg-carbon-black selection:text-absolute-white">
+        <SovereignCursor color="#e0ccbb" dotSize={8} circleSize={40} />
         {children}
       </body>
     </html>
