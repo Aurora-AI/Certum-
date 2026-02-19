@@ -221,24 +221,32 @@ const AboutManifesto = () => {
 
                     {/* RIGHT: TEXT CONTENT */}
                     <div className="col-span-12 lg:col-start-8 lg:col-span-5 flex flex-col justify-center">
-                        <LineReveal delay={0}>
+                        <ParagraphReveal delay={0}>
+                            <div className="flex items-center gap-[10px] mb-[3vw]">
+                                <span className="text-[14px] text-(--color-dark) opacity-40 leading-none">+</span>
+                                <span className="text-[clamp(10px,0.7vw,14px)] uppercase tracking-[0.2em] text-(--color-dark) opacity-60 font-medium">
+                                    Consórcios
+                                </span>
+                            </div>
+                        </ParagraphReveal>
+                        <LineReveal delay={0.1}>
                              <h2 className="text-[clamp(32px,4vw,64px)] leading-[1.1] tracking-[-0.02em] font-normal text-(--color-dark) mb-[1.5vw]">
                                 E se você pudesse juntar o melhor dos dois mundos?
                              </h2>
                         </LineReveal>
-                        <ParagraphReveal delay={0.1}>
+                        <ParagraphReveal delay={0.2}>
                              <p className="text-[clamp(18px,1.2vw,22px)] leading-[1.3] text-(--color-dark) opacity-50 mb-[3vw] font-normal uppercase tracking-[0.1em]">
                                 A taxa dos consórcios com a previsibilidade dos financiamentos.
                              </p>
                         </ParagraphReveal>
                         
                         <div className="mb-[3vw]">
-                             <ParagraphReveal delay={0.2}>
+                             <ParagraphReveal delay={0.3}>
                                 <p className="text-[clamp(16px,1.2vw,20px)] leading-[1.5] font-mono text-(--color-dark) mb-[1vw] opacity-80">
                                     35 anos. 3 imóveis pagos, 1 recebido.
                                 </p>
                             </ParagraphReveal>
-                            <ParagraphReveal delay={0.3}>
+                            <ParagraphReveal delay={0.4}>
                                 <p className="text-[clamp(16px,1.2vw,20px)] leading-[1.5] font-mono text-(--color-dark) opacity-80 mb-[2vw]">
                                     O financiamento tradicional drena 70% do seu capital em juros compostos. 
                                     Não é uma oportunidade, é uma servidão vitalícia. 
@@ -248,13 +256,13 @@ const AboutManifesto = () => {
                         </div>
 
                          <div className="pl-[2vw] border-l-2 border-amber-700/30">
-                             <ParagraphReveal delay={0.3}>
+                             <ParagraphReveal delay={0.5}>
                                 <p className="text-[clamp(18px,1.4vw,24px)] leading-[1.4] font-medium text-black mb-[2vw]">
                                     No Plano Pontual você terá as taxas do consórcio, com a previsibilidade do financiamento. 
                                     Saiba exatamente quando você terá acesso ao seu sonho!
                                 </p>
                             </ParagraphReveal>
-                            <ParagraphReveal delay={0.4}>
+                            <ParagraphReveal delay={0.6}>
                                 <MagneticButton href="#simulator">
                                     <span className="text-[14px] tracking-[0.15em] uppercase text-(--color-dark) font-bold group-hover:text-amber-700 transition-colors">
                                         Simular Agora
@@ -370,18 +378,26 @@ const AboutManifesto = () => {
 
                     {/* RIGHT: TEXT CONTENT */}
                     <div className="col-span-12 lg:col-start-8 lg:col-span-5 flex flex-col justify-center">
-                         <LineReveal delay={0}>
+                         <ParagraphReveal delay={0}>
+                            <div className="flex items-center gap-[10px] mb-[3vw]">
+                                <span className="text-[14px] text-(--color-dark) opacity-40 leading-none">+</span>
+                                <span className="text-[clamp(10px,0.7vw,14px)] uppercase tracking-[0.2em] text-(--color-dark) opacity-60 font-medium">
+                                    Seguros
+                                </span>
+                            </div>
+                        </ParagraphReveal>
+                         <LineReveal delay={0.1}>
                              <h2 className="text-[clamp(32px,4vw,64px)] leading-[1.1] tracking-[-0.02em] font-normal text-(--color-dark) mb-[3vw]">
                                 Para quem chegou ao topo, a missão é nunca mais voltar.
                              </h2>
                         </LineReveal>
-                        <ParagraphReveal delay={0.2}>
+                        <ParagraphReveal delay={0.3}>
                             <p className="text-[clamp(20px,1.6vw,32px)] leading-[1.3] font-normal text-(--color-dark) mb-[2.5vw]">
-                                Blindagem patrimonial e segurança biológica. Do Seguro de Vida com saque programado à gestão de saúde de elite. 
+                                Blindagem patrimonial. Do Seguro de Vida com saque programado à gestão de saúde de elite. 
                                 Proteção inexpugnável para o seu legado hoje.
                             </p>
                         </ParagraphReveal>
-                        <ParagraphReveal delay={0.4}>
+                        <ParagraphReveal delay={0.5}>
                             <MagneticButton href="#insurance">
                                 <span className="text-[14px] tracking-[0.15em] uppercase text-(--color-dark) font-bold group-hover:text-amber-700 transition-colors">
                                     Garantir Minha Blindagem
