@@ -191,13 +191,12 @@ const AboutManifesto = () => {
                             <div className="portal-container relative w-full md:w-[35vw] mx-auto lg:mx-0" style={{ aspectRatio: '9/16' }}>
                                 <div ref={frame1Ref} className="portal-frame-wrapper absolute inset-0 z-10 overflow-hidden rounded-[4px] shadow-[0_20px_60px_rgba(0,0,0,0.3)] origin-center transition-transform duration-700 group-hover:scale-[1.02]">
                                      <Image
-                                        src="/assets/Manifesto2.jpeg"
-                                        alt="Chronos Frame"
+                                        src="/assets/the_architect.png"
+                                        alt="The Architect Frame"
                                         fill
                                         className="object-cover scale-[1.05]"
                                         priority
                                      />
-                                     {/* Removed bg-black/10 overlay to remove 'border' effect or dimming */}
                                      <div className="absolute inset-0 group-hover:bg-transparent transition-colors duration-500"></div>
                                      
                                      {/* HOVER LABEL */}
@@ -209,9 +208,9 @@ const AboutManifesto = () => {
                                 </div>
                                 <div ref={photo1Ref} className="portal-photo-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] z-20 overflow-hidden shadow-xl will-change-transform">
                                     <video 
-                                        className="w-full h-full object-cover sepia-15 contrast-120 grayscale group-hover:grayscale-0 transition-all duration-700 will-change-transform"
+                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 will-change-transform"
                                         autoPlay muted loop playsInline
-                                        src="/assets/manifesto_video_2.mp4"
+                                        src="/assets/the_architect_seed.mp4"
                                     />
                                 </div>
                             </div>
@@ -260,7 +259,7 @@ const AboutManifesto = () => {
                 </div>
 
                 {/* --- ACT II: O MANIFESTO (RESTORED) --- */}
-                <div className="s-grid relative items-center px-[5vw]">
+                <div className="s-grid relative items-center px-[5vw] mb-[15vw]">
                      {/* --- PORTAL COLUMN (Right on Desktop to alternate) --- */}
                      <div className="col-span-12 md:col-start-2 md:col-span-12 lg:col-start-2 lg:col-span-6 relative mb-[10vw] md:mb-0 order-1 lg:order-1">
                          <a href="#about" className="group block cursor-pointer">
@@ -295,7 +294,7 @@ const AboutManifesto = () => {
                     </div>
 
                     {/* --- TEXT COLUMN --- */}
-                    <div className="col-span-12 md:col-start-9 md:col-span-4 lg:col-start-9 lg:col-span-3 py-[5vw] order-2 lg:order-2">
+                    <div className="col-span-12 md:col-start-8 md:col-span-5 flex flex-col justify-center order-2 lg:order-2">
                         <ParagraphReveal delay={0.1}>
                             <div className="flex items-center gap-[10px] mb-[3vw]">
                                 <span className="text-[14px] text-(--color-dark) opacity-40 leading-none">+</span>
@@ -327,6 +326,30 @@ const AboutManifesto = () => {
                         </ParagraphReveal>
                     </div>
 
+                </div>
+
+                {/* --- ACT III: PROTEÇÃO (COMING SOON) --- */}
+                <div className="s-grid relative items-center px-[5vw] opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-1000">
+                    <div className="col-span-12 lg:col-span-6 relative mb-[10vw] lg:mb-0">
+                         <div className="portal-container relative w-full md:w-[35vw] mx-auto lg:mx-0" style={{ aspectRatio: '9/16' }}>
+                             <div className="portal-frame-wrapper absolute inset-0 z-10 overflow-hidden rounded-[4px] border border-dashed border-dark/20 flex flex-col items-center justify-center">
+                                 <span className="text-[clamp(10px,0.75vw,14px)] tracking-[0.3em] uppercase opacity-40 mb-4">Em Breve</span>
+                                 <h3 className="text-xl font-mono opacity-20 select-none">Protection Layer</h3>
+                             </div>
+                         </div>
+                    </div>
+                    <div className="col-span-12 lg:col-start-8 lg:col-span-5 flex flex-col justify-center">
+                         <LineReveal delay={0}>
+                             <h2 className="text-[clamp(32px,4vw,64px)] leading-[1.1] tracking-[-0.02em] font-normal text-(--color-dark) mb-[3vw]">
+                                Onde o seu legado é inquestionável.
+                             </h2>
+                        </LineReveal>
+                        <ParagraphReveal delay={0.2}>
+                            <p className="text-[clamp(20px,1.6vw,32px)] leading-[1.3] font-normal text-(--color-dark) mb-[2.5vw]">
+                                Em breve: O protocolo definitivo de proteção e seguros de elite. Para quem já chegou lá e não pretende voltar.
+                            </p>
+                        </ParagraphReveal>
+                    </div>
                 </div>
 
             </div>
