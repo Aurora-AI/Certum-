@@ -93,7 +93,7 @@ const ContactFooter = () => {
     return (
         <footer ref={sectionRef} className="footer-section s-grid theme-dark relative overflow-hidden" style={{ paddingTop: '8vw', paddingBottom: '4vw', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
              {/* Background Gradient Subtle (Volume) */}
-             <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e13] to-transparent pointer-events-none" />
+             <div className="absolute inset-0 bg-linear-to-t from-[#0d0e13] to-transparent pointer-events-none" />
 
             {/* ZONA 1: A PROMESSA (Hero Text) */}
             <div className="footer-content" style={{ gridColumn: '2 / span 6', position: 'relative', zIndex: 2 }}>
@@ -103,8 +103,8 @@ const ContactFooter = () => {
                 </h2>
                 
                 <p className="footer-content" style={{ marginTop: '2vw', fontSize: '1.2vw', color: 'rgba(255,255,255,0.6)', maxWidth: '25vw', lineHeight: '1.4' }}>
-                    Consórcios estruturados e seguros high-end. <br/>
-                    Atendimento private em Curitiba e todo o Brasil.
+                    Blindagem patrimonial. Seguro de Vida com saque. <br/>
+                    Saúde de elite e consórcios private.
                 </p>
             </div>
 

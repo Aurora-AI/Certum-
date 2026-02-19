@@ -48,7 +48,7 @@ const AuthorityBlock = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="authority-section w-full relative h-[60vw] min-h-[800px] flex items-center justify-center bg-[#0d0e13] text-[#e4e0db] overflow-hidden">
+        <section ref={sectionRef} className="authority-section w-full relative h-[60vw] min-h-[800px] flex items-center justify-center bg-[#0d0e13] text-light overflow-hidden">
             
             {/* --- LAYER 0: THE VOID (Ambient) --- */}
             {/* Uma luz volumétrica central para dar "chão" à autoridade */}
@@ -60,13 +60,15 @@ const AuthorityBlock = () => {
             <div className="absolute inset-0 flex justify-between items-center px-[5vw] pointer-events-none select-none z-0">
                 
                 {/* 70 Years Monument */}
-                <div className="monumental-number text-[25vw] leading-none font-bold text-white opacity-[0.03] mix-blend-overlay transform -translate-x-[5vw]">
+                <div className="monumental-number relative text-[25vw] leading-none font-bold text-white opacity-[0.03] mix-blend-overlay transform -translate-x-[5vw]">
                     70
+                    <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] animate-[shimmer_8s_infinite] pointer-events-none"></div>
                 </div>
 
                 {/* 18 Bi Monument */}
-                <div className="monumental-number text-[25vw] leading-none font-bold text-white opacity-[0.03] mix-blend-overlay transform translate-x-[5vw]">
+                <div className="monumental-number relative text-[25vw] leading-none font-bold text-white opacity-[0.03] mix-blend-overlay transform translate-x-[5vw]">
                     18
+                    <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] animate-[shimmer_8s_infinite_2s] pointer-events-none"></div>
                 </div>
             </div>
 
@@ -77,6 +79,7 @@ const AuthorityBlock = () => {
                 
                 {/* 2.1 The Label */}
                 <span className="text-label text-accent tracking-[0.2vw] opacity-80">
+                    {/* /// LASTRO INSTITUCIONAL */}
                     /// LASTRO INSTITUCIONAL
                 </span>
 
@@ -88,7 +91,7 @@ const AuthorityBlock = () => {
                     </h2>
                     
                     {/* The Divider (Binding) */}
-                    <div className="h-[4vw] w-px bg-gradient-to-b from-transparent via-accent to-transparent opacity-50"></div>
+                    <div className="h-[4vw] w-px bg-linear-to-b from-transparent via-accent to-transparent opacity-50"></div>
 
                     {/* RODOBENS */}
                     <h2 className="text-[5vw] font-bold tracking-tighter text-white">
@@ -103,7 +106,7 @@ const AuthorityBlock = () => {
                 </p>
 
                 {/* 2.4 The Decoration (Minimal) */}
-                <div className="w-[1px] h-[6vw] bg-gradient-to-b from-accent to-transparent mt-[4vw] opacity-30"></div>
+                <div className="w-px h-[6vw] bg-linear-to-b from-accent to-transparent mt-[4vw] opacity-30"></div>
 
             </div>
 

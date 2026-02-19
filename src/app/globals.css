@@ -292,3 +292,10 @@
 .magnetic-btn:hover .magnetic-icon {
    color: var(--color-dark);
 }
+
+/* --- ANIMATIONS (Grand Audit Polish) --- */
+@keyframes shimmer {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  50% { transform: translateX(150%) skewX(-20deg); }
+  100% { transform: translateX(150%) skewX(-20deg); }
+}
