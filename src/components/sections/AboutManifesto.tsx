@@ -222,18 +222,23 @@ const AboutManifesto = () => {
                     {/* RIGHT: TEXT CONTENT */}
                     <div className="col-span-12 lg:col-start-8 lg:col-span-5 flex flex-col justify-center">
                         <LineReveal delay={0}>
-                             <h2 className="text-[clamp(32px,4vw,64px)] leading-[1.1] tracking-[-0.02em] font-normal text-(--color-dark) mb-[3vw]">
+                             <h2 className="text-[clamp(32px,4vw,64px)] leading-[1.1] tracking-[-0.02em] font-normal text-(--color-dark) mb-[1.5vw]">
                                 E se você pudesse juntar o melhor dos dois mundos?
                              </h2>
                         </LineReveal>
+                        <ParagraphReveal delay={0.1}>
+                             <p className="text-[clamp(18px,1.2vw,22px)] leading-[1.3] text-(--color-dark) opacity-50 mb-[3vw] font-normal uppercase tracking-[0.1em]">
+                                A taxa dos consórcios com a previsibilidade dos financiamentos.
+                             </p>
+                        </ParagraphReveal>
                         
                         <div className="mb-[3vw]">
-                             <ParagraphReveal delay={0.1}>
+                             <ParagraphReveal delay={0.2}>
                                 <p className="text-[clamp(16px,1.2vw,20px)] leading-[1.5] font-mono text-(--color-dark) mb-[1vw] opacity-80">
                                     35 anos. 3 imóveis pagos, 1 recebido.
                                 </p>
                             </ParagraphReveal>
-                            <ParagraphReveal delay={0.2}>
+                            <ParagraphReveal delay={0.3}>
                                 <p className="text-[clamp(16px,1.2vw,20px)] leading-[1.5] font-mono text-(--color-dark) opacity-80 mb-[2vw]">
                                     O financiamento tradicional drena 70% do seu capital em juros compostos. 
                                     Não é uma oportunidade, é uma servidão vitalícia. 
