@@ -35,7 +35,6 @@ export default function SovereignCursor({
   const currentTarget = useRef<HTMLElement | null>(null);
 
   // Trail configuration
-  const trailCount = 5;
   const trailColors = [
     `${color}40`,
     `${color}30`,
@@ -44,7 +43,7 @@ export default function SovereignCursor({
     `${color}05`,
   ];
 
-  // Update cursor position
+  // Update cursor position - Defined as a function to avoid hoisting issues in useCallback if referenced internaly
   const updateCursor = useCallback(() => {
     if (!dotRef.current || !circleRef.current) return;
 
@@ -112,6 +111,9 @@ export default function SovereignCursor({
   // Handle hover states
   const handleMouseEnter = useCallback((e: MouseEvent) => {
     const target = e.target as HTMLElement;
+    
+    // Safety check: target might not be an Element (e.g. document)
+    if (!target || typeof target.matches !== 'function') return;
     
     // Check for interactive elements
     const isInteractive = target.matches(
@@ -181,6 +183,9 @@ export default function SovereignCursor({
   const handleMouseLeave = useCallback((e: MouseEvent) => {
     const target = e.target as HTMLElement;
     
+    // Safety check
+    if (!target || typeof target.matches !== 'function') return;
+    
     if (currentTarget.current === target) {
       // Reset magnetic position
       gsap.to(target, {
@@ -245,7 +250,7 @@ export default function SovereignCursor({
     mousePos.current = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
     // Start animation loop
-    requestAnimationFrame(updateCursor);
+    const animId = requestAnimationFrame(updateCursor);
 
     // Add event listeners
     window.addEventListener("mousemove", handleMouseMove);
@@ -254,6 +259,7 @@ export default function SovereignCursor({
     document.addEventListener("mouseleave", handleMouseLeave, true);
 
     return () => {
+      cancelAnimationFrame(animId);
       document.body.style.cursor = "";
       style.remove();
       window.removeEventListener("mousemove", handleMouseMove);
@@ -272,7 +278,7 @@ export default function SovereignCursor({
           ref={(el) => {
             if (el) trailRefs.current[index] = el;
           }}
-          className="fixed pointer-events-none z-[9998] rounded-full"
+          className="fixed pointer-events-none z-9998 rounded-full"
           style={{
             width: dotSize + index * 2,
             height: dotSize + index * 2,
@@ -287,7 +293,7 @@ export default function SovereignCursor({
       {/* Main dot */}
       <div
         ref={dotRef}
-        className="fixed pointer-events-none z-[10000] rounded-full mix-blend-difference"
+        className="fixed pointer-events-none z-10000 rounded-full mix-blend-difference"
         style={{
           width: dotSize,
           height: dotSize,
@@ -301,7 +307,7 @@ export default function SovereignCursor({
       {/* Outer circle */}
       <div
         ref={circleRef}
-        className="fixed pointer-events-none z-[9999] rounded-full"
+        className="fixed pointer-events-none z-9999 rounded-full"
         style={{
           width: circleSize,
           height: circleSize,
