@@ -710,7 +710,7 @@ export default function HeroVolumetric({
                         </h1>
                         <div style={{fontSize: 'var(--font-s-p)', maxWidth: '30vw', marginTop: '2vw', color: 'var(--color-white-08)'}}>
                              <div className="u-clip-parent"><span className="u-clip-child">
-                                Preservação de patrimônio através de inteligência soberana.
+                                Não preservamos patrimônio. Criamos.
                             </span></div>
                         </div>
                     </div>
@@ -768,7 +768,7 @@ export default function HeroVolumetric({
 
                     <div className="text-hero-desc" style={{fontSize: 'var(--font-s-p)', maxWidth: '24vw', marginTop: '2vw', color: 'var(--color-white-08)'}}>
                         <div className="u-clip-parent"><span className="u-clip-child">
-                            Preservação de patrimônio através de inteligência soberana.
+                            Não preservamos patrimônio. Criamos.
                         </span></div>
                     </div>
 

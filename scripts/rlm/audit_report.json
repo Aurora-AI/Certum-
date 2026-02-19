@@ -72,19 +72,6 @@
             "issue": "Static section detected in high-physics zone (no GSAP)."
         }
     ],
-    "syntax_debris": [
-        {
-            "path": "app\\globals.css",
-            "issue": "TODO label pending."
-        },
-        {
-            "path": "components\\canvas\\WebGPUBarrierParticles.tsx",
-            "issue": "console.log left behind."
-        },
-        {
-            "path": "components\\rodobens\\AgentChat.tsx",
-            "issue": "console.log left behind."
-        }
-    ],
+    "syntax_debris": [],
     "broken_imports": []
 }

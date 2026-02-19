@@ -4,10 +4,10 @@ import React, { useRef, useLayoutEffect, useState } from 'react';
 import gsap from 'gsap';
 
 const services = [
-    { id: "01", title: "Real Estate Leverage", subtitle: "Imóveis, Terrenos e Construção", meta: "Consórcio Imobiliário", imageColor: "#4a4a4a" },
-    { id: "02", title: "Automotive & Mobility", subtitle: "Automóveis e Motocicletas", meta: "Consórcio de Carros e Motos", imageColor: "#5c5c5c" },
-    { id: "03", title: "Heavy Fleet & Agro", subtitle: "Caminhões, Maquinário e Frotas", meta: "Consórcio de Caminhões e Máquinas Agrícolas", imageColor: "#6e6e6e" },
-    { id: "04", title: "Sovereign Protection", subtitle: "Seguros Corporativos e Vida", meta: "Seguros Corporativos", imageColor: "#808080" }
+    { id: "01", title: "Alavancagem Patrimonial", subtitle: "Imóveis, Terrenos e Construção", meta: "High-Ticket Real Estate", imageColor: "#4a4a4a" },
+    { id: "02", title: "Mobilidade Premium", subtitle: "Automóveis de Luxo e Blindados", meta: "Luxury Automotive", imageColor: "#5c5c5c" },
+    { id: "03", title: "Eficiência Operacional", subtitle: "Caminhões, Maquinário e Frotas", meta: "Heavy Asset Management", imageColor: "#6e6e6e" },
+    { id: "04", title: "Blindagem de Capital", subtitle: "Seguros Corporativos e Sucessão", meta: "Wealth Protection", imageColor: "#808080" }
 ];
 
 const ServicesList = () => {
@@ -45,7 +45,7 @@ const ServicesList = () => {
     };
 
     return (
-        <section ref={containerRef} className="services-section s-grid relative w-full bg-[#0d0e13] text-[#e4e0db]" style={{paddingTop: '10vw', paddingBottom: '10vw'}}>
+        <section ref={containerRef} className="services-section s-grid relative w-full bg-[#0d0e13] text-light" style={{paddingTop: '10vw', paddingBottom: '10vw'}}>
             
             {/* Context Label */}
             <div className="col-start-2 col-span-3 mb-[4vw]">
@@ -65,7 +65,7 @@ const ServicesList = () => {
                         onMouseLeave={handleMouseLeave}
                     >
                         <div className="service-header flex items-center">
-                            <span className="service-num text-[1vw] mr-[2vw] font-mono text-[var(--color-accent)]">
+                            <span className="service-num text-[1vw] mr-[2vw] font-mono text-accent">
                                 {service.id}
                             </span>
                             <div>
