@@ -243,7 +243,7 @@ const AboutManifesto = () => {
 
                          <div className="pl-[2vw] border-l-2 border-amber-700/30">
                              <ParagraphReveal delay={0.3}>
-                                <p className="text-[clamp(18px,1.4vw,24px)] leading-[1.4] font-normal text-(--color-dark) mb-[2vw] text-amber-900">
+                                <p className="text-[clamp(18px,1.4vw,24px)] leading-[1.4] font-medium text-black mb-[2vw]">
                                     No Plano Pontual você terá as taxas do consórcio, com a previsibilidade do financiamento. 
                                     Saiba exatamente quando você terá acesso ao seu sonho!
                                 </p>
