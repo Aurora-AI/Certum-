@@ -110,7 +110,7 @@ const ContactFooter = () => {
 
             {/* ZONA 2: O CONCIERGE (Magnetic Anchor) */}
             <div className="footer-content" style={{ gridColumn: '9 / span 4', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', position: 'relative', zIndex: 10 }}>
-                <a ref={magnetRef} href="https://wa.me/5541999999999" className="magnetic-btn" aria-label="Falar com Concierge">
+                <a ref={magnetRef} href="https://wa.me/5541997946451" className="magnetic-btn" aria-label="Falar com Concierge">
                     <div className="magnetic-fill"></div>
                     <span ref={textRef} className="magnetic-text">Falar com<br/>Concierge</span>
                     <div ref={iconRef} className="magnetic-icon">↗</div>
@@ -145,7 +145,7 @@ const ContactFooter = () => {
                 "logo": "https://certumprime.com.br/logo.png", // Ajuste conforme logo real
                 "contactPoint": {
                     "@type": "ContactPoint",
-                    "telephone": "+55-41-99999-9999",
+                    "telephone": "+55-41-99794-6451",
                     "contactType": "sales",
                     "areaServed": "BR",
                     "availableLanguage": "Portuguese"
