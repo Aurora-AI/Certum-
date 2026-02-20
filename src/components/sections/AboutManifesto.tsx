@@ -210,7 +210,7 @@ const AboutManifesto = () => {
                                 </div>
                                 <div ref={photo1Ref} className="portal-photo-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] z-20 overflow-hidden shadow-xl will-change-transform">
                                     <video 
-                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 will-change-transform"
+                                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 will-change-transform"
                                         autoPlay muted loop playsInline
                                         src="/assets/the_architect_seed.mp4"
                                     />
@@ -236,7 +236,7 @@ const AboutManifesto = () => {
                         </LineReveal>
                         <ParagraphReveal delay={0.2}>
                              <p className="text-[clamp(18px,1.2vw,22px)] leading-[1.3] text-(--color-dark) opacity-50 mb-[3vw] font-normal uppercase tracking-[0.1em]">
-                                A taxa dos consórcios com a previsibilidade dos financiamentos.
+                                Financiamento drena capital. Consórcio preserva. Taxas menores, previsibilidade estruturada.
                              </p>
                         </ParagraphReveal>
                         
@@ -248,9 +248,8 @@ const AboutManifesto = () => {
                             </ParagraphReveal>
                             <ParagraphReveal delay={0.4}>
                                 <p className="text-[clamp(16px,1.2vw,20px)] leading-[1.5] font-mono text-(--color-dark) opacity-80 mb-[2vw]">
-                                    O financiamento tradicional drena 70% do seu capital em juros compostos. 
-                                    Não é uma oportunidade, é uma servidão vitalícia. 
-                                    Os números não mentem: <span className="text-red-900 border-b border-red-900/30">você está pagando o lucro do banco com o seu tempo.</span>
+                                    Financiamento tradicional consome 70% em juros. 
+                                    O consórcio devolve o controle ao seu fluxo.
                                 </p>
                             </ParagraphReveal>
                         </div>
@@ -258,8 +257,8 @@ const AboutManifesto = () => {
                          <div className="pl-[2vw] border-l-2 border-amber-700/30">
                              <ParagraphReveal delay={0.5}>
                                 <p className="text-[clamp(18px,1.4vw,24px)] leading-[1.4] font-medium text-black mb-[2vw]">
-                                    No Plano Pontual você terá as taxas do consórcio, com a previsibilidade do financiamento. 
-                                    Saiba exatamente quando você terá acesso ao seu sonho!
+                                    Plano Pontual: taxas do consórcio, previsibilidade do Meia Parcela. 
+                                    Sem surpresas. Sem dívidas explosivas.
                                 </p>
                             </ParagraphReveal>
                             <ParagraphReveal delay={0.6}>
@@ -299,7 +298,7 @@ const AboutManifesto = () => {
                                 {/* THE SEED */}
                                 <div ref={photo2Ref} className="portal-photo-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] z-20 overflow-hidden shadow-xl will-change-transform">
                                     <video 
-                                        className="w-full h-full object-cover contrast-110 saturate-110 will-change-transform"
+                                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 will-change-transform"
                                         autoPlay muted loop playsInline
                                         src="/assets/manifesto_video1.mp4"
                                     />
@@ -321,8 +320,7 @@ const AboutManifesto = () => {
 
                         <ParagraphReveal delay={0.2}>
                             <p className="text-[clamp(20px,1.6vw,32px)] leading-[1.3] font-normal text-(--color-dark) mb-[2.5vw]">
-                                A verdadeira riqueza não grita. Ela espera. Em um cenário de erosão monetária, o Consórcio 
-                                deixa de ser uma compra para se tornar um protocolo de alavancagem assimétrica.
+                                A verdadeira riqueza não grita. Ela espera. Consórcio não é compra. É alavancagem assimétrica.
                             </p>
                         </ParagraphReveal>
 
@@ -367,7 +365,7 @@ const AboutManifesto = () => {
                                 </div>
                                 <div ref={photo3Ref} className="portal-photo-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] z-20 overflow-hidden shadow-xl will-change-transform">
                                     <video 
-                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 will-change-transform"
+                                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 will-change-transform"
                                         autoPlay muted loop playsInline
                                         src="/assets/The_Shield.mp4"
                                     />
