@@ -1,32 +1,29 @@
 'use client';
 
 import { useChat } from '@ai-sdk/react';
-import { useRef, useEffect, useState } from 'react';
-import { PontualCard } from './tools/PontualCard';
-import { ComparisonCard } from './tools/ComparisonCard';
-import { PontualOffer, FinancialComparison } from '@/types/rodobens.schema';
+import { useRef, useEffect, useState, useMemo } from 'react';
 
 export function AgentChat() {
   const chatHelpers = useChat({
+      // @ts-expect-error: Using a divergent api string type until SDK updates
       api: '/api/chat/rodobens',
       initialMessages: [
           {
               id: 'welcome',
-              role: 'system', 
-              content: "I am RPA-Core. I can simulate Consórcio Pontual and compare it with active financing rates. Give me a vehicle value (e.g. 50k) to start."
+              role: 'assistant', 
+              content: "I am the **Cognitive Factory Orchestrator**. Give me a B2B product goal, client pain point, or strategic objective. I will coordinate the Rodobens Expert, Sales Strategist, and Copywriter to build your asset."
           } as any 
       ]
-  } as any);
+  });
   
-  // Destructure what we know exists + fallback for others
-  const { messages, sendMessage, isLoading, ...rest } = chatHelpers as any; 
+  const { messages, append, isLoading } = chatHelpers as any; 
   
   // Manual State Management
   const [input, setInput] = useState('');
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const safeMessages = messages ?? [];
+  const safeMessages = useMemo(() => messages ?? [], [messages]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -42,27 +39,10 @@ export function AgentChat() {
       setInput(''); // Clear input immediately
       
       try {
-          // Attempt to use sendMessage (assuming it takes a message object or event)
-          // Documentation for some versions suggests append({ role: 'user', content: ... })
-          // If sendMessage exists, let's try to use it with a standard message object.
-          if (typeof sendMessage === 'function') {
-               // Some versions: sendMessage(e) -> FormEvent
-               // Others: sendMessage(chatRequestOptions)
-               // Others: append(message)
-               
-               // Let's try to locate 'append'.
-               if (rest.append) {
-                   await rest.append({ role: 'user', content: userMessage });
-               } else {
-                   // Fallback: assume sendMessage handles request construction
-                   // We need to verify signature. 
-                   // If we can't, we might need to rely on 'append' if it exists in prototype.
-                   await sendMessage({ role: 'user', content: userMessage });
-               }
-          } else if (typeof rest.append === 'function') {
-              await rest.append({ role: 'user', content: userMessage });
+          if (append) {
+              await append({ role: 'user', content: userMessage });
           } else {
-              console.error("No send method found!");
+              console.error("No append method found on useChat");
           }
       } catch (err) {
           console.error("Failed to send:", err);
@@ -78,39 +58,8 @@ export function AgentChat() {
             <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[85%] ${m.role === 'user' ? 'bg-carbon-black text-white' : 'bg-gray-50 text-carbon-black border border-glass-border'} p-4 text-sm font-body leading-relaxed shadow-sm`}>
                     
-                    {/* Text Content */}
-                    <div className="whitespace-pre-wrap">{m.content}</div>
-
-                    {/* Tool Invocations */}
-                    {m.toolInvocations?.map((toolInvocation: any) => {
-                        const toolCallId = toolInvocation.toolCallId;
-                        
-                        // Render Result
-                        if ('result' in toolInvocation) {
-                            if (toolInvocation.toolName === 'simulatePontual') {
-                                return (
-                                    <div key={toolCallId} className="mt-4">
-                                        <PontualCard data={toolInvocation.result as PontualOffer} />
-                                    </div>
-                                );
-                            }
-                            if (toolInvocation.toolName === 'compareFinancials') {
-                                return (
-                                    <div key={toolCallId} className="mt-4">
-                                        <ComparisonCard data={toolInvocation.result as FinancialComparison} /> 
-                                    </div>
-                                );
-                            }
-                        } else {
-                            // Loading State
-                            return (
-                                <div key={toolCallId} className="mt-4 text-xs font-mono text-sovereign-gold animate-pulse">
-                                    ▶ Calculating {toolInvocation.toolName}...
-                                </div>
-                            );
-                        }
-                        return null;
-                    })}
+                    {/* Text Content with Markdown Support (if we had ReactMarkdown, but whitespace-pre-wrap works nicely) */}
+                    <div className="whitespace-pre-wrap font-mono prose prose-zinc prose-sm max-w-none text-carbon-black">{m.content}</div>
                 </div>
             </div>
         ))}
@@ -131,7 +80,7 @@ export function AgentChat() {
             className="flex-1 bg-gray-50 border border-glass-border p-3 font-body text-sm focus:outline-none focus:border-carbon-black transition-colors text-carbon-black placeholder-gray-400"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about vehicle value, Pontual plan, or financing comparison..."
+            placeholder="Describe the desired B2B product strategy, email pitch, or sales page..."
         />
         <button 
             type="submit"

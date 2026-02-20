@@ -723,7 +723,7 @@ export default function HeroVolumetric({
     }
 
     return (
-        <div ref={containerRef} className="w-full h-screen relative overflow-hidden bg-background">
+        <div ref={containerRef} className="w-full h-screen relative overflow-hidden bg-background will-change-transform">
             
             {/* CSS Grid Background (Desktop) - Enhanced Visibility & Neutrality */}
             <div 
@@ -739,7 +739,7 @@ export default function HeroVolumetric({
             />
 
             {/* LAYER 1: CANVAS (THE SPHERE) */}
-            <div id="canvas-container" className="absolute inset-0 w-full h-full z-(--z-canvas) opacity-0">
+            <div id="canvas-container" className="absolute inset-0 w-full h-full z-(--z-canvas) opacity-0 will-change-[transform,opacity]">
                 <canvas 
                     ref={canvasRef} 
                     className="absolute inset-0 w-full h-full block touch-none cursor-crosshair"

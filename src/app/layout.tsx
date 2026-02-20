@@ -1,12 +1,10 @@
 import type { Metadata } from 'next';
-import { Manrope, Space_Mono, Newsreader, Poppins } from 'next/font/google';
+import { Playfair_Display, Inter } from 'next/font/google';
 import './globals.css';
 
-// 9. Awwwards Optimization: Font Loading (Zero CLS)
-const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope' });
-const spaceMono = Space_Mono({ weight: '400', subsets: ['latin'], variable: '--font-space-mono' });
-const newsreader = Newsreader({ subsets: ['latin'], style: 'italic', variable: '--font-newsreader' });
-const poppins = Poppins({ weight: ['300', '400', '500', '600', '700'], subsets: ['latin'], variable: '--font-poppins' });
+// 9. Wealth Management Standard: Font Loading (Serif + Sans)
+const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const viewport = {
   themeColor: '#0d0e13',
@@ -57,11 +55,6 @@ export const metadata: Metadata = {
     description: 'Alavancagem patrimonial e acesso a bens de luxo sem juros abusivos.',
     images: ['https://certumprime.com.br/assets/Manifesto2.jpeg'],
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5, // Acessibilidade
-  },
   icons: {
     icon: '/favicon.ico',
     apple: '/assets/Manifesto2.jpeg', // Placeholder icon
@@ -79,14 +72,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className={`${manrope.variable} ${spaceMono.variable} ${newsreader.variable} ${poppins.variable}`}>
+    <html lang="pt-BR" className={`${playfair.variable} ${inter.variable}`} suppressHydrationWarning>
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
         {/* Clash Display for premium Hero typography (CDN okay for display font) */}
         <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap" rel="stylesheet" />
       </head>
-      <body className="bg-cosmic-cream text-carbon-black antialiased overflow-x-hidden selection:bg-carbon-black selection:text-absolute-white">
-        <SovereignCursor color="#e0ccbb" dotSize={8} circleSize={40} />
+      <body className="bg-dark text-white antialiased overflow-x-hidden selection:bg-accent selection:text-dark">
+        <SovereignCursor color="#C8A985" dotSize={8} circleSize={40} />
         {children}
       </body>
     </html>

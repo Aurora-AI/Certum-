@@ -6,7 +6,7 @@ import Preloader from '@/components/ui/Preloader';
 import HeroVolumetric from "@/components/antigravity/HeroVolumetric";
 import AboutManifesto from "@/components/sections/AboutManifesto";
 import AuthorityBlock from "@/components/sections/AuthorityBlock";
-import ServicesList from "@/components/sections/ServicesList";
+import SequentialPortfolio from "@/components/sections/SequentialPortfolio";
 import ContactFooter from "@/components/sections/ContactFooter";
 
 export default function Home() {
@@ -24,11 +24,11 @@ export default function Home() {
       {/* 02. The Thesis (About - Light Mode) */}
       <AboutManifesto />
 
-      {/* 03. Authority (Glassmonolith) */}
-      <AuthorityBlock />
+      {/* 03. Tactical Arsenal (Cinematic Sequential) */}
+      <SequentialPortfolio />
 
-      {/* 04. Expertise (Interactive List) */}
-      <ServicesList />
+      {/* 04. Authority (Glassmonolith) */}
+      <AuthorityBlock />
 
       {/* 05. Sovereign Contact (Footer) */}
       <ContactFooter />

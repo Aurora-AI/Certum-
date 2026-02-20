@@ -10,7 +10,7 @@
   --color-dark:       #0d0e13;   /* Quase preto, levemente azulado (Deep Space) */
   --color-light:      #e4e0db;   /* Off-white quente (Papel Moeda Antigo) */
   --color-white:      #f8f8f8;   /* Branco puro suavizado */
-  --color-accent:     #e0ccbb;   /* Areia/Gold (Ouro Pálido - Silent Luxury) */
+  --color-accent:     #C8A985;   /* Wealth Gold (Standard) */
 
   /* Camadas de Opacidade (A mágica da profundidade) */
   --color-white-08:   rgba(248, 248, 248, 0.8);
@@ -75,7 +75,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden; /* Previne scroll horizontal acidental */
-    /* Recomendo usar font-family: 'Inter', 'Lausanne', ou similar Grotesque */
+    font-family: var(--font-inter), sans-serif;
   }
 }
 
@@ -99,6 +99,7 @@
   text-transform: uppercase;
   color: var(--color-light); /* Enforce visibility against dark bg */
   margin: 0;
+  font-family: var(--font-playfair), serif;
 }
 
 @utility text-label {
@@ -131,11 +132,11 @@
   letter-spacing: -0.1vw;
   font-weight: 400;
   line-height: 1.1;
-  font-family: 'Manrope', sans-serif; /* Ensure font consistency */
+  font-family: var(--font-playfair), serif; /* Ensure font consistency */
 }
 
 @utility manifesto-body {
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-weight: 300;
 }
 
