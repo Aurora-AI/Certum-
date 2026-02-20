@@ -94,9 +94,18 @@ const AuthorityBlock = () => {
                     <div className="h-[4vw] w-px bg-linear-to-b from-transparent via-accent to-transparent opacity-50"></div>
 
                     {/* RODOBENS */}
-                    <h2 className="text-[10vw] lg:text-[5vw] font-bold tracking-tighter text-white">
-                        RODOBENS
-                    </h2>
+                    <a 
+                      href="https://www.rodobens.com.br" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="group/link relative"
+                    >
+                      <h2 className="text-[10vw] lg:text-[5vw] font-bold tracking-tighter text-white transition-colors duration-500 group-hover/link:text-accent">
+                          RODOBENS
+                      </h2>
+                      {/* Subtlest underglow on hover */}
+                      <div className="absolute -bottom-2 left-0 w-full h-px bg-accent scale-x-0 origin-left transition-transform duration-500 group-hover/link:scale-x-100 opacity-50"></div>
+                    </a>
                 </div>
 
                 {/* 2.3 The Explanation (Subtitle) */}
