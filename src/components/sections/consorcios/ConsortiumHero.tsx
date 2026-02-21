@@ -236,7 +236,7 @@ export default function ConsortiumHero() {
                 const camZ = Math.cos(time * 0.15) * 22;
                 mat4.lookAt(view, [camX, 2, camZ], [0, 0, 0], [0, 1, 0]);
                 mat4.multiply(viewProj, viewProj, view);
-                device.queue.writeBuffer(renderUniformsBuf, 0, viewProj as Float32Array);
+                device.queue.writeBuffer(renderUniformsBuf, 0, new Float32Array(viewProj));
 
                 const commandEncoder = device.createCommandEncoder();
                 const computePass = commandEncoder.beginComputePass();
