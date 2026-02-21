@@ -56,6 +56,20 @@ const portfolioData = [
       { title: 'Maquinário Agrícola' },
       { title: 'Serviços Especializados' }
     ]
+  },
+  {
+    id: 4,
+    title: 'Intelligence Hub',
+    description: 'Nossa divisão de análise tática. Onde dados de mercado encontram estratégia consorcial.',
+    icon: Landmark,
+    image: '/assets/portfolio_engenharia.png', // Fallback image for now
+    link: '/blog',
+    linkText: 'Acessar Hub de Inteligência',
+    subItems: [
+      { title: 'Análises em Tempo Real (Market Pulse)' },
+      { title: 'Teses de Alavancagem Global' },
+      { title: 'Relatórios de Exposição de Risco' }
+    ]
   }
 ];
 
@@ -112,6 +126,8 @@ export default function SequentialPortfolio() {
                     backgroundImage: `url(${item.image})`,
                     transform: activeIndex === index ? 'scale(1)' : 'scale(1.05)'
                   }}
+                  role="img"
+                  aria-label={`${item.title} - ${item.description}`}
                 />
                 
                 {/* Overlays for contrast */}

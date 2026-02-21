@@ -91,36 +91,40 @@ export default function ConsorcioCategories() {
   return (
     <section 
       ref={sectionRef}
-      className="w-full bg-[#0d0e13] text-light py-[10vh] md:py-[20vh] px-[4vw] md:px-[6vw] relative border-t border-[rgba(255,255,255,0.05)]"
+      className="w-full bg-[#FAFAF8] text-dark py-[10vh] md:py-[20vh] relative"
     >
-      <div className="max-w-[1400px] mx-auto mb-[8vh] md:mb-[10vh] flex flex-col md:flex-row md:items-end justify-between gap-[4vw]">
-        <div className="max-w-xl">
-          <span className="text-[3vw] md:text-[0.9vw] uppercase tracking-[0.2em] text-zinc-500 font-body mb-[2vw] block">
+      <div className="s-grid relative mb-[8vh] md:mb-[10vh] items-end">
+        <div className="col-span-12 lg:col-span-7">
+          <span className="text-label uppercase tracking-widest text-[#888] mb-[2vw] block">
             Espectro Operacional
           </span>
-          <h2 className="text-[8vw] md:text-[3.5vw] font-display font-light leading-[1.1]">
+          <h2 className="text-h1 font-serif leading-tight">
             As Quatro <span className="text-accent italic">Forças.</span>
           </h2>
         </div>
         
-        <p className="text-[4.5vw] md:text-[1.1vw] font-body text-zinc-400 font-light max-w-md leading-relaxed">
-          Nossa arquitetura de alavancagem não se limita a pedras. Nós mapeamos e tracionamos todos os principais ativos geradores de fluxo da economia primária.
-        </p>
+        <div className="col-span-12 lg:col-span-5">
+          <p className="text-p text-[#444] leading-relaxed">
+            Nossa arquitetura de alavancagem não se limita a pedras. Nós mapeamos e tracionamos todos os principais ativos geradores de fluxo da economia primária.
+          </p>
+        </div>
       </div>
 
       {/* Editorial Asymmetry Grid */}
-      <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 md:grid-rows-3 auto-rows-auto gap-[4vw] md:gap-[1.5vw]">
+      <div className="s-grid gap-[4vw] md:gap-[1.5vw]">
         
         {categories.map((cat) => (
           <div 
             key={cat.id} 
             className={`assymetric-card group relative w-full overflow-hidden bg-[#111] cursor-pointer ${cat.gridClass}`}
           >
-            {/* Background Image */}
+            {/* Background Image - Monochrome & Depth */}
             <div className="absolute inset-0 z-0">
               <div 
-                className="w-full h-full bg-cover bg-center transition-transform duration-[2s] ease-s-tier group-hover:scale-110"
+                className="w-full h-full bg-cover bg-center transition-transform duration-[2s] ease-s-tier group-hover:scale-110 grayscale brightness-75 group-hover:grayscale-0"
                 style={{ backgroundImage: `url(${cat.image})` }}
+                role="img"
+                aria-label={`Consórcio Rodobens para ${cat.subtitle} - ${cat.title}`}
               />
             </div>
 
@@ -143,7 +147,7 @@ export default function ConsorcioCategories() {
                 <span className="text-[3vw] md:text-[0.8vw] uppercase tracking-widest text-accent mb-[1.5vw] block">
                   {cat.subtitle}
                 </span>
-                <h3 className="text-[6.5vw] md:text-[2.2vw] font-display font-light text-white mb-[1.5vw] leading-[1.1]">
+                <h3 className="text-[6.5vw] md:text-[2.2vw] font-serif font-bold text-white mb-[1.5vw] leading-[1.1]">
                   {cat.title}
                 </h3>
                 <div className="overflow-hidden">

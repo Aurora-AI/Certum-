@@ -1,38 +1,16 @@
-'use client';
+import type { Metadata } from 'next';
+import HomeClient from './HomeClient';
 
-import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
-import Preloader from '@/components/ui/Preloader';
-import HeroVolumetric from "@/components/antigravity/HeroVolumetric";
-import AboutManifesto from "@/components/sections/AboutManifesto";
-import AuthorityBlock from "@/components/sections/AuthorityBlock";
-import SequentialPortfolio from "@/components/sections/SequentialPortfolio";
-import ContactFooter from "@/components/sections/ContactFooter";
+export const metadata: Metadata = {
+  title: 'Certum Prime | Representante Autorizado Rodobens - Consórcios e Seguros',
+  description: 'Especialistas em alavancagem patrimonial e arquitetura financeira. Consórcios Rodobens em São José do Rio Preto e nível nacional para imóveis, veículos premium e agro.',
+  keywords: ['Consórcio Rodobens SJRP', 'Investimento Imobiliário SP', 'Alavancagem Financeira', 'Certum Prime Rodobens'],
+  openGraph: {
+    title: 'Certum Prime | Arquitetura de Riqueza Rodobens',
+    description: 'Domine a arte da alavancagem patrimonial. Planos exclusivos de consórcio e seguros de alto vulto.',
+  }
+};
 
 export default function Home() {
-  return (
-    <main className="relative w-full overflow-hidden bg-[#0d0e13]">
-      
-      {/* 00. Preloader (Vault Decryption) */}
-      <Preloader />
-      
-      {/* 01. Hero Section (Volumetric Silence) */}
-      <Suspense fallback={null}>
-        <HeroVolumetric />
-      </Suspense>
-
-      {/* 02. The Thesis (About - Light Mode) */}
-      <AboutManifesto />
-
-      {/* 03. Tactical Arsenal (Cinematic Sequential) */}
-      <SequentialPortfolio />
-
-      {/* 04. Authority (Glassmonolith) */}
-      <AuthorityBlock />
-
-      {/* 05. Sovereign Contact (Footer) */}
-      <ContactFooter />
-      
-    </main>
-  );
+  return <HomeClient />;
 }

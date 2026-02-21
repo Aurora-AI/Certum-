@@ -3,6 +3,7 @@
 import React, { useRef, useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import MagneticButton from '@/components/ui/MagneticButton';
 
 export default function InvestmentThesis() {
     const sectionRef = useRef<HTMLDivElement>(null);
@@ -73,20 +74,37 @@ export default function InvestmentThesis() {
                     </p>
                     
                     <p className="thesis-line text-[4.5vw] md:text-[1.1vw] font-body text-[rgba(13,14,19,0.6)] font-light leading-relaxed mb-[6vw]">
-                        O protocolo não é sobre "guardar dinheiro para comprar uma casa". É sobre acessar linhas de crédito com custo fracionário (zero juros compostos) para arrematar ativos reais estressados, expandir parques logísticos ou injetar liquidez num patrimônio que já cresce. A matemática brutal prova que pagar 15% de taxa administrativa diluída em 200 meses supera qualquer financiamento ou rendimento conservador na mesma janela de tempo quando aplicado na economia real.
+                        O protocolo não é sobre &quot;guardar dinheiro para comprar uma casa&quot;. É sobre acessar linhas de crédito com custo fracionário (zero juros compostos) para arrematar ativos reais estressados, expandir parques logísticos ou injetar liquidez num patrimônio que já cresce. A matemática brutal prova que pagar 15% de taxa administrativa diluída em 200 meses supera qualquer financiamento ou rendimento conservador na mesma janela de tempo quando aplicado na economia real.
                     </p>
 
-                    <div className="grid grid-cols-2 gap-[4vw] md:gap-[2vw]">
+                    <div className="grid grid-cols-2 gap-[4vw] md:gap-[2vw] mb-[6vw]">
                         <div>
                             <div className="thesis-hairline w-full h-[1px] bg-[rgba(13,14,19,0.2)] origin-left mb-[1vw]" />
                             <span className="thesis-line text-[8vw] md:text-[3vw] font-display block">0%</span>
-                            <span className="thesis-line text-[3vw] md:text-[0.9vw] uppercase tracking-widest text-[#0d0e13]/50">Juros Compostos</span>
+                            <span className="thesis-line text-[3vw] md:text-[0.9vw] uppercase tracking-widest text-[#0d0e13]/50 mb-[1vw] block">Juros Compostos</span>
+                            {/* Visual Asset: Flat line vs exponential debt */}
+                            <div className="thesis-line relative w-[80%] md:w-[60%] h-[30px] mt-[1.5vw] opacity-50">
+                                <div className="absolute bottom-0 left-0 w-full h-[1px] bg-[#0d0e13]"></div>
+                                <div className="absolute bottom-0 left-0 w-[80%] h-full border-b-[1px] border-[rgba(200,169,133,0.8)] rounded-br-[100%] origin-bottom-left transform -scale-x-100"></div>
+                            </div>
                         </div>
                         <div>
                             <div className="thesis-hairline w-full h-[1px] bg-[rgba(13,14,19,0.2)] origin-left mb-[1vw]" />
                             <span className="thesis-line text-[8vw] md:text-[3vw] font-display block">10x</span>
-                            <span className="thesis-line text-[3vw] md:text-[0.9vw] uppercase tracking-widest text-[#0d0e13]/50">Poder de Alavancagem</span>
+                            <span className="thesis-line text-[3vw] md:text-[0.9vw] uppercase tracking-widest text-[#0d0e13]/50 mb-[1vw] block">Poder de Alavancagem</span>
+                            {/* Visual Asset: Exponential Growth */}
+                            <div className="thesis-line relative w-[80%] md:w-[60%] h-[30px] mt-[1.5vw]">
+                                <div className="absolute bottom-0 left-0 w-full h-full border-t-[1px] border-[#0d0e13] rounded-tl-[100%]"></div>
+                            </div>
                         </div>
+                    </div>
+
+                    <div className="thesis-line mt-[2vw]">
+                        <MagneticButton href="#contact">
+                            <span className="text-[14px] tracking-[0.15em] uppercase text-[#0d0e13] font-bold group-hover:text-amber-700 transition-colors">
+                                Iniciar Estruturação
+                            </span>
+                        </MagneticButton>
                     </div>
                 </div>
 

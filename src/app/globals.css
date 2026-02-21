@@ -7,10 +7,14 @@
    * ----------------------------------------------------------------- */
   
   /* Cores Base - Ajustadas para "Certum Prime" (Luxo Financeiro) */
-  --color-dark:       #0d0e13;   /* Quase preto, levemente azulado (Deep Space) */
-  --color-light:      #e4e0db;   /* Off-white quente (Papel Moeda Antigo) */
-  --color-white:      #f8f8f8;   /* Branco puro suavizado */
-  --color-accent:     #C8A985;   /* Wealth Gold (Standard) */
+  --color-dark:       #0d0e13;   /* Deep Space */
+  --color-light:      #e4e0db;   /* Platinum/Papel Moeda */
+  --color-white:      #f8f8f8;   /* White */
+  --color-accent:     #C8A985;   /* Wealth Gold */
+  --color-gold:       #C8A985;
+  --color-platinum:   #E4E0DB;
+  --color-silver:     #A1A1A1;
+  --color-obsidian:   #1a1b23;
 
   /* Camadas de Opacidade (A mágica da profundidade) */
   --color-white-08:   rgba(248, 248, 248, 0.8);
@@ -22,11 +26,16 @@
    * ----------------------------------------------------------------- */
   
   /* Font Sizes */
-  --font-s-hero:      clamp(48px, 10.5vw, 220px);    /* O H1 Gigante (Min 48px) */
-  --font-s-h1:        clamp(32px, 5.5vw, 120px);     /* Títulos de Seção (Min 32px) */
-  --font-s-h2:        clamp(22px, 3.6111vw, 80px);   /* Subtítulos (Min 22px) */
-  --font-s-p:         clamp(16px, 1.1111vw, 24px);   /* Corpo de texto (Min 16px - Leitura) */
-  --font-s-label:     clamp(12px, 0.85vw, 16px);     /* Pequenos labels técnicos (Min 12px) */
+  --font-s-hero:      clamp(48px, 10.5vw, 220px);    
+  --font-s-h1:        clamp(32px, 5.5vw, 120px);     
+  --font-s-h2:        clamp(22px, 3.6111vw, 80px);   
+  --font-s-p:         clamp(16px, 1.1vw, 22px);   
+  --font-s-label:     clamp(10px, 0.75vw, 14px);     
+
+  /* Display Font Assignemnts */
+  --font-display-serif: var(--font-playfair), serif;
+  --font-display-sans:  'Clash Display', var(--font-inter), sans-serif;
+  --font-body:          var(--font-inter), sans-serif;
 
   /* Letter Spacing (Tracking) - O segredo editorial */
   /* Quanto maior a fonte, mais negativo é o tracking */
@@ -42,8 +51,8 @@
    * 03. GRID & ESTRUTURA
    * ----------------------------------------------------------------- */
   --grid-columns:     12;
-  --grid-gap:         clamp(16px, 2.2222vw, 40px);  /* Gap fluido (Min 10px) */
-  --page-margin:      clamp(20px, 4.4444vw, 100px);  /* Margem lateral fluida (Min 20px - Safe Area) */
+  --grid-gap:         clamp(16px, 2.2222vw, 40px);  
+  --page-margin:      6vw;  /* Unified Michelin Scale */
 
   /* -----------------------------------------------------------------
    * 04. FÍSICA & MOVIMENTO (MOTION)
@@ -299,4 +308,18 @@
   0% { transform: translateX(-150%) skewX(-20deg); }
   50% { transform: translateX(150%) skewX(-20deg); }
   100% { transform: translateX(150%) skewX(-20deg); }
+}
+
+/* -----------------------------------------------------------------
+ * 06. INTELLIGENCE HUB ANIMATIONS
+ * ----------------------------------------------------------------- */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex !important;
+  width: max-content;
+  animation: marquee 40s linear infinite;
 }

@@ -80,8 +80,10 @@ export default function AssetGallery() {
             {/* Background Image Container */}
             <div className="absolute inset-0 z-0 overflow-hidden">
                 <div 
-                    className="w-full h-full bg-cover bg-center transition-transform duration-[1.5s] ease-s-tier group-hover:scale-105"
+                    className="w-full h-full bg-cover bg-center transition-transform duration-[1.5s] ease-[cubic-bezier(1,0,0,1)] group-hover:scale-105"
                     style={{ backgroundImage: `url(${item.image})` }}
+                    role="img"
+                    aria-label={`Classe de ativo: ${item.title} - ${item.subtitle}`}
                 />
             </div>
             

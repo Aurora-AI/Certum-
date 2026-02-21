@@ -57,16 +57,16 @@ const AuthorityBlock = () => {
 
             {/* --- LAYER 1: MONUMENTAL SCALE (Architecture) --- */}
             {/* Os números são a estrutura do prédio, não o conteúdo. */}
-            <div className="absolute inset-0 flex justify-between items-center px-[5vw] pointer-events-none select-none z-0">
+            <div className="absolute inset-0 flex justify-between items-center px-[6vw] pointer-events-none select-none z-0">
                 
                 {/* 70 Years Monument */}
-                <div className="monumental-number relative text-[25vw] leading-none font-bold text-white opacity-[0.03] mix-blend-overlay transform -translate-x-[5vw]">
+                <div className="monumental-number relative text-[25vw] leading-none font-bold text-white opacity-[0.05] mix-blend-overlay transform -translate-x-[5vw]">
                     70
                     <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] animate-[shimmer_8s_infinite] pointer-events-none"></div>
                 </div>
 
                 {/* 18 Bi Monument */}
-                <div className="monumental-number relative text-[35vw] lg:text-[25vw] leading-none font-bold text-white opacity-[0.03] mix-blend-overlay transform translate-x-[5vw]">
+                <div className="monumental-number relative text-[35vw] lg:text-[25vw] leading-none font-bold text-white opacity-[0.05] mix-blend-overlay transform translate-x-[5vw]">
                     18
                     <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] animate-[shimmer_8s_infinite_2s] pointer-events-none"></div>
                 </div>
@@ -80,13 +80,13 @@ const AuthorityBlock = () => {
                 {/* 2.1 The Label */}
                 <span className="text-label text-accent tracking-[0.2vw] opacity-80">
                     {/* /// LASTRO INSTITUCIONAL */}
-                    /// LASTRO INSTITUCIONAL
+                    {"/// LASTRO INSTITUCIONAL"}
                 </span>
 
                 {/* 2.2 The Partnership (Centerpiece) */}
                 <div className="flex items-center gap-[4vw] mb-[2vw]">
                     {/* CERTUM */}
-                    <h2 className="text-[10vw] lg:text-[5vw] font-bold tracking-tighter text-white">
+                    <h2 className="text-[10vw] lg:text-[5vw] font-bold tracking-tighter text-white font-serif">
                         CERTUM
                     </h2>
                     
@@ -100,7 +100,7 @@ const AuthorityBlock = () => {
                       rel="noopener noreferrer"
                       className="group/link relative"
                     >
-                      <h2 className="text-[10vw] lg:text-[5vw] font-bold tracking-tighter text-white transition-colors duration-500 group-hover/link:text-accent">
+                      <h2 className="text-[10vw] lg:text-[5vw] font-bold tracking-tighter text-white font-serif transition-colors duration-500 group-hover/link:text-accent">
                           RODOBENS
                       </h2>
                       {/* Subtlest underglow on hover */}
@@ -114,8 +114,18 @@ const AuthorityBlock = () => {
                     <br/>Uma aliança forjada em performance absoluta.
                 </p>
 
-                {/* 2.4 The Decoration (Minimal) */}
-                <div className="w-px h-[6vw] bg-linear-to-b from-accent to-transparent mt-[4vw] opacity-30"></div>
+                {/* 2.4 The Decoration & Journey CTA */}
+                <div className="flex flex-col items-center mt-[4vw]">
+                     <a href="/pontual" className="group flex items-center gap-[1vw] text-[3vw] md:text-[0.9vw] font-body uppercase tracking-widest text-white/70 hover:text-accent transition-all duration-300">
+                         <span className="border-b border-transparent group-hover:border-accent transition-colors pb-1">
+                             Acessar Estratégias
+                         </span>
+                         <svg className="w-[3vw] h-[3vw] md:w-[1vw] md:h-[1vw] transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                         </svg>
+                     </a>
+                     <div className="w-px h-[6vw] bg-linear-to-b from-accent to-transparent mt-[4vw] opacity-30"></div>
+                </div>
 
             </div>
 

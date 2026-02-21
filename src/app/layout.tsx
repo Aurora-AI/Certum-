@@ -65,6 +65,7 @@ export const metadata: Metadata = {
 };
 
 import SovereignCursor from '@/app/components/ui/SovereignCursor';
+import LocalBusinessData from '@/components/seo/LocalBusinessData';
 
 export default function RootLayout({
   children,
@@ -81,6 +82,7 @@ export default function RootLayout({
       <body className="bg-dark text-white antialiased overflow-x-hidden selection:bg-accent selection:text-dark">
         <SovereignCursor color="#C8A985" dotSize={8} circleSize={40} />
         {children}
+        <LocalBusinessData />
       </body>
     </html>
   );

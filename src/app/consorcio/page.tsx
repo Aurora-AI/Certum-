@@ -1,16 +1,12 @@
-'use client';
+import type { Metadata } from 'next';
+import ConsorcioClient from './ConsorcioClient';
 
-import React from 'react';
-import ConsorcioHero from "@/components/consorcio/ConsorcioHero";
-import ConsorcioCategories from "@/components/consorcio/ConsorcioCategories";
-import ContactFooter from "@/components/sections/ContactFooter";
+export const metadata: Metadata = {
+  title: 'Consórcio Tradicional Rodobens | Certum Prime SJRP',
+  description: 'Planos estruturados para imóveis, veículos, frotas e maquinário agro. Adquira seu bem com planejamento financeiro estratégico e taxas competitivas.',
+  keywords: ['Consórcio Imobiliário Rodobens', 'Consórcio de Caminhões', 'Rodobens São José do Rio Preto', 'Investimento Seguro'],
+};
 
 export default function ConsorcioTradicionalPage() {
-    return (
-        <main className="relative w-full overflow-hidden bg-[#0d0e13]">
-            <ConsorcioHero />
-            <ConsorcioCategories />
-            <ContactFooter />
-        </main>
-    );
+    return <ConsorcioClient />;
 }

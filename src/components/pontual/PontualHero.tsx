@@ -2,8 +2,11 @@
 
 import React, { useRef, useLayoutEffect } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function PontualHero() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -35,6 +38,19 @@ export default function PontualHero() {
                 { scaleX: 1, duration: 2 },
                 1
             );
+
+            // Halo Effect: Exit Transition (Peak-End Rule)
+            gsap.to(containerRef.current, {
+                scale: 0.95,
+                opacity: 0.2,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top top",
+                    end: "bottom center",
+                    scrub: true
+                }
+            });
         }, containerRef);
         
         return () => ctx.revert();

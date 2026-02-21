@@ -123,18 +123,16 @@ const AboutManifesto = () => {
             // ACT I PHYSICS: A Realidade
             const tl1 = gsap.timeline({
                 scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 75%", // Start much earlier (when section enters bottom quarter)
-                    end: "top 40%",   // Finish before it hits center
-                    scrub: 1,         // Faster response
+                    trigger: frame1Ref.current,
+                    start: "top 85%", 
+                    end: "top 45%",   
+                    scrub: 1,        
                 }
             });
 
-            // Start at scale 0.7 (70%) to match the video size (hidden behind it)
-            // No opacity fade - it starts visible but occluded
             tl1.fromTo(frame1Ref.current, 
                 { scale: 0.7 },
-                { scale: 1, ease: "power2.out" } // Changed ease for smoother "pop"
+                { scale: 1, ease: "power2.out" }
             );
 
             tl1.fromTo(photo1Ref.current,
@@ -146,20 +144,40 @@ const AboutManifesto = () => {
             // ACT II PHYSICS: O Manifesto
             const tl2 = gsap.timeline({
                 scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "40% 75%", // Relative to section height
-                    end: "60% 40%", 
+                    trigger: frame2Ref.current,
+                    start: "top 85%", 
+                    end: "top 45%", 
                     scrub: 1,
                 }
             });
 
-            // Consistency for second container
             tl2.fromTo(frame2Ref.current, 
-                { scale: 0.7, opacity: 0 }, 
-                { scale: 1, opacity: 1, ease: "power2.out" }
+                { scale: 0.7 }, 
+                { scale: 1, ease: "power2.out" }
             );
 
             tl2.fromTo(photo2Ref.current,
+                { scale: 1.1 },
+                { scale: 1, ease: "power2.out" },
+                "<" 
+            );
+
+            // ACT III PHYSICS: Proteção
+            const tl3 = gsap.timeline({
+                scrollTrigger: {
+                    trigger: frame3Ref.current,
+                    start: "top 85%", 
+                    end: "top 45%", 
+                    scrub: 1,
+                }
+            });
+
+            tl3.fromTo(frame3Ref.current, 
+                { scale: 0.7 }, 
+                { scale: 1, ease: "power2.out" }
+            );
+
+            tl3.fromTo(photo3Ref.current,
                 { scale: 1.1 },
                 { scale: 1, ease: "power2.out" },
                 "<" 
@@ -183,7 +201,7 @@ const AboutManifesto = () => {
             <div ref={breachRef} className="w-full bg-[#FAFAF8] pt-[20vw] pb-[10vw]">
                 
                 {/* --- ACT I: PERGUNTA & SÍNTESE (Side-by-Side) --- */}
-                <div className="s-grid relative items-center px-[5vw] mb-[15vw]">
+                <div className="s-grid relative items-center mb-[15vw]">
                     
                     {/* LEFT: PORTAL VISUAL */}
                     <div className="col-span-12 lg:col-span-6 relative mb-[10vw] lg:mb-0">
@@ -235,19 +253,19 @@ const AboutManifesto = () => {
                              </h2>
                         </LineReveal>
                         <ParagraphReveal delay={0.2}>
-                             <p className="text-[clamp(18px,1.2vw,22px)] leading-[1.3] text-(--color-dark) opacity-50 mb-[3vw] font-normal uppercase tracking-[0.1em]">
+                             <p className="text-[clamp(18px,1.2vw,22px)] leading-[1.3] text-(--color-dark) opacity-50 mb-[3vw] font-normal uppercase tracking-widest">
                                 Financiamento drena capital. Consórcio preserva. Taxas menores, previsibilidade estruturada.
                              </p>
                         </ParagraphReveal>
                         
                         <div className="mb-[3vw]">
                              <ParagraphReveal delay={0.3}>
-                                <p className="text-[clamp(16px,1.2vw,20px)] leading-[1.5] font-mono text-(--color-dark) mb-[1vw] opacity-80">
+                                <p className="text-[clamp(16px,1.2vw,20px)] leading-normal font-mono text-(--color-dark) mb-[1vw] opacity-80">
                                     35 anos. 3 imóveis pagos, 1 recebido.
                                 </p>
                             </ParagraphReveal>
                             <ParagraphReveal delay={0.4}>
-                                <p className="text-[clamp(16px,1.2vw,20px)] leading-[1.5] font-mono text-(--color-dark) opacity-80 mb-[2vw]">
+                                <p className="text-[clamp(16px,1.2vw,20px)] leading-normal font-mono text-(--color-dark) opacity-80 mb-[2vw]">
                                     Financiamento tradicional consome 70% em juros. 
                                     O consórcio devolve o controle ao seu fluxo.
                                 </p>
@@ -273,7 +291,7 @@ const AboutManifesto = () => {
                 </div>
 
                 {/* --- ACT II: O MANIFESTO (RESTORED) --- */}
-                <div className="s-grid relative items-center px-[5vw] mb-[15vw]">
+                <div className="s-grid relative items-center mb-[15vw]">
                      {/* --- PORTAL COLUMN (Right on Desktop to alternate) --- */}
                      <div className="col-span-12 md:col-start-2 md:col-span-12 lg:col-start-2 lg:col-span-6 relative mb-[10vw] md:mb-0 order-1 lg:order-1">
                          <a href="#about" className="group block cursor-pointer">
@@ -342,7 +360,7 @@ const AboutManifesto = () => {
                 </div>
 
                 {/* --- ACT III: PROTEÇÃO (THE SHIELD) --- */}
-                <div className="s-grid relative items-center px-[5vw] mb-[10vw]">
+                <div className="s-grid relative items-center mb-[10vw]">
                     {/* LEFT: PORTAL VISUAL */}
                     <div className="col-span-12 lg:col-span-6 relative mb-[10vw] lg:mb-0">
                          <a href="#insurance" className="group block cursor-pointer">
